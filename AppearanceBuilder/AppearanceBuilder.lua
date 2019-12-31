@@ -3,10 +3,10 @@ AppearanceBuilder v1.0.0.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
-Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [ApperanceStartIndex], [MacroStartIndex]"'
+Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearnceStartIndex], [MacroStartIndex]"'
 
 Example:
-Call Plugin "ApperanceBuilder" "10, 1, 0.5, 1, 1, 201, 401"
+Call Plugin "AppearnceBuilder" "10, 1, 0.5, 1, 1, 201, 401"
 
 Creates 10 Appearances starting at 201 and Macros starting at 401 with the fill being darker then the outline.
  
@@ -16,8 +16,8 @@ FillSaturation  between 0.0 and 1.0 defaults to 1.0
 FillBrightness  between 0.0 and 1.0 defaults to 1.0
 FillSaturation  between 0.0 and 1.0 defaults to <FillSaturation>
 FillBrightness  between 0.0 and 1.0 defaults to <FillBrightness>
-ApperanceStartIndex between 0 - 10000 defaults to 101
-ApperanceStartIndex between 0 - 10000 defaults to ApperanceStartIndex
+AppearnceStartIndex between 0 - 10000 defaults to 101
+AppearnceStartIndex between 0 - 10000 defaults to AppearnceStartIndex
 
 Things todo:
 - Figure out how to ask a question for the user to input a value
@@ -90,14 +90,14 @@ local function Main (display_handle, argument)
     local arguments
     if argument == null then
         Echo("Usage:")
-        Echo('Call Plugin HSB2RGB "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Apperance Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
+        Echo('Call Plugin HSB2RGB "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Appearnce Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
         Echo('All options except for COUNT are optional, and will choose some defaults')
         return
     else
         arguments = split(argument, ",")
     end
 
-    local overwrite = PopupInput("Overwrite macros and Apperances?", display_handle, {"NO", "YES, will remove references!"})
+    local overwrite = PopupInput("Overwrite macros and Appearnces?", display_handle, {"NO", "YES, will remove references!"})
     
     -- sanatize our inputs
     --TODO: really need to change this to key=value pairs!
@@ -133,13 +133,13 @@ local function Main (display_handle, argument)
         local rf, gf, bf, namef = toRGB(i, fillS, fillB)
         local ro, go, bo, nameo = toRGB(i, outlineS, outlineB)
 
-        -- Overwrite Apperances
+        -- Overwrite Appearnces
         --TODO: This should do an overwrite insted of a delete
         if overwrite == 1 then
             Cmd("Delete Appearance %d /NC", appearanceIndex)
         end
 
-        -- build Apperances
+        -- build Appearnces
         local command = ""
         if nameo == null then
             command = string.format('Store Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d"',appearanceIndex, rf, gf, bf, a, math.floor(ro * 255), math.floor(go * 255), math.floor(bo * 255), math.floor(a * 255))
@@ -162,7 +162,7 @@ local function Main (display_handle, argument)
         Cmd(string.format('Set 1 Command "Assign Appearance %d at" ', appearanceIndex))
         Cmd("Set 1 Execute no")
         Cmd("CD Root")
-        local macroName = "Assign " .. (nameo or "Apperance")
+        local macroName = "Assign " .. (nameo or "Appearnce")
         Cmd("Label Macro " .. macroIndex .. '"'.. macroName ..'"')
 
 
