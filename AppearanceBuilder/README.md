@@ -4,12 +4,14 @@ Please note that this will likly break in future version of the console. and to 
 This plugin creates the specified number of Appearance colors by spinning the Hue wheel eavenly. it trys to give the colors names based on a small list of editable RGB values and names in the plugin.
 
 Usage:
-Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearnceStartIndex], [MacroStartIndex]"'
+`Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearnceStartIndex], [MacroStartIndex]"'`
 
 Example:
-Call Plugin "AppearnceBuilder" "10, 1, 0.4, 1, 1, 103, 121"
+`Call Plugin "AppearnceBuilder" "10, 1, 0.4, 1, 1, 103, 121"`
 
 Creates 10 Appearances starting at 103 and Macros starting at 121 with the fill being darker then the outline.
+
+![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilderExample.png)
  
 Properties:
 COUNT           between  1 and 360 defalts to 15
