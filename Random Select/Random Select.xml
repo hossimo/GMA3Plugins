@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.0.0.3">
+    <Plugin Name="Random Select" Guid="00 E0 4C 00 6F 1B 00 00 63 71 A9 52 D9 67 8A A0" Author="hoss" Version="1.0.0.1">
+        <ComponentLua Name="Random Select" Guid="00 E0 4C 00 AD 54 00 00 65 71 A9 52 85 AC 8B A0" FileName="random_select.lua" />
+    </Plugin>
+</GMA3>
