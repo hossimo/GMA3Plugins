@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.0.0.3">
+    <Plugin Name="Copy Screenshots" Author="hoss" Version="1.0.0.1">
+        <ComponentLua Name="copy_screenshots" FileName="copy_screenshots.lua">
+        </ComponentLua>
+    </Plugin>
+</GMA3>
