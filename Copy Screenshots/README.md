@@ -1,3 +1,5 @@
+# FOUND A BUG IN Version 1.0.0.1 that causes it to fail on the console, 🤦‍ (that was kind of the point) should be fixed shortly.
+
 Copy Screenshots v1.0.0.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -21,6 +23,3 @@ Issues:
 
 Releases:
 1.0.0.1 - Inital release
-
-
-
