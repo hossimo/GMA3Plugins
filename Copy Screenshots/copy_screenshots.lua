@@ -1,5 +1,5 @@
 --[[
-Copy Screenshots v1.0.0.1
+Copy Screenshots v1.0.0.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -20,6 +20,7 @@ Issues:
 
 Releases:
 1.0.0.1 - Inital release
+1.0.0.2 - Fixed a path parsing bug causing the plugin to not work on the console.
 
 
 MIT License
@@ -68,6 +69,7 @@ local function copyFileToUSB(sourceFiles, overwrite)
     local skipCount = 0
 
     for k, v in pairs(sourceFiles) do
+        --Echo("srcFileHandle: %s", v)
         local srcFileHandle = assert(io.open(v, "r"))
         local fileContent = srcFileHandle:read("*all")
 
@@ -131,19 +133,37 @@ local function Main(display_handle,argument)
     local pfile
     if (sep == "\\") then
         pfile = io.popen('dir /B "'.. lib_images ..'"*display*.png')
-    else
-        --pfile = popen('ls "'.. lib_images ..'"*display*.png')
+            for filename in pfile:lines() do
+                files[filename] = lib_images..filename
+            end
+        else
         pfile = io.popen('ls "'.. lib_images .. '"*display*.png')
-    end
+            for filename in pfile:lines() do
+                local file = split(filename,"/")
+
+                files[file[#file]] = filename -- file listing includes full path, just use the first last part
+            end
+        end
 
     -- files to copy
-    for filename in pfile:lines() do
-        files[filename] = lib_images..filename
-    end
 
     -- get someone else to do it.
     local result = copyFileToUSB(files, true)
 end
+
+-- split
+-- why is there no split in lua?
+function split (inputstr, sep)
+    if sep == nil then
+            sep = "%s"
+    end
+    local t={}
+    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+            table.insert(t, str)
+    end
+    return t
+end
+
 
 -- ****************************************************************
 -- plugin exit cleanup entry point 
