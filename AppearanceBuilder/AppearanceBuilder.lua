@@ -1,12 +1,12 @@
 --[[
-AppearanceBuilder v1.0.0.1
+AppearanceBuilder v1.0.0.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
-Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearnceStartIndex], [MacroStartIndex]"'
+Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearanceStartIndex], [MacroStartIndex]"'
 
 Example:
-Call Plugin "AppearnceBuilder" "10, 1, 0.5, 1, 1, 201, 401"
+Call Plugin "AppearanceBuilder" "10, 1, 0.5, 1, 1, 201, 401"
 
 Creates 10 Appearances starting at 201 and Macros starting at 401 with the fill being darker then the outline.
  
@@ -16,17 +16,21 @@ FillSaturation  between 0.0 and 1.0 defaults to 1.0
 FillBrightness  between 0.0 and 1.0 defaults to 1.0
 FillSaturation  between 0.0 and 1.0 defaults to <FillSaturation>
 FillBrightness  between 0.0 and 1.0 defaults to <FillBrightness>
-AppearnceStartIndex between 0 - 10000 defaults to 101
-AppearnceStartIndex between 0 - 10000 defaults to AppearnceStartIndex
+AppearanceStartIndex between 0 - 10000 defaults to 101
+AppearanceStartIndex between 0 - 10000 defaults to AppearanceStartIndex
+
+If no properties are set the plugin will ask some questions for each value
 
 Things todo:
-- Figure out how to ask a question for the user to input a value
 - The name is curretly taken from the outline color, and has a small list of colors.
 - Better Appearance overwriteing, currently deletes and creates causing the refrances to be deleted.
 - Better Macro overwriting, currently deletes and creates, if not overwriting adds additional lines with the INSERT command
-- Better property managment, key value pairs would be much nicer
 - Eficancies and Consistantly issues
+- Ask Numeric Questions insted of InputText
 
+Releases:
+- 1.0.0.1 - Inital Release
+- 1.0.0.2 - Added Text input when no arguments
 
 
 
@@ -88,42 +92,77 @@ local names = {
 local function Main (display_handle, argument)
     --Echo("Console Version: %s" Version())
     local arguments
+
+    local count
+    local fillS
+    local fillB
+    local outlineS
+    local outlineB
+    local appearanceStartIndex
+    local macroStartIndex
+    local inline = false
+    local continueString
+
+
     if argument == null then
-        Echo("Usage:")
-        Echo('Call Plugin HSB2RGB "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Appearnce Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
-        Echo('All options except for COUNT are optional, and will choose some defaults')
-        return
+        Printf("Usage:")
+        Printf('Call Plugin HSB2RGB "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Appearance Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
+        Printf('All options except for COUNT are optional, and will choose some defaults')
+
+        -- get inputs
+        count = clamp(math.floor(tonumber(TextInput("Apearnces to create? (1 - 360, Blank to cancel)") or 0)), 0, 360)
+        if count == 0 then
+            return
+        end
+        fillS = clamp(tonumber(TextInput("Fill Saturation (0.0 - 1.0)") or 1.0), 0.0, 1.0)
+        fillB = clamp(tonumber(TextInput("Fill Brightness (0.0 - 1.0)") or 1.0), 0.0, 1.0)
+        outlineS = clamp(tonumber(TextInput("Outline Saturation (0.0 - 1.0)") or 1.0), 0.0, 1.0)
+        outlineB = clamp(tonumber(TextInput("Outline Brightness (0.0 - 1.0)") or 1.0), 0.0, 1.0)
+        appearanceStartIndex = clamp(math.floor(tonumber(TextInput("Appearance Start Index (1 - 10000)")or 101)),1,10000) 
+        macroStartIndex = clamp(math.floor(tonumber(TextInput("Macro Start Index (1 - 10000)")or 101)),1,10000)
+        continueString = string.format("Continue? Count: %d, Fill Sat: %f, Fill Bri: %f, Outline Sat: %f, Outline Bri: %f, Appearance: %d, Macro: %d", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex)
     else
+        -- sanatize our inputs
         arguments = split(argument, ",")
+        --count (int)
+        count = clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
+
+        -- fill saturation (float)
+        fillS = clamp(tonumber(arguments[2]) or 1.0 + .0, 0.0, 1.0)
+
+        -- fill brightness (float)
+        fillB = clamp(tonumber(arguments[3]) + .0, 0.0, 1.0) or 1.0
+
+        --outline saturation (float)
+        outlineS = clamp(tonumber(arguments[4]) + .0, 0.0, 1.0) or fillS    
+
+        -- outline brightness (float)
+        outlineB = clamp(tonumber(arguments[5]) + .0, 0.0, 1.0) or fillB
+
+        -- appearanceStartIndex (int)
+        appearanceStartIndex = clamp(math.floor(tonumber(arguments[6]) or 101),1,10000)
+
+        -- appearanceStartIndex (int)
+        macroStartIndex = clamp(math.floor(tonumber(arguments[7]) or appearanceStartIndex),1,10000)
+
+        inline = true
     end
 
-    local overwrite = PopupInput("Overwrite macros and Appearnces?", display_handle, {"NO", "YES, will remove references!"})
+
+
+    if inline == false then 
+        local c = PopupInput(continueString , display_handle, {"NO", "YES"})
+        if c == 0 then
+            Printf("Exiting Plugin")
+            return
+        end
+    end
     
-    -- sanatize our inputs
-    --TODO: really need to change this to key=value pairs!
-    --count (int)
-    local count = clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
 
-    -- fill saturation (float)
-    local fillS = clamp(tonumber(arguments[2]) or 1.0 + .0, 0.0, 1.0)
-
-    -- fill brightness (float)
-    local fillB = clamp(tonumber(arguments[3]) + .0, 0.0, 1.0) or 1.0
-
-    --outline saturation (float)
-    local outlineS = clamp(tonumber(arguments[4]) + .0, 0.0, 1.0) or fillS    
-
-    -- outline brightness (float)
-    local outlineB = clamp(tonumber(arguments[5]) + .0, 0.0, 1.0) or fillB
-
-    -- appearanceStartIndex (int)
-    local appearanceStartIndex = clamp(math.floor(tonumber(arguments[6]) or 101),1,10000)
-
-    -- appearanceStartIndex (int)
-    local macroStartIndex = clamp(math.floor(tonumber(arguments[7]) or appearanceStartIndex),1,10000)
+    local overwrite = PopupInput("Overwrite macros and Appearances?", display_handle, {"NO", "YES, will remove references!"})
+    
 
     local fillIncrement = 1 / count
-    -- start index hardcoded to 21 for testing
     local appearanceIndex = appearanceStartIndex
     local macroIndex = macroStartIndex
 
@@ -133,13 +172,13 @@ local function Main (display_handle, argument)
         local rf, gf, bf, namef = toRGB(i, fillS, fillB)
         local ro, go, bo, nameo = toRGB(i, outlineS, outlineB)
 
-        -- Overwrite Appearnces
+        -- Overwrite Appearances
         --TODO: This should do an overwrite insted of a delete
         if overwrite == 1 then
             Cmd("Delete Appearance %d /NC", appearanceIndex)
         end
 
-        -- build Appearnces
+        -- build Appearances
         local command = ""
         if nameo == null then
             command = string.format('Store Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d"',appearanceIndex, rf, gf, bf, a, math.floor(ro * 255), math.floor(go * 255), math.floor(bo * 255), math.floor(a * 255))
@@ -162,7 +201,7 @@ local function Main (display_handle, argument)
         Cmd(string.format('Set 1 Command "Assign Appearance %d at" ', appearanceIndex))
         Cmd("Set 1 Execute no")
         Cmd("CD Root")
-        local macroName = "Assign " .. (nameo or "Appearnce")
+        local macroName = "Assign " .. (nameo or "Appearance")
         Cmd("Label Macro " .. macroIndex .. '"'.. macroName ..'"')
 
 
