@@ -1,5 +1,5 @@
 --[[
-AppearanceBuilder v1.0.0.2
+AppearanceBuilder v1.0.0.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -31,7 +31,7 @@ Things todo:
 Releases:
 - 1.0.0.1 - Inital Release
 - 1.0.0.2 - Added Text input when no arguments
-
+- 1.0.0.3 - Changed Text input confirmation to Confirm() from PopupInput()
 
 
 MIT License
@@ -120,7 +120,7 @@ local function Main (display_handle, argument)
         outlineB = clamp(tonumber(TextInput("Outline Brightness (0.0 - 1.0)") or 1.0), 0.0, 1.0)
         appearanceStartIndex = clamp(math.floor(tonumber(TextInput("Appearance Start Index (1 - 10000)")or 101)),1,10000) 
         macroStartIndex = clamp(math.floor(tonumber(TextInput("Macro Start Index (1 - 10000)")or 101)),1,10000)
-        continueString = string.format("Continue? Count: %d, Fill Sat: %f, Fill Bri: %f, Outline Sat: %f, Outline Bri: %f, Appearance: %d, Macro: %d", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex)
+        continueString = string.format("Continue? Count: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nAppearance Start Index: %d\nMacro Start Index: %d", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex)
     else
         -- sanatize our inputs
         arguments = split(argument, ",")
@@ -151,7 +151,7 @@ local function Main (display_handle, argument)
 
 
     if inline == false then 
-        local c = PopupInput(continueString , display_handle, {"NO", "YES"})
+        local c = Confirm("Continue?", continueString)
         if c == 0 then
             Printf("Exiting Plugin")
             return
