@@ -1,4 +1,5 @@
-AppearanceBuilder v1.0.0.1
+AppearanceBuilder v1.0.0.2
+
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 This plugin creates the specified number of Appearance colors by spinning the Hue wheel eavenly. it trys to give the colors names based on a small list of editable RGB values and names in the plugin.
