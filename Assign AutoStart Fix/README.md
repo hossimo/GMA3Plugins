@@ -12,7 +12,7 @@ Usage:
 
 
 Issues:
-***NOTE: This will OVERWRITE any CMD's in the Selected Sequences CueZero and OffCue!***
+* ***NOTE: This will OVERWRITE any CMD's in the Selected Sequences CueZero and OffCue!***
 * Does not currently check if the Sequence exists, probably no need since when the issue gets fixed this plugin will be depricated.
 
 Releases:
