@@ -1,5 +1,5 @@
 --[[
-Assign AutoStart Fix v1.0.0.1
+Assign AutoStart Fix v1.0.0.2
 
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -17,6 +17,7 @@ Issues:
 
 Releases:
 * 1.0.0.1 - Inital release
+* 1.0.0.2 - Added Undo, better checks for non valid inputs
 
 
 MIT License
@@ -73,25 +74,27 @@ local function Main(display_handle,argument)
 		input = TextInput("Enter Sequance Number or range (e.g. 1,2-4)")
 	end
 	
-	local sequances = calculateRange(input)
+	local sequances, stringSequances = calculateRange(input)
 	if sequances == nil then
 		Echo("No Valid Ranges")
 		return
 	end
 
+	-- create an undo session.
+	local undo = CreateUndo("Adding Macros AutoStart Macros to Sequences " .. stringSequances)
+	
 	-- use our returned sequences to insert the CueZero and CueEnd Macros
-
 	for k, v in pairs(sequances) do
-		Echo("%d", v)
-	-- make sure object exists!
-	-- assign the macros
-	local cmdString = string.format('Set Seq %d "CmdEnable" "Yes"', v)
-	Cmd(cmdString)
-	cmdString = string.format('Set Seq %d Cue 0 "Cmd" "Set Seq %d AutoStart No"', v, v)
-	Cmd(cmdString)
-	cmdString = string.format('Set Seq %d Cue "OffCue" "Cmd" "Set Seq %d AutoStart Yes"', v, v)
-	Cmd(cmdString)
+		-- make sure object exists!
+		-- assign the macros
+		local cmdString = string.format('Set Seq %d "CmdEnable" "Yes"', v)
+		Cmd(cmdString, undo)
+		cmdString = string.format('Set Seq %d Cue 0 "Cmd" "Set Seq %d AutoStart No"', v, v)
+		Cmd(cmdString, undo)
+		cmdString = string.format('Set Seq %d Cue "OffCue" "Cmd" "Set Seq %d AutoStart Yes"', v, v)
+		Cmd(cmdString, undo)
 	end
+	CloseUndo(undo)
 end
 
 -- calculateRange
@@ -99,6 +102,7 @@ function calculateRange(input)
 	-- first split on ","
 	local seqSplit = split(input, ",")
 	local returnList = {}
+	local returnString = ""
 
 	if #seqSplit == 0 then
 		Printf("No Sequences Found, Exiting")
@@ -106,8 +110,17 @@ function calculateRange(input)
 	elseif #seqSplit > 0 then
 		for k, v in pairs(seqSplit) do
 			if string.find(v, "-") ~= nil then
-				-- found a range
 				local inputRange = split(v, "-")
+
+				-- if inputRange[1] == null or inputRange[2] == null then
+				-- 	goto continue
+				-- end
+
+				if tonumber(inputRange[1]) == null or tonumber(inputRange[2]) == null then
+					goto continue
+				end
+
+				-- found a range
 				local inputStart = math.floor(tonumber(inputRange[1]))
 				local inputEnd = math.floor(tonumber(inputRange[2]))
 
@@ -116,23 +129,30 @@ function calculateRange(input)
 					for i = inputStart, inputEnd do
 						table.insert (returnList, i)
 					end
+					returnString = returnString .. v .. ","
 				else
 					--range is invalid, skip it.
 				end
 				
 			else
 				-- just a value
+				if tonumber(v) == null then
+					goto continue
+				end
 				local item = math.floor(tonumber(v))
 				if item ~= null then
 					table.insert (returnList, item)
+					returnString = returnString .. v .. ","
 				end
 			end
+			::continue::
 		end
 	end
 	if #returnList == 0 then
 		return null
 	else 
-		return returnList		
+		returnString = returnString:sub(1, -2)
+		return returnList, returnString	
 	end
 end
 

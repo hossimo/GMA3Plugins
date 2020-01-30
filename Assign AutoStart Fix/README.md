@@ -17,3 +17,5 @@ Issues:
 
 Releases:
 * 1.0.0.1 - Inital release
+* 1.0.0.2 - Added Oops, better checks for non valid inputs
+
