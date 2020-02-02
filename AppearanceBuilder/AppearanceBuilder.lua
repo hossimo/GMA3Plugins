@@ -1,5 +1,5 @@
 --[[
-AppearanceBuilder v1.0.0.3
+AppearanceBuilder v1.0.0.4
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -32,6 +32,7 @@ Releases:
 - 1.0.0.1 - Inital Release
 - 1.0.0.2 - Added Text input when no arguments
 - 1.0.0.3 - Changed Text input confirmation to Confirm() from PopupInput()
+- 1.0.0.4 - Added Undo/Oops
 
 
 MIT License
@@ -110,7 +111,7 @@ local function Main (display_handle, argument)
         Printf('All options except for COUNT are optional, and will choose some defaults')
 
         -- get inputs
-        count = clamp(math.floor(tonumber(TextInput("Apearnces to create? (1 - 360, Blank to cancel)") or 0)), 0, 360)
+        count = clamp(math.floor(tonumber(TextInput("Appearances to create? (1 - 360, Blank to cancel)") or 0)), 0, 360)
         if count == 0 then
             return
         end
@@ -160,7 +161,7 @@ local function Main (display_handle, argument)
     
 
     local overwrite = PopupInput("Overwrite macros and Appearances?", display_handle, {"NO", "YES, will remove references!"})
-    
+    local undo = CreateUndo("Appearance Builder")
 
     local fillIncrement = 1 / count
     local appearanceIndex = appearanceStartIndex
@@ -175,7 +176,7 @@ local function Main (display_handle, argument)
         -- Overwrite Appearances
         --TODO: This should do an overwrite insted of a delete
         if overwrite == 1 then
-            Cmd("Delete Appearance %d /NC", appearanceIndex)
+            Cmd(string.format("Delete Appearance %d /NC", appearanceIndex), undo)
         end
 
         -- build Appearances
@@ -185,30 +186,31 @@ local function Main (display_handle, argument)
         else
             command = string.format('Store Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d" "Name" "%s"',appearanceIndex, rf, gf, bf, a, math.floor(ro * 255), math.floor(go * 255), math.floor(bo * 255), math.floor(a * 255), nameo)
         end
-        Cmd(command)
+        Cmd(command, undo)
 
         -- build macros
         -- Overwrite Macros
         --TODO: This should do an overwrite insted of a delete
         if overwrite == 1 then
-            Cmd("Delete Macro %d /NC", macroIndex)
+            Cmd(string.format("Delete Macro %d /NC", macroIndex), undo)
         end
 
-        Cmd("Store Macro " .. macroIndex)
-        Cmd("Assign Appearance " .. appearanceIndex .. " at Macro " .. macroIndex)
-        Cmd("CD Macro " .. macroIndex)
-        Cmd("Insert") --TODO: HMM, how do I first delete all lines.
-        Cmd(string.format('Set 1 Command "Assign Appearance %d at" ', appearanceIndex))
-        Cmd("Set 1 Execute no")
-        Cmd("CD Root")
+        Cmd("Store Macro " .. macroIndex, undo)
+        Cmd("Assign Appearance " .. appearanceIndex .. " at Macro " .. macroIndex, undo)
+        Cmd("CD Macro " .. macroIndex, undo)
+        Cmd("Insert", undo) --TODO: HMM, how do I first delete all lines.
+        Cmd(string.format('Set 1 Command "Assign Appearance %d at" ', appearanceIndex), undo)
+        Cmd("Set 1 Execute no", undo)
+        Cmd("CD Root", undo)
         local macroName = "Assign " .. (nameo or "Appearance")
-        Cmd("Label Macro " .. macroIndex .. '"'.. macroName ..'"')
+        Cmd("Label Macro " .. macroIndex .. '"'.. macroName ..'"', undo)
 
 
         -- increment our indexes
         appearanceIndex = appearanceIndex + 1
         macroIndex = macroIndex + 1
     end
+    CloseUndo(undo)
 end
 
 --

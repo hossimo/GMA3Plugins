@@ -1,4 +1,4 @@
-AppearanceBuilder v1.0.0.2
+AppearanceBuilder v1.0.0.4
 
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -34,3 +34,5 @@ Things todo:
 Releases:
 - 1.0.0.1 - Inital Release
 - 1.0.0.2 - Added Text input when no arguments
+- 1.0.0.3 - Changed Text input confirmation to Confirm() from PopupInput()
+- 1.0.0.4 - Added Undo/Oops
