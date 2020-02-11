@@ -1,5 +1,5 @@
 --[[
-AppearanceBuilder v1.0.0.4
+AppearanceBuilder v1.0.0.5
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -33,6 +33,7 @@ Releases:
 - 1.0.0.2 - Added Text input when no arguments
 - 1.0.0.3 - Changed Text input confirmation to Confirm() from PopupInput()
 - 1.0.0.4 - Added Undo/Oops
+- 1.0.0.5 - Cleanup and making functions local
 
 
 MIT License
@@ -87,11 +88,13 @@ local names = {
     {{255,255,255},"White"}
 }
 
---
--- Main
---
+-- local functions
+local split, clamp, toRGB, getColorName
+
+-- ****************************************************************
+-- plugin main entry point 
+-- ****************************************************************
 local function Main (display_handle, argument)
-    --Echo("Console Version: %s" Version())
     local arguments
 
     local count
@@ -213,24 +216,23 @@ local function Main (display_handle, argument)
     CloseUndo(undo)
 end
 
---
+-- ****************************************************************
 -- Cleanup (placeholder)
---
+-- ****************************************************************
 local function Cleanup()
-    Printf("[Start Cleanup]")
 end
 
---
+-- ****************************************************************
 -- Execute (placeholder)
---
+-- ****************************************************************
 local function Execute(Type, ...)
-    Printf("[Start Execute]")
-    Printf("Type: %s", Type)
 end
 
+-- ****************************************************************
+-- Local Functions
+-- ****************************************************************
 
 -- split
--- why is there no split in lua?
 function split (inputstr, sep)
     if sep == nil then
             sep = "%s"
@@ -243,7 +245,7 @@ function split (inputstr, sep)
 end
 
 -- clamp
- function clamp (input, min, max)
+function clamp (input, min, max)
     local i = input
     if i < min then i = min end
     if i > max then i = max end
@@ -332,5 +334,7 @@ function getColorName (r, g, b, threshold)
     end
     return result
 end
+
+
 
 return Main, Cleanup, Execute

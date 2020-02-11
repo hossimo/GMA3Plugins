@@ -1,4 +1,4 @@
-Assign AutoStart Fix v1.0.0.1
+Assign AutoStart Fix v1.0.0.3
 
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -18,4 +18,4 @@ Issues:
 Releases:
 * 1.0.0.1 - Inital release
 * 1.0.0.2 - Added Oops, better checks for non valid inputs
-
+* 1.0.0.3 - Makeing functions local

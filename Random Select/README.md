@@ -1,4 +1,4 @@
-Random Select v1.0.0.1
+Random Select v1.0.0.2
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 ![Example Image](https://github.com/hossimo/GMA3Plugins/blob/master/Images/RandomSelect.gif)
@@ -10,3 +10,4 @@ Usage:
 
 Releases:
 1.0.0.1 - Inital release
+1.0.0.2 - Makeing functions local

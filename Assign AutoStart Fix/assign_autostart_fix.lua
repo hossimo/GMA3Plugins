@@ -1,5 +1,5 @@
 --[[
-Assign AutoStart Fix v1.0.0.2
+Assign AutoStart Fix v1.0.0.3
 
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -18,6 +18,7 @@ Issues:
 Releases:
 * 1.0.0.1 - Inital release
 * 1.0.0.2 - Added Undo, better checks for non valid inputs
+* 1.0.0.3 - Makeing functions local
 
 
 MIT License
@@ -58,6 +59,9 @@ local my_handle     = select(4,...);
 local F=string.format;
 local E=Echo;
 
+--local functions
+local calculateRange, split
+
 
 -- ****************************************************************
 -- plugin main entry point 
@@ -97,6 +101,40 @@ local function Main(display_handle,argument)
 	CloseUndo(undo)
 end
 
+-- ****************************************************************
+-- plugin exit cleanup entry point 
+-- ****************************************************************
+
+local function Cleanup()
+end
+
+-- ****************************************************************
+-- plugin execute entry point 
+-- ****************************************************************
+
+local function Execute(Type,...)
+	local func=signalTable[Type];
+	if(func) then
+		func(signalTable,...);
+	else
+		local debug_text=string.format("Execute %s not supported",Type);
+		E(debug_text);
+	end
+end
+
+function signalTable:Key(Status,Source,Profile,Token)
+	local debug_text=F("Execute Key (%s) %s UserProfile %d : %s",Status,Source,Profile,Token);
+	E(debug_text);
+end
+
+function signalTable:Fader(Status,Source,Profile,Token,Value)
+	local debug_text=F("Execute Fader (%s) %s UserProfile %d : %s %f",Status,Source,Profile,Token,Value);
+	E(debug_text);
+end
+
+-- ****************************************************************
+-- Local Functions
+-- ****************************************************************
 -- calculateRange
 function calculateRange(input)
 	-- first split on ","
@@ -157,7 +195,6 @@ function calculateRange(input)
 end
 
 -- split
--- why is there no split in lua?
 function split (inputstr, sep)
 	if sep == nil then
 		sep = "%s"
@@ -169,37 +206,6 @@ function split (inputstr, sep)
     return t
 end
 
-
--- ****************************************************************
--- plugin exit cleanup entry point 
--- ****************************************************************
-
-local function Cleanup()
-end
-
--- ****************************************************************
--- plugin execute entry point 
--- ****************************************************************
-
-local function Execute(Type,...)
-	local func=signalTable[Type];
-	if(func) then
-		func(signalTable,...);
-	else
-		local debug_text=string.format("Execute %s not supported",Type);
-		E(debug_text);
-	end
-end
-
-function signalTable:Key(Status,Source,Profile,Token)
-	local debug_text=F("Execute Key (%s) %s UserProfile %d : %s",Status,Source,Profile,Token);
-	E(debug_text);
-end
-
-function signalTable:Fader(Status,Source,Profile,Token,Value)
-	local debug_text=F("Execute Fader (%s) %s UserProfile %d : %s %f",Status,Source,Profile,Token,Value);
-	E(debug_text);
-end
 
 -- ****************************************************************
 -- return the entry points of this plugin : 

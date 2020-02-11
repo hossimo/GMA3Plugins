@@ -1,5 +1,5 @@
 --[[
-Copy Screenshots v1.0.0.2
+Copy Screenshots v1.0.0.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -21,6 +21,7 @@ Issues:
 Releases:
 1.0.0.1 - Inital release
 1.0.0.2 - Fixed a path parsing bug causing the plugin to not work on the console.
+1.0.0.3 - Makeing functions local
 
 
 MIT License
@@ -61,8 +62,89 @@ local my_handle     = select(4,...);
 local F=string.format;
 local E=Echo;
 
+-- Local Functions
+local split, copyFileToUSB
 
-local function copyFileToUSB(sourceFiles, overwrite)
+-- ****************************************************************
+-- plugin main entry point 
+-- ****************************************************************
+
+local function Main(display_handle,argument)
+    local sep = package.config:sub(1,1)
+    local lib_images = GetPathOverrideFor("lib_images", "") .. sep -- MaLightingTechnology\gma3_1.0.0\shared\resource\lib_images\
+    local destination_path = ""
+    local files = {}
+    E("lib_images Path: " .. (lib_images or "<NONE>"))
+
+    local pfile
+    if (sep == "\\") then
+        pfile = io.popen('dir /B "'.. lib_images ..'"*display*.png')
+            for filename in pfile:lines() do
+                files[filename] = lib_images..filename
+            end
+        else
+        pfile = io.popen('ls "'.. lib_images .. '"*display*.png')
+            for filename in pfile:lines() do
+                local file = split(filename,"/")
+
+                files[file[#file]] = filename -- file listing includes full path, just use the first last part
+            end
+        end
+
+    -- files to copy
+
+    -- get someone else to do it.
+    local result = copyFileToUSB(files, true)
+end
+
+-- ****************************************************************
+-- plugin exit cleanup entry point 
+-- ****************************************************************
+
+local function Cleanup()
+end
+
+-- ****************************************************************
+-- plugin execute entry point 
+-- ****************************************************************
+
+local function Execute(Type,...)
+	local func=signalTable[Type];
+	if(func) then
+		func(signalTable,...);
+	else
+		local debug_text=string.format("Execute %s not supported",Type);
+		E(debug_text);
+	end
+end
+
+function signalTable:Key(Status,Source,Profile,Token)
+	local debug_text=F("Execute Key (%s) %s UserProfile %d : %s",Status,Source,Profile,Token);
+	E(debug_text);
+end
+
+function signalTable:Fader(Status,Source,Profile,Token,Value)
+	local debug_text=F("Execute Fader (%s) %s UserProfile %d : %s %f",Status,Source,Profile,Token,Value);
+	E(debug_text);
+end
+
+-- ****************************************************************
+-- Local Functions
+-- ****************************************************************
+
+-- split
+function split (inputstr, sep)
+    if sep == nil then
+            sep = "%s"
+    end
+    local t={}
+    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+            table.insert(t, str)
+    end
+    return t
+end
+
+function copyFileToUSB(sourceFiles, overwrite)
     local sep = package.config:sub(1,1) -- windows or linux paths
     local usbFound = false
     local copyCount = 0
@@ -118,83 +200,6 @@ local function copyFileToUSB(sourceFiles, overwrite)
     end
 end
 
-
--- ****************************************************************
--- plugin main entry point 
--- ****************************************************************
-
-local function Main(display_handle,argument)
-    local sep = package.config:sub(1,1)
-    local lib_images = GetPathOverrideFor("lib_images", "") .. sep -- MaLightingTechnology\gma3_1.0.0\shared\resource\lib_images\
-    local destination_path = ""
-    local files = {}
-    E("lib_images Path: " .. (lib_images or "<NONE>"))
-
-    local pfile
-    if (sep == "\\") then
-        pfile = io.popen('dir /B "'.. lib_images ..'"*display*.png')
-            for filename in pfile:lines() do
-                files[filename] = lib_images..filename
-            end
-        else
-        pfile = io.popen('ls "'.. lib_images .. '"*display*.png')
-            for filename in pfile:lines() do
-                local file = split(filename,"/")
-
-                files[file[#file]] = filename -- file listing includes full path, just use the first last part
-            end
-        end
-
-    -- files to copy
-
-    -- get someone else to do it.
-    local result = copyFileToUSB(files, true)
-end
-
--- split
--- why is there no split in lua?
-function split (inputstr, sep)
-    if sep == nil then
-            sep = "%s"
-    end
-    local t={}
-    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-            table.insert(t, str)
-    end
-    return t
-end
-
-
--- ****************************************************************
--- plugin exit cleanup entry point 
--- ****************************************************************
-
-local function Cleanup()
-end
-
--- ****************************************************************
--- plugin execute entry point 
--- ****************************************************************
-
-local function Execute(Type,...)
-	local func=signalTable[Type];
-	if(func) then
-		func(signalTable,...);
-	else
-		local debug_text=string.format("Execute %s not supported",Type);
-		E(debug_text);
-	end
-end
-
-function signalTable:Key(Status,Source,Profile,Token)
-	local debug_text=F("Execute Key (%s) %s UserProfile %d : %s",Status,Source,Profile,Token);
-	E(debug_text);
-end
-
-function signalTable:Fader(Status,Source,Profile,Token,Value)
-	local debug_text=F("Execute Fader (%s) %s UserProfile %d : %s %f",Status,Source,Profile,Token,Value);
-	E(debug_text);
-end
 
 -- ****************************************************************
 -- return the entry points of this plugin : 

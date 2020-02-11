@@ -1,4 +1,4 @@
-Copy Screenshots v1.0.0.2
+Copy Screenshots v1.0.0.3
 
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -23,3 +23,5 @@ Issues:
 Releases:
 * 1.0.0.1 - Inital release
 * 1.0.0.2 - Fixed a path parsing bug causing the plugin to not work on the console.
+* 1.0.0.3 - Makeing functions local
+
