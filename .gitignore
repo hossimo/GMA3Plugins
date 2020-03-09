@@ -7,4 +7,10 @@ libcache.dat
 # things I don't want to commit
 TestBed/
 /Globals.*
-GroupStore/
+_Template/
+_SYSTEM_PLUGINS_
+grandMA3/shared/resource/lib_plugins/GroupStore/
+grandMA3/shared/resource/lib_plugins/KeneticSet/
+grandMA3/shared/resource/lib_plugins/Invert Selection/
+grandMA3/shared/resource/lib_plugins/RemDim/
+grandMA3/shared/resource/lib_plugins/AutoSave/
