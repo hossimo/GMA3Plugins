@@ -108,7 +108,7 @@ local function Main (display_handle, argument)
     local continueString
 
 
-    if argument == null then
+    if argument == nil then
         Printf("Usage:")
         Printf('Call Plugin HSB2RGB "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Appearance Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
         Printf('All options except for COUNT are optional, and will choose some defaults')
@@ -132,7 +132,7 @@ local function Main (display_handle, argument)
         count = clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
 
         -- fill saturation (float)
-        fillS = clamp(tonumber(arguments[2]) or 1.0 + .0, 0.0, 1.0)
+        fillS = clamp(tonumber(arguments[2]) or (1.0 + .0), 0.0, 1.0)
 
         -- fill brightness (float)
         fillB = clamp(tonumber(arguments[3]) + .0, 0.0, 1.0) or 1.0
@@ -184,7 +184,7 @@ local function Main (display_handle, argument)
 
         -- build Appearances
         local command = ""
-        if nameo == null then
+        if nameo == nil then
             command = string.format('Store Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d"',appearanceIndex, rf, gf, bf, a, math.floor(ro * 255), math.floor(go * 255), math.floor(bo * 255), math.floor(a * 255))
         else
             command = string.format('Store Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d" "Name" "%s"',appearanceIndex, rf, gf, bf, a, math.floor(ro * 255), math.floor(go * 255), math.floor(bo * 255), math.floor(a * 255), nameo)
@@ -255,14 +255,14 @@ end
 -- convert to RGB
 function toRGB (h, s, v)
     -- stuff of magic https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
-    if h == null then h = 0 end
-    if s == null then s = 1.0 end
-    if v == null then v = 1.0 end
+    if h == nil then h = 0 end
+    if s == nil then s = 1.0 end
+    if v == nil then v = 1.0 end
 
     local r = 0
     local g = 0
     local b = 0
-    local name = null
+    local name = nil
     local i = math.floor(h * 6)
     local f = h * 6 - i
     local p = v * (1.0 - s)
@@ -328,7 +328,7 @@ function getColorName (r, g, b, threshold)
         end
     end
     --Echo("%s (%d)", names[bestIndex][2], bestScore)
-    local result = null
+    local result = nil
     if (bestScore < threshold) then
         result = names[bestIndex][2]
     end

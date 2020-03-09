@@ -163,7 +163,7 @@ function copyFileToUSB(sourceFiles, overwrite)
             if i ~= 1 then
                 local path = d.path
                 local exportFilePath = GetPathOverrideFor("lib_images", path) .. sep
-                file = io.open(exportFilePath .. k, "r")
+                local file = io.open(exportFilePath .. k, "r")
                 if overwrite and  file ~= nil then 
                     E("Skipping Existing: %s", exportFilePath)
                     skipCount = skipCount + 1

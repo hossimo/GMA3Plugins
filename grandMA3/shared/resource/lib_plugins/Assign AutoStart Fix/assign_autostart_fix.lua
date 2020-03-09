@@ -70,7 +70,7 @@ local calculateRange, split
 local function Main(display_handle,argument)
 	local input = ""
 
-	if argument ~= null then
+	if argument ~= nil then
 		-- got an inline argument
 		input = argument
 	else
@@ -144,7 +144,7 @@ function calculateRange(input)
 
 	if #seqSplit == 0 then
 		Printf("No Sequences Found, Exiting")
-		return null
+		return nil
 	elseif #seqSplit > 0 then
 		for k, v in pairs(seqSplit) do
 			if string.find(v, "-") ~= nil then
@@ -154,7 +154,7 @@ function calculateRange(input)
 				-- 	goto continue
 				-- end
 
-				if tonumber(inputRange[1]) == null or tonumber(inputRange[2]) == null then
+				if tonumber(inputRange[1]) == nil or tonumber(inputRange[2]) == nil then
 					goto continue
 				end
 
@@ -174,11 +174,11 @@ function calculateRange(input)
 				
 			else
 				-- just a value
-				if tonumber(v) == null then
+				if tonumber(v) == nil then
 					goto continue
 				end
 				local item = math.floor(tonumber(v))
-				if item ~= null then
+				if item ~= nil then
 					table.insert (returnList, item)
 					returnString = returnString .. v .. ","
 				end
@@ -187,7 +187,7 @@ function calculateRange(input)
 		end
 	end
 	if #returnList == 0 then
-		return null
+		return nil
 	else 
 		returnString = returnString:sub(1, -2)
 		return returnList, returnString	
