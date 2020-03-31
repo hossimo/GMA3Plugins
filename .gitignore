@@ -10,7 +10,8 @@ TestBed/
 _Template/
 _SYSTEM_PLUGINS_
 grandMA3/shared/resource/lib_plugins/GroupStore/
-grandMA3/shared/resource/lib_plugins/KeneticSet/
+grandMA3/shared/resource/lib_plugins/KineticSet/KineticSet.Lua
+grandMA3/shared/resource/lib_plugins/KineticSet/KineticSet.xml
 grandMA3/shared/resource/lib_plugins/Invert Selection/
 grandMA3/shared/resource/lib_plugins/RemDim/
 grandMA3/shared/resource/lib_plugins/AutoSave/
