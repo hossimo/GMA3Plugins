@@ -1,5 +1,5 @@
 --[[
-Random Select v1.0.0.2
+Random Select v1.1.0.1
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
@@ -10,7 +10,11 @@ Usage:
 Releases:
 1.0.0.1 - Inital release
 1.0.0.2 - Makeing functions local
+1.1.0.1 - Fixes Selection of SubFixtures
 
+Notes:
+- Currently only works with FIDs
+- Currently only makes linear selections
 
 MIT License
 
@@ -51,7 +55,7 @@ local F=string.format;
 local E=Echo;
 
 -- local functions forward decloration
-local SelectionToArray
+local SelectionToArray, CalculateSFID
 
 -- ****************************************************************
 -- plugin main entry point 
@@ -68,7 +72,7 @@ local function Main(display_handle,argument)
 	Cmd("Clear")
 	local selcetionString = ""
 	for k in pairs(selection) do
-		selcetionString = selcetionString .. GetSubfixture(selection[k]).FID
+		selcetionString = selcetionString .. CalculateSFID(selection[k])
 
 		if #selection ~= k then
 			selcetionString = selcetionString .. " + "
@@ -117,7 +121,6 @@ function SelectionToArray(random)
 
 	local selectedFixtures = {};
 	local sfIdx = SelectionFirst (true);
-
 	while (sfIdx ~= nil)
 	do
 		if random == true then
@@ -153,6 +156,29 @@ function SelectionToArray(random)
 		return sortedSelection -- return our random selection
 	end
 	return selectedFixtures -- return our default selection
+end
+
+
+-- calculateSub FIDs
+-- Sub Fixtures (not child fixtures), don't contain an FID. returns the aparent Sub fixture ID based on the root fixture
+
+function CalculateSFID(fixture)
+	local result = GetSubfixture(fixture).FID
+	if (result ~= nil) then
+		return result
+	end
+
+	result = ""
+
+
+	while (GetSubfixture(fixture):GetClass() == "SubFixture")
+	do
+		local parent = GetSubfixture(fixture):Parent();
+		result = "." .. fixture - parent.SubfixtureIndex .. result
+		fixture = parent.SubfixtureIndex
+	end
+	result = GetSubfixture(fixture).FID .. result
+	return result
 end
 
 
