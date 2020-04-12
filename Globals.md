@@ -7,17 +7,17 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 
 ## Table Of Contents
 *Not it any useful order*
-[Cmd](#Cmd)
-[CreateUndo](#CreateUndo)
-[CloseUndo](#CloseUndo)
-[Confirm](#Confirm)
-[GlobalVars](#GlobalVars)
-[PluginVars](#PluginVars)
-[AddonVars](#AddonVars)
-[UserVars](#UserVars)
-[GetVar](#GetVar)
-[SetVar](#SetVar)
-[DelVar](#DelVar)
+* [Cmd](#Cmd)
+* [CreateUndo](#CreateUndo)
+* [CloseUndo](#CloseUndo)
+* [Confirm](#Confirm)
+* [GlobalVars](#GlobalVars)
+* [PluginVars](#PluginVars)
+* [AddonVars](#AddonVars)
+* [UserVars](#UserVars)
+* [GetVar](#GetVar)
+* [SetVar](#SetVar)
+* [DelVar](#DelVar)
 
 <!----- CMD ----->
 <a name="Cmd"></a>
