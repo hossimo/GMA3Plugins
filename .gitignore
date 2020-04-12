@@ -6,7 +6,6 @@ libcache.dat
 
 # things I don't want to commit
 TestBed/
-/Globals.*
 _Template/
 _SYSTEM_PLUGINS_
 grandMA3/shared/resource/lib_plugins/GroupStore/
