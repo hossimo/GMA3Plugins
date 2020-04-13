@@ -7,6 +7,7 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 
 ## Table Of Contents
 *Not it any useful order*
+
 * [Cmd](#Cmd)
 * [CreateUndo](#CreateUndo)
 * [CloseUndo](#CloseUndo)
@@ -18,6 +19,7 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [GetVar](#GetVar)
 * [SetVar](#SetVar)
 * [DelVar](#DelVar)
+* [PopupInput](#PopupInput)
 
 <!----- CMD ----->
 <a name="Cmd"></a>
@@ -228,7 +230,7 @@ local result = GetVar(userVar, "COUNTER") -- result = 42
 local delSuccess = DelVar(userVar, "COUNTER") 
 ```
 
-<!--  DelVar(object:variables, string "varName") : bool -->
+<!--  DelVar -->
 <a name="DelVar"></a>
 
 ## DelVar(object:variables, string "varName") : bool
@@ -248,13 +250,85 @@ local setSuccess = SetVar(userVar, "COUNTER", 42)
 local result = GetVar(userVar, "COUNTER") -- result = 42
 local delSuccess = DelVar(userVar, "COUNTER") 
 ```
+<!--  DelVar -->
 
 
 
+<!-- PopupInput -->
+<a name="PopupInput"></a>
+
+## PopupInput(string:title, object: display_handle, table:values...[,string:selectedValue[,integer:x,integer:y]]}) : int
+### Breif:
+Displays a Radio or Option list the user can select an item from and returns what item the user selected.
+
+This seems to allow several types for options including strings, numbers and maybe, LUA or other display handles. more information is needed.
+
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ string:title  | Title of the dialog box | ✔ (string or nil)
+ object:displayhandel | the main display_value | 
+ table: value | Can be a table value of strings for each option or a table of tables in the format of {"int" \| "str" \| "lua" \| "handle", name , type dependant}. This second methoud needs more details |
+ string: selectedvalue | String of selected value | ✔
+ integer: x | *Not sure what this does* | ✔
+ integer: y | *Not sure what this does* | if x?
+
+### Returns:
+nil: if user cancels
+
+int: zero based selected value
+
+*error documentation says it returns a string:value*
+
+...
+
+### Examples:
+Option 1: 
+```lua
+local function Main(display_handle,argument) -- we need this display_handle
+    -- ...
+    local title = "Select your type of pizza"
+    local options = {"Pineapple", "Pepperoni", "Mushroom"}
+    local r = PopupInput(title, display_handle, options, "Pepperoni") -- defaults to "Pepperoni", user selected "Pineapple"
+    Echo("result: " .. r .. " is type: " .. type(r)) -- result: 0 is type number
+    -- ...
+end
+```
+Option 2: Needs more details
+```lua
+local r = PopupInput("TITLE", display_handle, {{"str", "String", nil}, {"int","Number", 123}}, "123", 1, 1)
+-- displays:
+-- String
+-- Number <-selected
+E(type(r) .. " = " .. r) -- returns the zero based numer of the selected item.
+```
+
+<!-- PopupInput -->
+
+<!-- TextInput -->
+<!--
+| TextInput() | <sup>(1)</sup>|<sup>(1)</sup>|
+<a name="TEMPLATE"></a>
 
 
+## TEMPLATE(string:x, [object:undo]) : bool
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ string:x  | a thing |
+ object:x | an optional thing | ✔
 
+### Returns:
+string: "Ok"
+string: "Syntax Error"
+string: "Ilegal Command"
+...
 
+### Examples:
+```lua
+Code("Example")
+-->
+<!-- TextInput -->
 
 
 
