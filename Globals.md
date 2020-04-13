@@ -320,6 +320,7 @@ Displays a text input field for the user to enter a valie, takes optional title 
 
 ### Returns:
 nil: if cancled
+
 string: value entered
 ...
 
