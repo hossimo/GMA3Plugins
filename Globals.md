@@ -322,7 +322,6 @@ Displays a text input field for the user to enter a valie, takes optional title 
 nil: if cancled
 
 string: value entered
-...
 
 ### Examples:
 ```lua
