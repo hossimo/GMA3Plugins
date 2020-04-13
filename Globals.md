@@ -7,17 +7,19 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 
 ## Table Of Contents
 *Not it any useful order*
-[Cmd](#Cmd)
-[CreateUndo](#CreateUndo)
-[CloseUndo](#CloseUndo)
-[Confirm](#Confirm)
-[GlobalVars](#GlobalVars)
-[PluginVars](#PluginVars)
-[AddonVars](#AddonVars)
-[UserVars](#UserVars)
-[GetVar](#GetVar)
-[SetVar](#SetVar)
-[DelVar](#DelVar)
+
+* [Cmd](#Cmd)
+* [CreateUndo](#CreateUndo)
+* [CloseUndo](#CloseUndo)
+* [Confirm](#Confirm)
+* [GlobalVars](#GlobalVars)
+* [PluginVars](#PluginVars)
+* [AddonVars](#AddonVars)
+* [UserVars](#UserVars)
+* [GetVar](#GetVar)
+* [SetVar](#SetVar)
+* [DelVar](#DelVar)
+* [PopupInput](#PopupInput)
 
 <!----- CMD ----->
 <a name="Cmd"></a>
@@ -260,7 +262,7 @@ table:{{'str'|'int'|'lua'|'handle', name, type-dependent}...}
 
 <a name="PopupInput"></a>
 
-## PopupInput(string:title, object: displayhandel, table:values...[,string:selectedValue[,integer:x,integer:y]]}) : int:selected
+## PopupInput(string:title, object: display_handle, table:values...[,string:selectedValue[,integer:x,integer:y]]}) : int
 ### Breif:
 Displays a Radio or Option list the user can select an item from and returns what item the user selected.
 
@@ -291,7 +293,7 @@ local function Main(display_handle,argument) -- we need this display_handle
     local options = {"Pineapple", "Pepperoni", "Mushroom"}
     local r = PopupInput(title, display_handle, options, "Pepperoni") -- defaults to "Pepperoni", user selected "Pineapple"
     Echo("result: " .. r .. " is type: " .. type(r)) -- result: 0 is type number
--- ...
+    -- ...
 end
 ```
 Option 2: Needs more details
@@ -306,6 +308,7 @@ E(type(r) .. " = " .. r) -- returns the zero based numer of the selected item.
 <!-- PopupInput -->
 
 <!-- TextInput -->
+<!--
 | TextInput() | <sup>(1)</sup>|<sup>(1)</sup>|
 <a name="TEMPLATE"></a>
 
@@ -326,7 +329,7 @@ string: "Ilegal Command"
 ### Examples:
 ```lua
 Code("Example")
-
+-->
 <!-- TextInput -->
 
 
