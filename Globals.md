@@ -11,7 +11,6 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [Cmd](#Cmd)
 * [CreateUndo](#CreateUndo)
 * [CloseUndo](#CloseUndo)
-* [Confirm](#Confirm)
 * [GlobalVars](#GlobalVars)
 * [PluginVars](#PluginVars)
 * [AddonVars](#AddonVars)
@@ -19,6 +18,7 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [GetVar](#GetVar)
 * [SetVar](#SetVar)
 * [DelVar](#DelVar)
+* [Confirm](#Confirm)
 * [PopupInput](#PopupInput)
 * [TextInput](#TextInput)
 
@@ -95,28 +95,6 @@ boolean: false if in use
 local undo = CreateUndo()
 Cmd("Store Cue 1", undo)
 CloseUndo(undo)
-```
-
-<!----- Confirm ----->
-<a name="Confirm"></a>
-
-## Confirm([string:Header [, string:Body]) : boolean
-### Breif:
-Displays the user a OK/Cancel question with header and multiline body text
-
-### Paramiters:
- Name | Description | Optional
--- | -- | --
- string:Header | Header text | ✔
- object:Body | Multiline body text | ✔
-
-### Returns:
-boolean: OK
-false: Cancel
-
-### Examples:
-```lua
-local result = Confirm("Do you want to exit?", "Are you sure?")
 ```
 
 <!-- | GlobalVars()| | userdata:variables | -->
@@ -253,7 +231,28 @@ local delSuccess = DelVar(userVar, "COUNTER")
 ```
 <!--  DelVar -->
 
+<!----- Confirm ----->
+<a name="Confirm"></a>
 
+## Confirm([string:Header [, string:Body]) : boolean
+### Breif:
+Displays the user a OK/Cancel question with header and multiline body text
+
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ string:Header | Header text | ✔
+ object:Body | Multiline body text | ✔
+
+### Returns:
+boolean: OK
+false: Cancel
+
+### Examples:
+```lua
+local result = Confirm("Do you want to exit?", "Are you sure?")
+```
+<!----- Confirm ----->
 
 <!-- PopupInput -->
 <a name="PopupInput"></a>
@@ -369,7 +368,6 @@ This table may contain objects that do not exist in the console. some are filled
 | CmdIndirect()| (string: command[, userdata: undo[, userdata: target]]) | nil|
 | CmdIndirectWait() | <sup>(1)</sup>|<sup>(1)</sup>|
 | CmdObj() | <sup>(1)</sup>|<sup>(1)</sup>|
-| CreateUndo()| (string: description)| userdata: undo |
 | CurrentExecPage() | ()| userdata: ObectMeta|
 | CurrentProfile()| ()| userdata: ObectMeta |
 | CurrentUser()| ()| userdata: ObectMeta|
@@ -442,7 +440,6 @@ This table may contain objects that do not exist in the console. some are filled
 | Obj() | <sup>(1)</sup>|<sup>(1)</sup>|
 | OverallDeviceCertificate() | <sup>(1)</sup>|<sup>(1)</sup>|
 | Patch()| |userdata: ???|
-| PopupInput()| <sup>(1)</sup>|<sup>(1)</sup>|
 | Printf() | <sup>(1)</sup>|<sup>(1)</sup>|
 | Programmer()||userdata: ???|
 | ProgrammerPart()| <sup>(1)</sup>|<sup>(1)</sup>|
@@ -475,7 +472,6 @@ This table may contain objects that do not exist in the console. some are filled
 | StopProgress() | <sup>(1)</sup>|<sup>(1)</sup>|
 | StrToHandle()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SyncFS() | <sup>(1)</sup>|<sup>(1)</sup>|
-| TextInput() | <sup>(1)</sup>|<sup>(1)</sup>|
 | Time()| <sup>(1)</sup>|<sup>(1)</sup>|
 | Timer()| <sup>(1)</sup>|<sup>(1)</sup>|
 | ToAddr() | <sup>(1)</sup>|<sup>(1)</sup>|
@@ -489,7 +485,6 @@ This table may contain objects that do not exist in the console. some are filled
 | _VERSION | Contains LUA version| string:"Lua 5.3"|
 | __CallbacksRegistry()| <sup>(1)</sup>|<sup>(1)</sup>|
 | assert() | <sup>(1)</sup>|<sup>(1)</sup>|
-| clamp()| <sup>(1)</sup>|<sup>(1)</sup>|
 | collectgarbage()| <sup>(1)</sup>|<sup>(1)</sup>|
 | coroutine() | <sup>(1)</sup>|<sup>(1)</sup>|
 | debug()| <sup>(1)</sup>|<sup>(1)</sup>|
@@ -516,9 +511,7 @@ This table may contain objects that do not exist in the console. some are filled
 | select() | <sup>(1)</sup>|<sup>(1)</sup>|
 | setmetatable() | <sup>(1)</sup>|<sup>(1)</sup>|
 | split()| <sup>(1)</sup>|<sup>(1)</sup>|
-| string() | <sup>(1)</sup>|<sup>(1)</sup>|
 | table()| <sup>(1)</sup>|<sup>(1)</sup>|
-| toRGB()| <sup>(1)</sup>|<sup>(1)</sup>|
 | tonumber()| <sup>(1)</sup>|<sup>(1)</sup>|
 | tostring()| <sup>(1)</sup>|<sup>(1)</sup>|
 | type()| <sup>(1)</sup>|<sup>(1)</sup>|
