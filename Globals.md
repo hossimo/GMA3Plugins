@@ -273,7 +273,7 @@ This seems to allow several types for options including strings, numbers and may
 -- | -- | --
  string:title  | Title of the dialog box | ✔ (string or nil)
  object:displayhandel | the main display_value | 
- table: value | Can be a table value of strings for each option or a table of tables in the format of {"int" | "str" | "lua" | "handle", name , type dependant}. This second methoud needs more details |
+ table: value | Can be a table value of strings for each option or a table of tables in the format of {"int" \| "str" \| "lua" \| "handle", name , type dependant}. This second methoud needs more details |
  string: selectedvalue | String of selected value | ✔
  integer: x | *Not sure what this does* | ✔
  integer: y | *Not sure what this does* | if x?
