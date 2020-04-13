@@ -255,11 +255,6 @@ local delSuccess = DelVar(userVar, "COUNTER")
 
 
 <!-- PopupInput -->
-PopupInput ( [string:title],
-UIcaller:lightuserdata,
-table:{{'str'|'int'|'lua'|'handle', name, type-dependent}...}
-[,string:selectedValue[,integer:x,integer:y]] ) returns string:value
-
 <a name="PopupInput"></a>
 
 ## PopupInput(string:title, object: display_handle, table:values...[,string:selectedValue[,integer:x,integer:y]]}) : int
@@ -280,8 +275,11 @@ This seems to allow several types for options including strings, numbers and may
 
 ### Returns:
 nil: if user cancels
+
 int: zero based selected value
+
 *error documentation says it returns a string:value*
+
 ...
 
 ### Examples:
