@@ -20,6 +20,7 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [SetVar](#SetVar)
 * [DelVar](#DelVar)
 * [PopupInput](#PopupInput)
+* [TextInput](#TextInput)
 
 <!----- CMD ----->
 <a name="Cmd"></a>
@@ -302,16 +303,12 @@ local r = PopupInput("TITLE", display_handle, {{"str", "String", nil}, {"int","N
 -- Number <-selected
 E(type(r) .. " = " .. r) -- returns the zero based numer of the selected item.
 ```
-
 <!-- PopupInput -->
 
 <!-- TextInput -->
-<!--
-| TextInput() | <sup>(1)</sup>|<sup>(1)</sup>|
-<a name="TEMPLATE"></a>
+<a name="TextInput"></a>
 
-
-## TEMPLATE(string:x, [object:undo]) : bool
+## TextInput(string:x, [object:undo]) : bool
 ### Paramiters:
  Name | Description | Optional
 -- | -- | --
@@ -326,16 +323,16 @@ string: "Ilegal Command"
 
 ### Examples:
 ```lua
-Code("Example")
--->
+local result = TextInput("Enter a Prime Number", 41) -- displays menu with title and the value of 41 entered
+Echo(type(result) .. " " .. result) -- returns a string of the result
+```
 <!-- TextInput -->
 
 
 
-<!----- TEMPLATE ----->
+<!-- TEMPLATE -->
 <!--
 <a name="TEMPLATE"></a>
-
 
 ## TEMPLATE(string:x, [object:undo]) : bool
 ### Paramiters:
@@ -355,11 +352,9 @@ string: "Ilegal Command"
 Code("Example")
 ```
 -->
-
+<!-- TEMPLATE -->
 
 <!--
-## Table
-
 This table may contain objects that do not exist in the console. some are filled out based on findings.
 
 | Function | Arguments| Returns|
