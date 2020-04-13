@@ -315,8 +315,8 @@ Displays a text input field for the user to enter a valie, takes optional title 
 ### Paramiters:
  Name | Description | Optional
 -- | -- | --
- string | number :Title  | The title for the input window | ✔
- string | number :Defailt | The default text | ✔
+ string \| number :Title  | The title for the input window | ✔
+ string \| number :Defailt | The default text | ✔
 
 ### Returns:
 nil: if cancled
