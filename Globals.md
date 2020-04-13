@@ -308,17 +308,19 @@ E(type(r) .. " = " .. r) -- returns the zero based numer of the selected item.
 <!-- TextInput -->
 <a name="TextInput"></a>
 
-## TextInput(string:x, [object:undo]) : bool
+## TextInput([string | number:Title], [string | number:Default]) : string
+### Breif:
+Displays a text input field for the user to enter a valie, takes optional title and default values
+
 ### Paramiters:
  Name | Description | Optional
 -- | -- | --
- string:x  | a thing |
- object:x | an optional thing | ✔
+ string | number :Title  | The title for the input window | ✔
+ string | number :Defailt | The default text | ✔
 
 ### Returns:
-string: "Ok"
-string: "Syntax Error"
-string: "Ilegal Command"
+nil: if cancled
+string: value entered
 ...
 
 ### Examples:
