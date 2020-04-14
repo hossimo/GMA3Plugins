@@ -311,6 +311,7 @@ int:group| TBD |✔
 table: {bool:success, int:result, table:inputs, table:states}
 
 ### Examples:
+![Example Image](https://github.com/hossimo/GMA3Plugins/blob/doc-messagebox/Images/MessageBox.png)
 ```lua
     local options = {
         title="This is a title",                        --string
