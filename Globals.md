@@ -310,8 +310,8 @@ int:group| TBD |✔
 ### Returns:
 table: {bool:success, int:result, table:inputs, table:states}
 
-
 ### Examples:
+```lua
     local options = {
         title="This is a title",                        --string
         backColor="1.7",                                --string:TBD
