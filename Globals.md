@@ -19,6 +19,7 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [SetVar](#SetVar)
 * [DelVar](#DelVar)
 * [Confirm](#Confirm)
+* [MessageBox](#MessageBox)
 * [PopupInput](#PopupInput)
 * [TextInput](#TextInput)
 * [DeskLocked](#DeskLocked)
