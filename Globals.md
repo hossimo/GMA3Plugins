@@ -259,6 +259,99 @@ local result = Confirm("Do you want to exit?", "Are you sure?")
 ```
 <!----- Confirm ----->
 
+<!-- MessageBox -->
+<a name="MessageBox"></a>
+
+## MessageBox(table:options) : table
+### Brief:
+ Displays a Message box with many options, a number of features are still to be determined.
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ table:options  | table of options detailed below |
+
+#### Options
+Name | Description | Optional
+-- | -- | --
+string:title |The title for the dialog.|
+number:backColor|The dialog chrome color |✔
+number:timeout|Number of MS the dialog will show for|✔
+bool:timeoutResultCancel| TBD |✔
+int:timeoutResultID| The result value is the dialog times out|✔
+string:icon|TBD|✔
+string:titleTextColor|TBD|✔
+string:messageTextColor|TBD|✔
+string:message|multiline dialog message|
+int\|handle:display|TBD|✔
+table:commands| Table of buttons across the bottom of the dialog, detailed in the Command table below|✔
+table:inputs|Table of Text imputs below the dialog message, detailed in the Inputs table below|✔
+table:states|Table of check buttons below the inputs, detailed in the States table below|✔
+#### Commands
+Name | Description | Optional
+-- | -- | --
+int:value| Value of result if command is chosen |
+string:name| Display of the command button |
+#### Inputs
+Name | Description | Optional
+-- | -- | --
+string:name|Name of the Input|
+string:value|Default of the input|
+string:blackFilter|TBD|
+string:whiteFilter|TBD|
+string:vkPlugin|TBD|
+string:maxTextLength|The maximum lenth of the entered string, the default value can ignore this number.|
+#### States
+Name | Description | Optional
+-- | -- | --
+string:name| Name of the Checkbox|
+bool:state| Default value of the state?|
+int:group| TBD |✔
+### Returns:
+table: {bool:success, int:result, table:inputs, table:states}
+
+
+### Examples:
+    local options = {
+        title="This is a title",                        --string
+        backColor="1.7",                                --string:TBD
+        timeout=10000,                                  --number:in Miliseconds
+        timeoutResultCancel=false,                      --bool
+        timeoutResultID=99,                             --number
+        icon=nil,                                       --string:TBD
+        titleTextColor=nil,                             --string:TBD
+        messageTextColor="4.1",                         --string:TBD
+        message="This is a long\nMultiline\nMessage",   --string
+        display= nil,                                   --int? | handle?
+        commands={
+            {value=0, name="NO"},                       --int, string
+            {value=1, name="MAYBE"},
+            {value=2, name="YES"}
+        },
+        inputs={
+            {name="INPUT 1", value="123", blackFilter="", whiteFilter="", vkPlugin="", maxTextLength = 3}, -- filters, vkPlugin: TBD
+            {name="INPUT 2", value="789ABC", blackFilter="", whiteFilter="", vkPlugin="", maxTextLength = 6},
+        },
+        states={
+            {name="State 1", state = true, group = 1}, -- group: TBD
+            {name="State 2", state = false, group = 1},
+            {name="State 3", state = true, group = 2},
+            {name="State 4", state = false, group = 2},
+            {name="State 5", state = true, group = 3},
+            {name="State 6", state = false, group = 3}
+        }
+    }
+    local r = MessageBox(options)
+
+    -- r[success]              -- always returns 1?
+    -- r[result]               -- either the selected Command or timeoutResultID if the timer ran out.
+    -- r[<input name>]         -- the value of the input
+    -- r[inputs][<input name>] -- same as the above
+    -- r[<state name>]         -- the value of the states
+    -- r[states][<state name>] -- same as the above
+```
+<!-- MessageBox -->
+
+
 <!-- PopupInput -->
 <a name="PopupInput"></a>
 
@@ -471,6 +564,7 @@ nil
 <a name="TEMPLATE"></a>
 
 ## TEMPLATE(string:x, [object:undo]) : bool
+### Brief:
 ### Paramiters:
  Name | Description | Optional
 -- | -- | --
@@ -564,7 +658,6 @@ This table may contain objects that do not exist in the console. some are filled
 | Keyboard()| <sup>(1)</sup>|<sup>(1)</sup>|
 | KeyboardObj()| <sup>(1)</sup>|<sup>(1)</sup>|
 | LoadExecConfig()| <sup>(1)</sup>|<sup>(1)</sup>|
-| MessageBox()| <sup>(1)</sup>|<sup>(1)</sup>|
 | Mouse()| <sup>(1)</sup>|<sup>(1)</sup>|
 | MouseObj()| <sup>(1)</sup>|<sup>(1)</sup>|
 | MultiLanguage()| <sup>(1)</sup>|<sup>(1)</sup>|
