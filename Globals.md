@@ -21,6 +21,11 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [Confirm](#Confirm)
 * [PopupInput](#PopupInput)
 * [TextInput](#TextInput)
+* [DeskLocked](#DeskLocked)
+* [Echo](#Echo)
+* [ErrEcho](#ErrEcho)
+* [Printf](#Printf)
+* [ErrPrintf](#ErrPrintf)
 
 <!----- CMD ----->
 <a name="Cmd"></a>
@@ -329,6 +334,136 @@ Echo(type(result) .. " " .. result) -- returns a string of the result
 ```
 <!-- TextInput -->
 
+<!-- DeskLocked -->
+<a name="DeskLocked"></a>
+
+## DeskLocked() : bool
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+
+### Returns:
+bool: true = Desk is locked
+bool: false = Desk is not locked
+...
+
+### Examples:
+```lua
+    local locked = DeskLocked()
+    if(locked) then
+        Echo("Desk is locked")
+    else
+        Echo("Desk is unlocked")
+    end
+```
+<!-- DeskLocked -->
+
+
+<!-- Echo -->
+<a name="Echo"></a>
+
+## Echo(string:format ...)
+### Breif:
+Outputs a yellow colored string to the consoles System Monitor
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ string:format  | lua formatted string see https://www.lua.org/pil/20.html for further details|
+
+### Returns:
+nil
+
+### Examples:
+```lua
+    Echo("Testing, Testing " .. 100 + 20 + 3 .. "!")
+    Echo("Testing, Testing %d!", 100 + 20 + 3)
+    local test = "Testing"
+    Echo("%s, %s %d!", test, test, 100 + 20 + 3) -- Testing, Testing 123 (decimal)
+    Echo("%s, %s %f!", test, test, 100 + 20 + 3 + 0.0) -- Testing, Testing 123.000000! (float)
+    Echo("%s, %s %x!", test, test, 2748) -- Testing, Testing abc (hex)
+```
+<!-- Echo -->
+
+<!-- ErrEcho -->
+<a name="ErrEcho"></a>
+
+## ErrEcho(string:format ...)
+### Breif:
+Outputs a red colored string to the consoles System Monitor
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ string:format  | lua formatted string see https://www.lua.org/pil/20.html for further details|
+
+### Returns:
+nil
+
+### Examples:
+```lua
+    ErrEcho("Testing, Testing " .. 100 + 20 + 3 .. "!")
+    ErrEcho("Testing, Testing %d!", 100 + 20 + 3)
+    local test = "Testing"
+    ErrEcho("%s, %s %d!", test, test, 100 + 20 + 3) -- Testing, Testing 123 (decimal)
+    ErrEcho("%s, %s %f!", test, test, 100 + 20 + 3 + 0.0) -- Testing, Testing 123.000000! (float)
+    ErrEcho("%s, %s %x!", test, test, 2748) -- Testing, Testing abc (hex)
+```
+<!-- ErrEcho -->
+
+<!-- Printf -->
+<a name="Printf"></a>
+
+## Printf(string:format ...)
+### Breif:
+Outputs a white(1) colored string to the consoles Command Line History AND System Monitor
+(1) This may be a bug.
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ string:format  | lua formatted string see https://www.lua.org/pil/20.html for further details|
+
+### Returns:
+nil
+
+### Examples:
+```lua
+    Printf("Testing, Testing " .. 100 + 20 + 3 .. "!")
+    Printf("Testing, Testing %d!", 100 + 20 + 3)
+    local test = "Testing"
+    Printf("%s, %s %d!", test, test, 100 + 20 + 3) -- Testing, Testing 123 (decimal)
+    Printf("%s, %s %f!", test, test, 100 + 20 + 3 + 0.0) -- Testing, Testing 123.000000! (float)
+    Printf("%s, %s %x!", test, test, 2748) -- Testing, Testing abc (hex)
+```
+<!-- Printf -->
+
+<!-- ErrPrintf -->
+<a name="ErrPrintf"></a>
+
+## ErrPrintf(string:format ...)
+### Breif:
+Outputs a white(1) colored string to the consoles Command Line History AND System Monitor
+(1) This may be a bug.
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ string:format  | lua formatted string see https://www.lua.org/pil/20.html for further details|
+
+### Returns:
+nil
+
+### Examples:
+```lua
+    ErrPrintf("Testing, Testing " .. 100 + 20 + 3 .. "!")
+    ErrPrintf("Testing, Testing %d!", 100 + 20 + 3)
+    local test = "Testing"
+    ErrPrintf("%s, %s %d!", test, test, 100 + 20 + 3) -- Testing, Testing 123 (decimal)
+    ErrPrintf("%s, %s %f!", test, test, 100 + 20 + 3 + 0.0) -- Testing, Testing 123.000000! (float)
+    ErrPrintf("%s, %s %x!", test, test, 2748) -- Testing, Testing abc (hex)
+```
+<!-- ErrPrintf -->
+
+
+
+
 
 
 <!-- TEMPLATE -->
@@ -374,11 +509,7 @@ This table may contain objects that do not exist in the console. some are filled
 | DataPool()| <sup>(1)</sup>|<sup>(1)</sup>|
 | DefaultDisplayPositions()| ()|<sup>(1)</sup>|
 | DeleteIPAddress() | <sup>(1)</sup>|<sup>(1)</sup>|
-| DeskLocked()| <sup>(1)</sup>|<sup>(1)</sup>|
-| Echo()| <sup>(1)</sup>|<sup>(1)</sup>|
 | Enums()| <sup>(1)</sup>|<sup>(1)</sup>|
-| ErrEcho()| <sup>(1)</sup>|<sup>(1)</sup>|
-| ErrPrintf() | <sup>(1)</sup>|<sup>(1)</sup>|
 | Export() | <sup>(1)</sup>|<sup>(1)</sup>|
 | ExportCSV() | <sup>(1)</sup>|<sup>(1)</sup>|
 | ExportJson()| <sup>(1)</sup>|<sup>(1)</sup>|
@@ -440,7 +571,6 @@ This table may contain objects that do not exist in the console. some are filled
 | Obj() | <sup>(1)</sup>|<sup>(1)</sup>|
 | OverallDeviceCertificate() | <sup>(1)</sup>|<sup>(1)</sup>|
 | Patch()| |userdata: ???|
-| Printf() | <sup>(1)</sup>|<sup>(1)</sup>|
 | Programmer()||userdata: ???|
 | ProgrammerPart()| <sup>(1)</sup>|<sup>(1)</sup>|
 | Pult()| <sup>(1)</sup>|<sup>(1)</sup>|
