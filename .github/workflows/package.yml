@@ -18,7 +18,7 @@ jobs:
       run: |
         TMP_PATH=Package
         PLUGIN=grandMA3/shared/resource/lib_plugins
-        export R_VERSION=${GITHUB_REF/refs\/tags\//}
+        echo "::set-env name=R_VERSION::${GITHUB_REF/refs\/tags\//}"
         cp -v README.md $TMP_PATH
         cp -v LICENSE ${TMP_PATH}/LICENSE.txt
         cp -vr ${PLUGIN}/AppearanceBuilder $TMP_PATH
