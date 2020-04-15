@@ -12,10 +12,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Run a Listing.
-      run: ls -la
-
-    - name: Run a multi-line script
+    - name: Make Package Path
+      run: mkdir -p /tmp/Package/grandMA3/shared/resource/lib_plugins
+    
+    - name: Copy Files to Package
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        TMP_PATH=./Package
+        PLUGIN=./grandMA3/shared/resource/lib_plugins
+        cp -v README.md $TMP_PATH
+        cp -v LICENSE  ${TMP_PATH}/LICENSE.txt
+        cp -vr ${PLUGIN}/AppearanceBuilder $TMP_PATH
+        cp -vr ${PLUGIN}/"Assign AutoStart Fix" $TMP_PATH
+        cp -vr ${PLUGIN}/"Copy Screenshots" $TMP_PATH
+        cp -vr ${PLUGIN}/"Random Select" $TMP_PATH
+        find . -name "libcache.dat" -type f -delete -print
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: GMA3Plugins-vX
+        path: ./Package
