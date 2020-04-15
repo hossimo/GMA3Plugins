@@ -1,6 +1,8 @@
 # GMA3Plugins
 Plugins for the grandMA3 Lighting Console.
 
+Download the latest release [here](https://github.com/hossimo/GMA3Plugins/releases) or browse the code below.
+
 ### Tested on 1.0.0.3 & 1.1.3.2
 * [Appearance Builder 1.1.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/AppearanceBuilder)
 * [Random Select 1.1.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Random%20Select)
