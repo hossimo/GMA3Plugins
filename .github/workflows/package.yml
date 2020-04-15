@@ -1,0 +1,34 @@
+name: GMA3Plugins Packager
+
+on:
+  push:
+    tags: 
+      - 'v*'
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Make Package Path
+      run: mkdir -p Package/grandMA3/shared/resource/lib_plugins
+          
+    - name: Copy Files to Package
+      run: |
+        TMP_PATH=Package
+        PLUGIN=grandMA3/shared/resource/lib_plugins
+        echo "::set-env name=R_VERSION::${GITHUB_REF/refs\/tags\//}"
+        cp -v README.md $TMP_PATH
+        cp -v LICENSE ${TMP_PATH}/LICENSE.txt
+        cp -vr ${PLUGIN}/AppearanceBuilder $TMP_PATH
+        cp -vr ${PLUGIN}/"Assign AutoStart Fix" $TMP_PATH
+        cp -vr ${PLUGIN}/"Copy Screenshots" $TMP_PATH
+        cp -vr ${PLUGIN}/"Random Select" $TMP_PATH
+        find . -name "libcache.dat" -type f -delete -print
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: GMA3Plugins-${{env.R_VERSION}}
+        path: ./Package
