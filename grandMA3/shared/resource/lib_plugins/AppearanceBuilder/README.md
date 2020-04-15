@@ -1,4 +1,4 @@
-AppearanceBuilder v1.0.0.5
+AppearanceBuilder v1.1.0.1
 
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
@@ -26,10 +26,8 @@ AppearanceStartIndex between 0 - 10000 defaults to AppearanceStartIndex
 
 Things todo:
 - The name is curretly taken from the outline color, and has a small list of colors.
-- Better Appearance overwriteing, currently deletes and creates causing the refrances to be deleted.
 - Better Macro overwriting, currently deletes and creates, if not overwriting adds additional lines with the INSERT command
 - Eficancies and Consistantly issues
-- Ask Numeric Questions insted of InputText
 
 Releases:
 - 1.0.0.1 - Inital Release
@@ -37,3 +35,4 @@ Releases:
 - 1.0.0.3 - Changed Text input confirmation to Confirm() from PopupInput()
 - 1.0.0.4 - Added Undo/Oops
 - 1.0.0.5 - Cleanup and making functions local
+- 1.1.0.1 - Uses MessageBox() and better Apperance Overwriting.
