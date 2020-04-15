@@ -27,6 +27,8 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [ErrEcho](#ErrEcho)
 * [Printf](#Printf)
 * [ErrPrintf](#ErrPrintf)
+* [Root](#Root)
+* [ShowData](#ShowData)
 
 <!----- CMD ----->
 <a name="Cmd"></a>
@@ -274,39 +276,39 @@ local result = Confirm("Do you want to exit?", "Are you sure?")
 #### Options
 Name | Description | Optional
 -- | -- | --
-string:title |The title for the dialog.|
-int\|string:backColor|The dialog chrome color. This color can be a number or string based on the current color theme and can be found at `Menu > Desk Lights Color Theme > Edit` For example "Global.Selected" or 1.7 is equal to FFD700FF in RGBA |✔
-number:timeout|Number of MS the dialog will show for|✔
-bool:timeoutResultCancel| TBD |✔
-int:timeoutResultID| The result value is the dialog times out|✔
-int\|string:icon|A Texture to display in the top left corner of the dialog. can be a texture name or it's index number. a listing a availible textures and indexes can be found by listing the GraphicsToor/TextureCollect/Textures path in the console or in onPC by navagating to the `C:\ProgramData\MALightingTechnology\gma3_1.1.3\shared\resource\textures` folder for a list of names. |✔
-int\|string:titleTextColor| See `backColor` |✔
-int\|string:messageTextColor| See `backColor` |✔
-string:message|multiline dialog message|
-int\|handle:display|TBD, set to nil?|✔
-table:commands| Table of buttons across the bottom of the dialog, detailed in the Command table below|✔
-table:inputs|Table of Text imputs below the dialog message, detailed in the Inputs table below|✔
-table:states|Table of check buttons below the inputs, detailed in the States table below|✔
+title : string|The title for the dialog.|
+backColor : int\|string|The dialog chrome color. This color can be a number or string based on the current color theme and can be found at `Menu > Desk Lights Color Theme > Edit` For example "Global.Selected" or 1.7 is equal to FFD700FF in RGBA |✔
+timeout : number|Number of MS the dialog will show for|✔
+timeoutResultCancel : bool| TBD |✔
+timeoutResultID : int| The result value is the dialog times out|✔
+icon : int\|string|A Texture to display in the top left corner of the dialog. can be a texture name or it's index number. a listing a availible textures and indexes can be found by listing the GraphicsToor/TextureCollect/Textures path in the console or in onPC by navagating to the `C:\ProgramData\MALightingTechnology\gma3_1.1.3\shared\resource\textures` folder for a list of names. |✔
+titleTextColor : int\|string| See `backColor` |✔
+messageTextColor : int\|string| See `backColor` |✔
+message : String|multiline dialog message|
+display : int\|handle|TBD, set to nil?|✔
+commands : table| Table of buttons across the bottom of the dialog, detailed in the Command table below|✔
+inputs : table|Table of Text imputs below the dialog message, detailed in the Inputs table below|✔
+states : table|Table of check buttons below the inputs, detailed in the States table below|✔
 #### Commands
 Name | Description | Optional
 -- | -- | --
-int:value| Value of result if command is chosen |
-string:name| Display of the command button |
+value : int| Value of result if command is chosen |
+name : string| Display of the command button |
 #### Inputs
 Name | Description | Optional
 -- | -- | --
-string:name|Name of the Input|
-string:value|Default of the input|
-string:blackFilter|A string that represents characters to block during input e.g. "$()\*" |
-string:whiteFilter|A string that represents characters to allow during input e.g. "0123456789-"|
-string:vkPlugin|A named ID reference to special virtual keyboards 'TextInputNumOnly'|
-string:maxTextLength|The maximum lenth of the entered string, the default value can ignore this number.|
+name : string|Name of the Input|
+value : string|Default of the input|
+blackFilter : string|A string that represents characters to block during input e.g. "$()\*" |
+whiteFilter : string|A string that represents characters to allow during input e.g. "0123456789-"|
+vkPlugin : string|A named ID reference to special virtual keyboards 'TextInputNumOnly'|
+maxTextLength : string|The maximum lenth of the entered string, the default value can ignore this number.|
 #### States
 Name | Description | Optional
 -- | -- | --
-string:name| Name of the Checkbox|
-bool:state| Default value of the state?|
-int:group| TBD |✔
+name : string| Name of the Checkbox|
+state : bool| Default value of the state?|
+group : int| TBD |✔
 ### Returns:
 table: {int:success, int:result, table:inputs, table:states}
 
@@ -557,6 +559,51 @@ nil
 <!-- ErrPrintf -->
 
 
+<!-- Root -->
+<a name="Root"></a>
+
+## Root() : object
+### Brief:
+Returns the Root Object. This object can be used to traverse the hierarchy from the root
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+
+### Returns:
+object: Root
+...
+
+### Examples:
+```lua
+local sequences = Root().ShowData.DataPools.Default.Sequences[1]
+Echo("Sequence 1's name is : %s", sequences.name) -- User 1 is called: Default
+```
+<!-- Root -->
+
+<!-- ShowData -->
+<a name="ShowData"></a>
+
+## ShowData() : object
+### Brief:
+Returns the ShowData Object. This object can be used to traverse the hierarchy from the root of ShowData()
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+
+### Returns:
+object: ShowData
+...
+
+### Examples:
+```lua
+local profileName = ShowData().UserProfiles[1].name;
+Echo("User 1 is called: %s", profileName) -- User 1 is called: Default
+
+local wheelMode = ShowData().UserProfiles:Find("Default").wheelmode
+Echo("The Default users wheelmode is %s", wheelMode) --The Default users wheelmode additive
+```
+<!-- ShowData -->
+
 
 
 
@@ -692,7 +739,6 @@ This table may contain objects that do not exist in the console. some are filled
 | SetProgress()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SetProgressRange()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SetProgressText() | <sup>(1)</sup>|<sup>(1)</sup>|
-| ShowData()| <sup>(1)</sup>|<sup>(1)</sup>|
 | StartProgress()| <sup>(1)</sup>|<sup>(1)</sup>|
 | StopProgress() | <sup>(1)</sup>|<sup>(1)</sup>|
 | StrToHandle()| <sup>(1)</sup>|<sup>(1)</sup>|
