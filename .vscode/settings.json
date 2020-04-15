@@ -92,6 +92,11 @@
         "ReleaseType",
         "Import",
         "ErrPrintf",
-        "Export"
+        "Export",
+        "DeskLocked",
+        "GlobalVars",
+        "UserVars",
+        "GetVar",
+        "DelVar"
     ]
 }
