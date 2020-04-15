@@ -13,7 +13,7 @@ jobs:
 
     - name: Make Package Path
       run: mkdir -p Package/grandMA3/shared/resource/lib_plugins
-    
+          
     - name: Copy Files to Package
       run: |
         TMP_PATH=Package
@@ -30,5 +30,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
-        name: GMA3Plugins-${GITHUB_REF/refs\/tags\//}
+        name: GMA3Plugins-${{env.R_VERSION}}
         path: ./Package
