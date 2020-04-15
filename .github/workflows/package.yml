@@ -17,10 +17,10 @@ jobs:
     
     - name: Copy Files to Package
       run: |
-        TMP_PATH=./Package
-        PLUGIN=./grandMA3/shared/resource/lib_plugins
+        TMP_PATH=Package
+        PLUGIN=grandMA3/shared/resource/lib_plugins
         cp -v README.md $TMP_PATH
-        cp -v LICENSE  ${TMP_PATH}/LICENSE.txt
+        cp -v LICENSE ${TMP_PATH}/LICENSE.txt
         cp -vr ${PLUGIN}/AppearanceBuilder $TMP_PATH
         cp -vr ${PLUGIN}/"Assign AutoStart Fix" $TMP_PATH
         cp -vr ${PLUGIN}/"Copy Screenshots" $TMP_PATH
