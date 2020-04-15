@@ -13,18 +13,18 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Make Package Path
-      run: mkdir -p /tmp/Package/grandMA3/shared/resource/lib_plugins
+      run: mkdir -p Package/grandMA3/shared/resource/lib_plugins
     
     - name: Copy Files to Package
       run: |
         TMP_PATH=Package
         PLUGIN=grandMA3/shared/resource/lib_plugins
         cp -v README.md $TMP_PATH
-        cp -v LICENSE /tmp/Package/LICENSE.txt
-        cp -vr ${PLUGIN}/AppearanceBuilder/. $TMP_PATH
-        cp -vr ${PLUGIN}/"Assign AutoStart Fix"/. $TMP_PATH
-        cp -vr ${PLUGIN}/"Copy Screenshots"/. $TMP_PATH
-        cp -vr ${PLUGIN}/"Random Select"/. $TMP_PATH
+        cp -v LICENSE ${TMP_PATH}/LICENSE.txt
+        cp -vr ${PLUGIN}/AppearanceBuilder $TMP_PATH
+        cp -vr ${PLUGIN}/"Assign AutoStart Fix" $TMP_PATH
+        cp -vr ${PLUGIN}/"Copy Screenshots" $TMP_PATH
+        cp -vr ${PLUGIN}/"Random Select" $TMP_PATH
         find . -name "libcache.dat" -type f -delete -print
     
     - name: Upload artifact
