@@ -1,40 +1,6 @@
 --[[
-AppearanceBuilder v1.0.0.5
-Please note that this will likly break in future version of the console. and to use at your own risk.
-
-Usage:
-Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearanceStartIndex], [MacroStartIndex]"'
-
-Example:
-Call Plugin "AppearanceBuilder" "10, 1, 0.5, 1, 1, 201, 401"
-
-Creates 10 Appearances starting at 201 and Macros starting at 401 with the fill being darker then the outline.
- 
-Properties:
-COUNT           between  1 and 360 defalts to 15
-FillSaturation  between 0.0 and 1.0 defaults to 1.0
-FillBrightness  between 0.0 and 1.0 defaults to 1.0
-FillSaturation  between 0.0 and 1.0 defaults to <FillSaturation>
-FillBrightness  between 0.0 and 1.0 defaults to <FillBrightness>
-AppearanceStartIndex between 0 - 10000 defaults to 101
-AppearanceStartIndex between 0 - 10000 defaults to AppearanceStartIndex
-
-If no properties are set the plugin will ask some questions for each value
-
-Things todo:
-- The name is curretly taken from the outline color, and has a small list of colors.
-- Better Appearance overwriteing, currently deletes and creates causing the refrances to be deleted.
-- Better Macro overwriting, currently deletes and creates, if not overwriting adds additional lines with the INSERT command
-- Eficancies and Consistantly issues
-- Ask Numeric Questions insted of InputText
-
-Releases:
-- 1.0.0.1 - Inital Release
-- 1.0.0.2 - Added Text input when no arguments
-- 1.0.0.3 - Changed Text input confirmation to Confirm() from PopupInput()
-- 1.0.0.4 - Added Undo/Oops
-- 1.0.0.5 - Cleanup and making functions local
-
+AppearanceBuilder v1.1.0.1
+See README.md for more information
 
 MIT License
 
@@ -106,25 +72,77 @@ local function Main (display_handle, argument)
     local macroStartIndex
     local inline = false
     local continueString
+    local overwrite = false
 
 
     if argument == nil then
         Printf("Usage:")
-        Printf('Call Plugin HSB2RGB "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Appearance Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
+        Printf('Call Plugin AppearanceBuilder "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Appearance Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
         Printf('All options except for COUNT are optional, and will choose some defaults')
 
+        -- Gather information using MessageBox()
+
+        local messageBoxQuestions = {
+            "Count",
+            "Fill Saturation\n(0.0 - 1.0)",
+            "Fill Brightness\n(0.0 - 1.0)",
+            "Outline Saturation\n(0.0 - 1.0)",
+            "Outline Brightness\n(0.0 - 1.0)",
+            "Appearance Index\n(1 - 9999)",
+            "Macro Index\n(1 - 9999)",
+            "Overwrite"
+        }
+        local messageBoxOptions = {
+            title="AppearanceBuilder",
+            backColor=nil,
+            timeout=nil,
+            timeoutResultCancel=false,
+            timeoutResultID=nil,
+            icon=nil,
+            titleTextColor=nil,
+            messageTextColor=nil,
+            message="Please enter the following information",
+            display= nil,
+            commands={
+                {value=1, name="Done"},
+                {value=0, name="Cancel"}
+            },
+            inputs={
+                {name=messageBoxQuestions[1], value="", maxTextLength = 4},
+                {name=messageBoxQuestions[2], value="1.0", maxTextLength = 5},
+                {name=messageBoxQuestions[3], value="1.0", maxTextLength = 5},
+                {name=messageBoxQuestions[4], value="1.0", maxTextLength = 5},
+                {name=messageBoxQuestions[5], value="1.0", maxTextLength = 5},
+                {name=messageBoxQuestions[6], value="101", maxTextLength = 5},
+                {name=messageBoxQuestions[7], value="101", maxTextLength = 5},
+            },
+            states={
+                {name=messageBoxQuestions[8], state = true},
+            }
+        }
+        local messageBoxResult = MessageBox(messageBoxOptions);
+        --tableToString(messageBoxResult)
+        overwrite = messageBoxResult["states"][messageBoxQuestions[8]];
+
         -- get inputs
-        count = clamp(math.floor(tonumber(TextInput("Appearances to create? (1 - 360, Blank to cancel)") or 0)), 0, 360)
-        if count == 0 then
+        count = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[1]]) or 0), 0, 360)
+        if count == 0 or messageBoxResult["result"] == 0 then
             return
         end
-        fillS = clamp(tonumber(TextInput("Fill Saturation (0.0 - 1.0)") or 1.0), 0.0, 1.0)
-        fillB = clamp(tonumber(TextInput("Fill Brightness (0.0 - 1.0)") or 1.0), 0.0, 1.0)
-        outlineS = clamp(tonumber(TextInput("Outline Saturation (0.0 - 1.0)") or 1.0), 0.0, 1.0)
-        outlineB = clamp(tonumber(TextInput("Outline Brightness (0.0 - 1.0)") or 1.0), 0.0, 1.0)
-        appearanceStartIndex = clamp(math.floor(tonumber(TextInput("Appearance Start Index (1 - 10000)")or 101)),1,10000) 
-        macroStartIndex = clamp(math.floor(tonumber(TextInput("Macro Start Index (1 - 10000)")or 101)),1,10000)
-        continueString = string.format("Continue? Count: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nAppearance Start Index: %d\nMacro Start Index: %d", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex)
+        fillS = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[2]]) or 1.0, 0.0, 1.0)
+        fillB = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[3]]) or 1.0, 0.0, 1.0)
+        outlineS = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[4]]) or 1.0, 0.0, 1.0)
+        outlineB = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[5]]) or 1.0, 0.0, 1.0)
+        appearanceStartIndex = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[6]]) or 101), 1 ,9999)
+        macroStartIndex = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[7]]) or 101), 1 ,9999)
+        local overwriteString
+        if overwrite == 1 then
+            overwriteString = "Yes"
+        else
+            overwriteString = "No"
+        end
+
+        continueString = string.format("Continue? Count: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nAppearance Start Index: %d\nMacro Start Index: %d\nOverwrite: %s", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex, overwriteString)
     else
         -- sanatize our inputs
         arguments = split(argument, ",")
@@ -138,7 +156,7 @@ local function Main (display_handle, argument)
         fillB = clamp(tonumber(arguments[3]) + .0, 0.0, 1.0) or 1.0
 
         --outline saturation (float)
-        outlineS = clamp(tonumber(arguments[4]) + .0, 0.0, 1.0) or fillS    
+        outlineS = clamp(tonumber(arguments[4]) + .0, 0.0, 1.0) or fillS
 
         -- outline brightness (float)
         outlineB = clamp(tonumber(arguments[5]) + .0, 0.0, 1.0) or fillB
@@ -154,16 +172,14 @@ local function Main (display_handle, argument)
 
 
 
-    if inline == false then 
+    if inline == false then
         local c = Confirm("Continue?", continueString)
         if c == 0 then
             Printf("Exiting Plugin")
             return
         end
     end
-    
 
-    local overwrite = PopupInput("Overwrite macros and Appearances?", display_handle, {"NO", "YES, will remove references!"})
     local undo = CreateUndo("Appearance Builder")
 
     local fillIncrement = 1 / count
@@ -177,19 +193,46 @@ local function Main (display_handle, argument)
         local ro, go, bo, nameo = toRGB(i, outlineS, outlineB)
 
         -- Overwrite Appearances
-        --TODO: This should do an overwrite insted of a delete
+        local buildAppearances
+        local currentAppearance = Root().ShowData.Appearances[appearanceIndex] --index number, nil if not exists
         if overwrite == 1 then
-            Cmd(string.format("Delete Appearance %d /NC", appearanceIndex), undo)
+            buildAppearances = true
+        elseif overwrite == 0  and currentAppearance == nil then
+            buildAppearances = true
+        else
+            buildAppearances = false
         end
 
-        -- build Appearances
-        local command = ""
-        if nameo == nil then
-            command = string.format('Store Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d"',appearanceIndex, rf, gf, bf, a, math.floor(ro * 255), math.floor(go * 255), math.floor(bo * 255), math.floor(a * 255))
-        else
-            command = string.format('Store Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d" "Name" "%s"',appearanceIndex, rf, gf, bf, a, math.floor(ro * 255), math.floor(go * 255), math.floor(bo * 255), math.floor(a * 255), nameo)
+        if (buildAppearances == true) then
+            -- build Appearances
+            local command = ""
+            if nameo == nil then
+                command = string.format('Set Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d"',
+                    appearanceIndex,
+                    rf,
+                    gf,
+                    bf,
+                    a,
+                    math.floor(ro * 255),
+                    math.floor(go * 255),
+                    math.floor(bo * 255),
+                    math.floor(a * 255))
+            else
+                command = string.format('Set Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d" "Name" "%s"',
+                    appearanceIndex,
+                    rf,
+                    gf,
+                    bf,
+                    a,
+                    math.floor(ro * 255),
+                    math.floor(go * 255),
+                    math.floor(bo * 255),
+                    math.floor(a * 255),
+                    nameo)
+            end
+            Cmd("Store Appearance %d", appearanceIndex) --store it first to make sure we have something to set.
+            Cmd(command, undo)
         end
-        Cmd(command, undo)
 
         -- build macros
         -- Overwrite Macros
