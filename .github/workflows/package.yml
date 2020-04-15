@@ -1,0 +1,21 @@
+name: GMA3Plugins Packager
+
+on:
+  push:
+    branches: [ workflows-packager ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run a Listing.
+      run: ls -la
+
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
