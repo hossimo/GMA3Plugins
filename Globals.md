@@ -275,15 +275,15 @@ local result = Confirm("Do you want to exit?", "Are you sure?")
 Name | Description | Optional
 -- | -- | --
 string:title |The title for the dialog.|
-number:backColor|The dialog chrome color |✔
+int\|string:backColor|The dialog chrome color. This color can be a number or string based on the current color theme and can be found at `Menu > Desk Lights Color Theme > Edit` For example "Global.Selected" or 1.7 is equal to FFD700FF in RGBA |✔
 number:timeout|Number of MS the dialog will show for|✔
 bool:timeoutResultCancel| TBD |✔
 int:timeoutResultID| The result value is the dialog times out|✔
-string:icon|TBD|✔
-string:titleTextColor|TBD|✔
-string:messageTextColor|TBD|✔
+int\|string:icon|A Texture to display in the top left corner of the dialog. can be a texture name or it's index number. a listing a availible textures and indexes can be found by listing the GraphicsToor/TextureCollect/Textures path in the console or in onPC by navagating to the `C:\ProgramData\MALightingTechnology\gma3_1.1.3\shared\resource\textures` folder for a list of names. |✔
+int\|string:titleTextColor| See `backColor` |✔
+int\|string:messageTextColor| See `backColor` |✔
 string:message|multiline dialog message|
-int\|handle:display|TBD|✔
+int\|handle:display|TBD, set to nil?|✔
 table:commands| Table of buttons across the bottom of the dialog, detailed in the Command table below|✔
 table:inputs|Table of Text imputs below the dialog message, detailed in the Inputs table below|✔
 table:states|Table of check buttons below the inputs, detailed in the States table below|✔
@@ -297,9 +297,9 @@ Name | Description | Optional
 -- | -- | --
 string:name|Name of the Input|
 string:value|Default of the input|
-string:blackFilter|TBD|
-string:whiteFilter|TBD|
-string:vkPlugin|TBD|
+string:blackFilter|A string that represents characters to block during input e.g. "$()\*" |
+string:whiteFilter|A string that represents characters to allow during input e.g. "0123456789-"|
+string:vkPlugin|A named ID reference to special virtual keyboards 'TextInputNumOnly'|
 string:maxTextLength|The maximum lenth of the entered string, the default value can ignore this number.|
 #### States
 Name | Description | Optional
@@ -308,20 +308,20 @@ string:name| Name of the Checkbox|
 bool:state| Default value of the state?|
 int:group| TBD |✔
 ### Returns:
-table: {bool:success, int:result, table:inputs, table:states}
+table: {int:success, int:result, table:inputs, table:states}
 
 ### Examples:
 ![Example Image](https://github.com/hossimo/GMA3Plugins/blob/master/Images/MessageBox.png)
 ```lua
     local options = {
         title="This is a title",                        --string
-        backColor="1.7",                                --string:TBD
+        backColor="Global.Focus",                       --string: Color based on current theme.
         timeout=10000,                                  --number:in Miliseconds
         timeoutResultCancel=false,                      --bool
-        timeoutResultID=99,                             --number
-        icon=nil,                                       --string:TBD
-        titleTextColor=nil,                             --string:TBD
-        messageTextColor="4.1",                         --string:TBD
+        timeoutResultID=-1,                             --number
+        icon="time",                                    --int|string
+        titleTextColor="Global.AlertText",              --int|string
+        messageTextColor=nil,                           --int|string
         message="This is a long\nMultiline\nMessage",   --string
         display= nil,                                   --int? | handle?
         commands={
@@ -330,11 +330,11 @@ table: {bool:success, int:result, table:inputs, table:states}
             {value=2, name="YES"}
         },
         inputs={
-            {name="INPUT 1", value="123", blackFilter="", whiteFilter="", vkPlugin="", maxTextLength = 3}, -- filters, vkPlugin: TBD
-            {name="INPUT 2", value="789ABC", blackFilter="", whiteFilter="", vkPlugin="", maxTextLength = 6},
+            {name="INPUT 1", value="123", blackFilter="", whiteFilter="0123456789", vkPlugin="TextInputNumOnly", maxTextLength = 3},
+            {name="INPUT 2", value="789ABC", blackFilter="$-=", whiteFilter="", vkPlugin="", maxTextLength = 6},
         },
         states={
-            {name="State 1", state = true, group = 1}, -- group: TBD
+            {name="State 1", state = true, group = 1},
             {name="State 2", state = false, group = 1},
             {name="State 3", state = true, group = 2},
             {name="State 4", state = false, group = 2},
@@ -344,7 +344,7 @@ table: {bool:success, int:result, table:inputs, table:states}
     }
     local r = MessageBox(options)
 
-    -- r[success]              -- always returns 1?
+    -- r[success]              -- 
     -- r[result]               -- either the selected Command or timeoutResultID if the timer ran out.
     -- r[<input name>]         -- the value of the input
     -- r[inputs][<input name>] -- same as the above
