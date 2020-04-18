@@ -659,7 +659,7 @@ FID | Gird | Description
 103 | 0/1/0 | Dimmer 3
 104 | 1/1/0 | Dimmer 4
 
-Fixture 1 thru 4
+Fixture 2 thru 4
 
 ```lua
 local count = SelectionCount()
