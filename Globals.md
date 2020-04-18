@@ -30,10 +30,10 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [Root](#Root)
 * [ShowData](#ShowData)
 
-*[Selection](#Selection)
-*[SelectionCount](#SelectionCount)
-*[SelectionFirst](#SelectionFirst)
-*[SelectionNext](#SelectionNext)
+* [Selection](#Selection)
+* [SelectionCount](#SelectionCount)
+* [SelectionFirst](#SelectionFirst)
+* [SelectionNext](#SelectionNext)
 
 Referances
 
