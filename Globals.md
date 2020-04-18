@@ -618,7 +618,7 @@ Echo("The Default users wheelmode is %s", wheelMode) --The Default users wheelmo
 
 ## Selection() : UserData
 ### Brief:
-⚠__Need more information__⚠
+⚠ __Need more information__ ⚠
 
 Returns a Dataobject not no idea of its format.
 
