@@ -30,6 +30,11 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [Root](#Root)
 * [ShowData](#ShowData)
 
+* [Selection](#Selection)
+* [SelectionCount](#SelectionCount)
+* [SelectionFirst](#SelectionFirst)
+* [SelectionNext](#SelectionNext)
+
 Referances
 
 * [vkPlugin](#vkPlugin)
@@ -608,6 +613,128 @@ Echo("The Default users wheelmode is %s", wheelMode) --The Default users wheelmo
 ```
 <!-- ShowData -->
 
+<!-- Selection -->
+<a name="Selection"></a>
+
+## Selection() : UserData
+### Brief:
+⚠ __Need more information__ ⚠
+
+Returns a Dataobject not no idea of its format.
+
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ 
+### Returns:
+?
+
+### Examples:
+```lua
+local x = Selection().name
+Echo("Name: %s", x) -- Name: Selection
+```
+<!-- Selection -->
+
+<!-- SelectionCount -->
+<a name="SelectionCount"></a>
+
+## SelectionCount() : int
+### Brief:
+Returns a count of the number of fixtures selected
+
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ 
+### Returns:
+int : Count of fixtures selected.
+
+### Examples:
+Patched Fixtures:
+FID | Gird | Description
+-- | -- | --
+101 | 0/0/0 | Dimmer 1
+102 | 1/0/0 | Dimmer 2
+103 | 0/1/0 | Dimmer 3
+104 | 1/1/0 | Dimmer 4
+
+Fixture 2 thru 4
+
+```lua
+local count = SelectionCount()
+Echo("Selected Count: %d", count) -- Selected Count: 3
+```
+<!-- SelectionCount -->
+
+<!-- SelectionFirst -->
+<a name="SelectionFirst"></a>
+
+## SelectionFirst() : int, int, int, int
+### Brief:
+Returns the first selected fxtures SubfixtureIndex, X, Y and, Z grid positions. The Fixtures subfixture ID is a representation of the fixture within the patch and does not directly reflect the fixtures FID or CID, for example. A fixture with no FID or CID still does have a valid SubfixtureIndex.
+
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+ 
+### Returns:
+int, int, int, int : SubfixtureIndex, GridX, GridY, GridZ
+
+### Examples:
+Patched Fixtures:
+FID | Gird | Description
+-- | -- | --
+101 | 0/0/0 | Dimmer 1
+102 | 1/0/0 | Dimmer 2
+103 | 0/1/0 | Dimmer 3
+104 | 1/1/0 | Dimmer 4
+
+Fixture 1 thru 4
+
+```lua
+local index, x, y, z = SelectionFirst()
+Echo("index: %d %d/%d/%d", index, x, y, z) -- index: 1 0/0/0
+```
+<!-- SelectionFirst -->
+
+<!-- SelectionNext -->
+<a name="SelectionNext"></a>
+
+## SelectionNext(int: current) : int, int, int, int
+### Brief:
+Returns the first selected fxtures SubfixtureIndex, X, Y and, Z grid positions. The Fixtures subfixture ID is a representation of the fixture within the patch and does not directly reflect the fixtures FID or CID, for example. A fixture with no FID or CID still does have a valid SubfixtureIndex.
+
+### Paramiters:
+ Name | Description | Optional
+-- | -- | --
+int:current| an int that represents the current selected SubfixtureIndex| 
+ 
+### Returns:
+int, int, int, int : SubfixtureIndex, GridX, GridY, GridZ
+
+Returns nil after the last selected fixture.
+
+### Examples:
+Patched Fixtures:
+FID | Gird | Description
+-- | -- | --
+101 | 0/0/0 | Dimmer 1
+102 | 1/0/0 | Dimmer 2
+103 | 0/1/0 | Dimmer 3
+104 | 1/1/0 | Dimmer 4
+
+Fixture 1 thru 4
+
+```lua
+local index, x, y, z = SelectionFirst()
+Echo("index: %d %d/%d/%d", index, x, y, z) -- index: 1 0/0/0
+index, x, y, z = SelectionNext(index)
+Echo("index: %d %d/%d/%d", index, x, y, z) -- index: 2 1/0/0
+```
+<!-- SelectionNext -->
+
+
 
 <!-- vkPlugin -->
 <a name="vkPlugin"></a>
@@ -743,13 +870,9 @@ This table may contain objects that do not exist in the console. some are filled
 | ReleaseType()| <sup>(1)</sup>|<sup>(1)</sup>|
 | Root()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SaveExecConfig()| <sup>(1)</sup>|<sup>(1)</sup>|
-| Selection() | <sup>(1)</sup>|<sup>(1)</sup>|
 | SelectionComponentX()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SelectionComponentY()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SelectionComponentZ()| <sup>(1)</sup>|<sup>(1)</sup>|
-| SelectionCount()| <sup>(1)</sup>|<sup>(1)</sup>|
-| SelectionFirst()| <sup>(1)</sup>|<sup>(1)</sup>|
-| SelectionNext()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SelectionNotifyBegin()| <sup>(1)</sup>|<sup>(1)</sup>|
 | SelectionNotifyEnd() | <sup>(1)</sup>|<sup>(1)</sup>|
 | SelectionNotifyObject() | <sup>(1)</sup>|<sup>(1)</sup>|
