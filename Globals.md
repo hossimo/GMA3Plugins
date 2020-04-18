@@ -701,7 +701,7 @@ Echo("index: %d %d/%d/%d", index, x, y, z) -- index: 1 0/0/0
 <!-- SelectionNext -->
 <a name="SelectionNext"></a>
 
-## SelectionNext() : int, int, int, int
+## SelectionNext(int: current) : int, int, int, int
 ### Brief:
 Returns the first selected fxtures SubfixtureIndex, X, Y and, Z grid positions. The Fixtures subfixture ID is a representation of the fixture within the patch and does not directly reflect the fixtures FID or CID, for example. A fixture with no FID or CID still does have a valid SubfixtureIndex.
 
