@@ -618,14 +618,14 @@ This is an inital list of text inputs:
 
 Name | Image
 -- | --
-CueNumberInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/CueNumberInput.png
-IP4Prefix | https://github.com/hossimo/GMA3Plugins/blob/master/Images/IP4Prefix.png
-NumericInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/NumericInput.png
-RelCueNumberInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/RelCueNumberInput.png
-TextInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInput.png
-TextInputNumOnly | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputNumOnly.png
-TextInputNumOnlyRange | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputNumOnlyRange.png
-TextInputTimeOnly | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputTimeOnly.png
+CueNumberInput | ![](https://github.com/hossimo/GMA3Plugins/blob/doc-vkplugin/Images/CueNumberInput.png)
+IP4Prefix | ![](https://github.com/hossimo/GMA3Plugins/blob/master/Images/IP4Prefix.png)
+NumericInput | ![](https://github.com/hossimo/GMA3Plugins/blob/master/Images/NumericInput.png)
+RelCueNumberInput | ![](https://github.com/hossimo/GMA3Plugins/blob/master/Images/RelCueNumberInput.png)
+TextInput | ![](https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInput.png)
+TextInputNumOnly | ![](https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputNumOnly.png)
+TextInputNumOnlyRange | ![](https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputNumOnlyRange.png)
+TextInputTimeOnly | ![](https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputTimeOnly.png)
 <!-- vkPlugin -->
 
 
