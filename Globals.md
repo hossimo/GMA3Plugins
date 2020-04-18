@@ -713,6 +713,8 @@ int:current| an int that represents the current selected SubfixtureIndex|
 ### Returns:
 int, int, int, int : SubfixtureIndex, GridX, GridY, GridZ
 
+Returns nil after the last selected fixture.
+
 ### Examples:
 Patched Fixtures:
 FID | Gird | Description
