@@ -30,6 +30,10 @@ Note that none of this is offical, and there are likly mistakes that need to be 
 * [Root](#Root)
 * [ShowData](#ShowData)
 
+Referances
+
+* [vkPlugin](#vkPlugin)
+
 <!----- CMD ----->
 <a name="Cmd"></a>
 
@@ -301,7 +305,7 @@ name : string|Name of the Input|
 value : string|Default of the input|
 blackFilter : string|A string that represents characters to block during input e.g. "$()\*" |
 whiteFilter : string|A string that represents characters to allow during input e.g. "0123456789-"|
-vkPlugin : string|A named ID reference to special virtual keyboards 'TextInputNumOnly'|
+vkPlugin : string|A named ID reference to special virtual keyboards 'TextInputNumOnly' for a listing see [vkPlugin](#vkPlugin)|
 maxTextLength : string|The maximum lenth of the entered string, the default value can ignore this number.|
 #### States
 Name | Description | Optional
@@ -604,6 +608,25 @@ Echo("The Default users wheelmode is %s", wheelMode) --The Default users wheelmo
 ```
 <!-- ShowData -->
 
+
+<!-- vkPlugin -->
+<a name="vkPlugin"></a>
+
+## Text Input Plugins
+### Brief:
+This is an inital list of text inputs:
+
+Name | Image
+-- | --
+CueNumberInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/CueNumberInput.png
+IP4Prefix | https://github.com/hossimo/GMA3Plugins/blob/master/Images/IP4Prefix.png
+NumericInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/NumericInput.png
+RelCueNumberInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/RelCueNumberInput.png
+TextInput | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInput.png
+TextInputNumOnly | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputNumOnly.png
+TextInputNumOnlyRange | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputNumOnlyRange.png
+TextInputTimeOnly | https://github.com/hossimo/GMA3Plugins/blob/master/Images/TextInputTimeOnly.png
+<!-- vkPlugin -->
 
 
 
