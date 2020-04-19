@@ -13,4 +13,4 @@ Download the latest release [here](https://github.com/hossimo/GMA3Plugins/releas
 * [Kinetic Set 1.0.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/KineticSet)
 
 ## Documentation
-* [Unoffical API documentation](https://github.com/hossimo/GMA3Plugins/blob/master/Globals.md)
+* [Unoffical API documentation Wiki](https://github.com/hossimo/GMA3Plugins/wiki)
