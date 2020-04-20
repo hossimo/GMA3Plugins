@@ -1,5 +1,5 @@
 --[[
-AppearanceBuilder v1.1.0.1
+AppearanceBuilder v1.1.0.2
 See README.md for more information
 
 MIT License
@@ -92,6 +92,8 @@ local function Main (display_handle, argument)
             "Macro Index\n(1 - 9999)",
             "Overwrite"
         }
+        local wfInt = "0123456789"
+        local wfFloat = "0123456789."
         local messageBoxOptions = {
             title="AppearanceBuilder",
             backColor=nil,
@@ -108,13 +110,16 @@ local function Main (display_handle, argument)
                 {value=0, name="Cancel"}
             },
             inputs={
-                {name=messageBoxQuestions[1], value="", maxTextLength = 4},
-                {name=messageBoxQuestions[2], value="1.0", maxTextLength = 5},
-                {name=messageBoxQuestions[3], value="1.0", maxTextLength = 5},
-                {name=messageBoxQuestions[4], value="1.0", maxTextLength = 5},
-                {name=messageBoxQuestions[5], value="1.0", maxTextLength = 5},
-                {name=messageBoxQuestions[6], value="101", maxTextLength = 5},
-                {name=messageBoxQuestions[7], value="101", maxTextLength = 5},
+                -- black and white filters don't seem to work with non TextInput fields
+                -- NumericInput does not have "."
+                -- Therefore need to remove the the following from the result "/-+Thru %=*"
+                {name=messageBoxQuestions[1], value="", maxTextLength = 4, vkPlugin = "TextInputNumOnly", whiteFilter = wfInt},
+                {name=messageBoxQuestions[2], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
+                {name=messageBoxQuestions[3], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
+                {name=messageBoxQuestions[4], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
+                {name=messageBoxQuestions[5], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
+                {name=messageBoxQuestions[6], value="101", maxTextLength = 5, vkPlugin = "TextInputNumOnly", whiteFilter = wfInt},
+                {name=messageBoxQuestions[7], value="101", maxTextLength = 5, vkPlugin = "TextInputNumOnly", whiteFilter = wfInt}
             },
             states={
                 {name=messageBoxQuestions[8], state = true},
@@ -129,12 +134,23 @@ local function Main (display_handle, argument)
         if count == 0 or messageBoxResult["result"] == 0 then
             return
         end
-        fillS = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[2]]) or 1.0, 0.0, 1.0)
-        fillB = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[3]]) or 1.0, 0.0, 1.0)
-        outlineS = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[4]]) or 1.0, 0.0, 1.0)
-        outlineB = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[5]]) or 1.0, 0.0, 1.0)
-        appearanceStartIndex = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[6]]) or 101), 1 ,9999)
-        macroStartIndex = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[7]]) or 101), 1 ,9999)
+        -- have to filter out the numbers because non text inputs dont respect the black/white Filters.
+        local v = "[^0123456789.]"
+
+        fillS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[2]], v, "") -- valid characters only
+        fillS = clamp(tonumber(fillS) or 1.0, 0.0, 1.0)
+
+        fillB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[3]], v, "")
+        fillB = clamp(tonumber(fillB) or 1.0, 0.0, 1.0)
+
+        outlineS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[4]], v, "")
+        outlineS = clamp(tonumber(outlineS) or 1.0, 0.0, 1.0)
+
+        outlineB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[5]], v, "")
+        outlineB = clamp(tonumber(outlineB) or 1.0, 0.0, 1.0)
+
+        appearanceStartIndex = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[6]]) or 101, 1 ,9999)
+        macroStartIndex = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[7]]) or 101, 1 ,9999)
         local overwriteString
         if overwrite == 1 then
             overwriteString = "Yes"
@@ -174,7 +190,7 @@ local function Main (display_handle, argument)
 
     if inline == false then
         local c = Confirm("Continue?", continueString)
-        if c == 0 then
+        if c ~= true then
             Printf("Exiting Plugin")
             return
         end
