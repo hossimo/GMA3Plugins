@@ -1,7 +1,7 @@
 ---
 name: Wiki Template
 about: Use this Issue Template to request a new Documentation page
-title: WIKI - TEMPLATE()
+title: WIKI - TEMPLATE() <!-- Replace this with the function name -->
 labels: documentation
 assignees: ''
 
@@ -20,6 +20,7 @@ param1  | string | a thing |
 param2 | object | an optional thing | ✔
 
 ### Returns:
+<!-- Enter the return values as needed -->
 Type | Description
 -- | --
 string | "Ok"
@@ -28,10 +29,12 @@ string | "Ilegal Command"
 ...
 
 ### Examples:
+<!-- Enter some concice code examples -->
 ```lua
 Code("Example")
 ```
 
+<!-- These Icons can be used to mark warnings or issues -->
 <!-- 
 ⚠ Warning
 🛑 Error
