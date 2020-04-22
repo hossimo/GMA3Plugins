@@ -1,5 +1,5 @@
 --[[
-AppearanceBuilder v1.1.0.2
+AppearanceBuilder v1.1.0.3
 See README.md for more information
 
 MIT License
@@ -246,7 +246,7 @@ local function Main (display_handle, argument)
                     math.floor(a * 255),
                     nameo)
             end
-            Cmd("Store Appearance %d", appearanceIndex) --store it first to make sure we have something to set.
+            Cmd("Store Appearance " .. appearanceIndex, undo) --store it first to make sure we have something to set.
             Cmd(command, undo)
         end
 
