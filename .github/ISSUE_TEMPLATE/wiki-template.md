@@ -1,5 +1,5 @@
 ---
-name: Wiki Template
+name: Wiki Documentation Request
 about: Use this Issue Template to request a new Documentation page
 title: WIKI - TEMPLATE() <!-- Replace this with the function name -->
 labels: documentation
