@@ -97,6 +97,10 @@
         "GlobalVars",
         "UserVars",
         "GetVar",
-        "DelVar"
+        "DelVar",
+        "BuildDetails",
+        "GetPathSeparator",
+        "ExportJson",
+        "FileExists"
     ]
 }
