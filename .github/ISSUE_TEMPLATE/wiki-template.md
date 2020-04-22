@@ -1,14 +1,14 @@
 ---
 name: Wiki Documentation Request
 about: Use this Issue Template to request a new Documentation page
-title: WIKI - TEMPLATE() <!-- Replace this with the function name -->
+title: FunctionName()
 labels: documentation
 assignees: ''
 
 ---
 
 <!-- Replace the below line with the function signature. -->
-## TEMPLATE(string:x, [object:undo]) : bool
+## FunctionName(string:x, [object:undo]) : bool
 ### Brief:
 <!-- Enter a brief description of the function  -->
 
