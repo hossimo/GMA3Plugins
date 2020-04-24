@@ -101,6 +101,7 @@
         "BuildDetails",
         "GetPathSeparator",
         "ExportJson",
-        "FileExists"
+        "FileExists",
+        "IncProgress"
     ]
 }

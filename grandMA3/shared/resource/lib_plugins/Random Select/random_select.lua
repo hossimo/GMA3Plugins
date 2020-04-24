@@ -120,7 +120,7 @@ function SelectionToArray(random)
 	random = random or false
 
 	local selectedFixtures = {};
-	local sfIdx = SelectionFirst (true);
+	local sfIdx = SelectionFirst ();
 	while (sfIdx ~= nil)
 	do
 		if random == true then
