@@ -102,6 +102,8 @@
         "GetPathSeparator",
         "ExportJson",
         "FileExists",
-        "IncProgress"
+        "IncProgress",
+        "GetDMXValue",
+        "GetDMXUniverse"
     ]
 }
