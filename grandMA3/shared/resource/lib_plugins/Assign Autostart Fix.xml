@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GMA3 DataVersion="1.0.0.3">
     <Plugin Name="Assign AutoStart Fix" Author="hoss" Version="1.0.0.3">
-        <ComponentLua Name="Assign AutoStart Fix" FileName="assign_autostart_fix.lua">
-        </ComponentLua>
+        <ComponentLua Name="Assign AutoStart Fix" FileName="Assign Autostart Fix.lua"></ComponentLua>
     </Plugin>
 </GMA3>
