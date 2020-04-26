@@ -1,5 +1,5 @@
 --[[
-AppearanceBuilder v1.1.0.3
+AppearanceBuilder v1.1.0.4
 See README.md for more information
 
 MIT License
@@ -248,6 +248,9 @@ local function Main (display_handle, argument)
             end
             Cmd("Store Appearance " .. appearanceIndex, undo) --store it first to make sure we have something to set.
             Cmd(command, undo)
+
+            -- since we are overwriting, clear out any stale images
+            Cmd(string.format("Set Appearance %d Property Image ''", appearanceIndex), undo)
         end
 
         -- build macros

@@ -38,3 +38,4 @@ Releases:
 - 1.1.0.1 - Uses MessageBox() and better Apperance Overwriting.
 - 1.1.0.2 - Message Box fields use the correct types. Fixed a bug where canceling at continue proceded anyway.
 - 1.1.0.3 - Fixed Undo
+- 1.1.0.4 - When overwriting, clear out any overwritten images
