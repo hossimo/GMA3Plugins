@@ -104,6 +104,8 @@
         "FileExists",
         "IncProgress",
         "GetDMXValue",
-        "GetDMXUniverse"
+        "GetDMXUniverse",
+        "Timer",
+        "GetTokenNameByIndex"
     ]
 }
