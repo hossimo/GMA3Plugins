@@ -106,6 +106,7 @@
         "GetDMXValue",
         "GetDMXUniverse",
         "Timer",
-        "GetTokenNameByIndex"
+        "GetTokenNameByIndex",
+        "GetAttributeCount"
     ]
 }
