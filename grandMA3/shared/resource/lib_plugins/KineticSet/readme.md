@@ -47,7 +47,7 @@ Each plugin can be controlled via a DMX remote. to setup the remote:
     - Temp = Rotation X
     - Rate = Rotation Y
 - Address - Universe.Address
-![Input Example](https://github.com/hossimo/GMA3Plugins/blob/feature-kineticset-upload/Images/KeneticDMXRemoteSetup.png)
+![Input Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/KeneticDMXRemoteSetup.png)
 
 Things to-do:
 
