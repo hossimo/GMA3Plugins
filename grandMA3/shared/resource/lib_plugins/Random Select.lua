@@ -1,20 +1,6 @@
 --[[
 Random Select v1.1.0.1
-Please note that this will likly break in future version of the console. and to use at your own risk.
-
-Usage:
-* Select some fixtures
-* Call Plugin "Random Select"
-* Your selection is now in a random order, if you don't like the order call the selection again.
-
-Releases:
-1.0.0.1 - Inital release
-1.0.0.2 - Makeing functions local
-1.1.0.1 - Fixes Selection of SubFixtures
-
-Notes:
-- Currently only works with FIDs
-- Currently only makes linear selections
+See README.md for more information
 
 MIT License
 
@@ -54,15 +40,12 @@ local my_handle     = select(4,...);
 local F=string.format;
 local E=Echo;
 
--- local functions forward decloration
-local SelectionToArray, CalculateSFID
-
 -- ****************************************************************
--- plugin main entry point 
+-- plugin main entry point
 -- ****************************************************************
 
 local function Main(display_handle,argument)
-	local selection = SelectionToArray(true)
+	local selection = Drt.SelectionToArray(true)
 	
 	if (#selection) == 0 then
 		Echo("No Selection")
@@ -72,7 +55,7 @@ local function Main(display_handle,argument)
 	Cmd("Clear")
 	local selcetionString = ""
 	for k in pairs(selection) do
-		selcetionString = selcetionString .. CalculateSFID(selection[k])
+		selcetionString = selcetionString .. Drt.calculateSFID(selection[k])
 
 		if #selection ~= k then
 			selcetionString = selcetionString .. " + "
@@ -82,108 +65,18 @@ local function Main(display_handle,argument)
 end
 
 -- ****************************************************************
--- plugin exit cleanup entry point 
+-- plugin exit cleanup entry point
 -- ****************************************************************
-
 local function Cleanup()
 end
 
 -- ****************************************************************
--- plugin execute entry point 
+-- plugin execute entry point
 -- ****************************************************************
-
 local function Execute(Type,...)
-	local func=signalTable[Type];
-	if(func) then
-		func(signalTable,...);
-	else
-		local debug_text=string.format("Execute %s not supported",Type);
-		E(debug_text);
-	end
 end
-
-function signalTable:Key(Status,Source,Profile,Token)
-	local debug_text=F("Execute Key (%s) %s UserProfile %d : %s",Status,Source,Profile,Token);
-	E(debug_text);
-end
-
-function signalTable:Fader(Status,Source,Profile,Token,Value)
-	local debug_text=F("Execute Fader (%s) %s UserProfile %d : %s %f",Status,Source,Profile,Token,Value);
-	E(debug_text);
-end
-
--- ****************************************************************
--- Local Functions
--- ****************************************************************
---Thanks MA, this is really helpful. I added a random option.
-function SelectionToArray(random)
-	random = random or false
-
-	local selectedFixtures = {};
-	local sfIdx = SelectionFirst ();
-	while (sfIdx ~= nil)
-	do
-		if random == true then
-			local key = tostring(math.random())
-			selectedFixtures[key] = sfIdx;
-		else
-			selectedFixtures[#selectedFixtures + 1] = sfIdx;
-		end
-		sfIdx = SelectionNext(sfIdx, true);
-	end
-
-	-- if we are in random mode we would like to short the keys to the result is random.
-	if random == true then
-		math.randomseed(os.time())
-		math.random() -- chuck the fist one away just in case.
-
-		local keys = {}
-		
-		-- grab our random keys
-		for k in pairs(selectedFixtures) do
-			table.insert(keys, k)
-		end
-		
-		-- sort them
-		table.sort(keys)
-
-		-- make a new selection table with our sorted randomness
-		local sortedSelection = {}
-
-		for i, k in ipairs(keys) do
-			table.insert(sortedSelection, selectedFixtures[k])
-		end
-		return sortedSelection -- return our random selection
-	end
-	return selectedFixtures -- return our default selection
-end
-
-
--- calculateSub FIDs
--- Sub Fixtures (not child fixtures), don't contain an FID. returns the aparent Sub fixture ID based on the root fixture
-
-function CalculateSFID(fixture)
-	local result = GetSubfixture(fixture).FID
-	if (result ~= nil) then
-		return result
-	end
-
-	result = ""
-
-
-	while (GetSubfixture(fixture):GetClass() == "SubFixture")
-	do
-		local parent = GetSubfixture(fixture):Parent();
-		result = "." .. fixture - parent.SubfixtureIndex .. result
-		fixture = parent.SubfixtureIndex
-	end
-	result = GetSubfixture(fixture).FID .. result
-	return result
-end
-
 
 -- ****************************************************************
 -- return the entry points of this plugin : 
 -- ****************************************************************
-
 return Main,Cleanup,Execute
