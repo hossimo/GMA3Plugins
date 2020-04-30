@@ -1,15 +1,6 @@
 --[[
 USB Stomper v1.1.0.1
-Please note that this will likly break in future version of the console. and to use at your own risk.
-
-Usage:
-When plugin is running it will eject any connected Removable Drive every second. To Stop it run the command `SetGlobalVar "EjectUSB" 2` infact you can set EjectUSB to anything but "1". Additionally you could invert the requirement only a spacific string stops the plugin or change the name of the variable. 
-
-Releases:
-1.1.0.1 - Inital release
-
-Notes:
-- In many cases it might just be easier to password protect your user and the admin user and log out when leaving the desk.
+See README.md for more information
 
 MIT License
 
