@@ -1,4 +1,4 @@
-## KineticSet
+## Kinetic Set
 ###### v1.0.0.1
 
 Moves the selected fixture according to Incoming or Internal Art-Net
@@ -14,7 +14,7 @@ The code for this plugin will remain private until official API Documents are av
 ### Usage:
 
 #### Calling the Plugin
-`Call Plugin "<PluginName>" "[Stop|Start,<FID>, <Speed Pos Z>[, <Speed Pos Y>, <Speed Pos X>, <Speed Rot Z>, <Speed Rot Y>, <Speed Rot X>, <Scale Pos Z>, <Scale Pos X>, <Scale Pos Y>]]"`
+`Call Plugin "Kinetic Set" "[Stop|Start,<FID>, <Speed Pos Z>[, <Speed Pos Y>, <Speed Pos X>, <Speed Rot Z>, <Speed Rot Y>, <Speed Rot X>, <Scale Pos Z>, <Scale Pos X>, <Scale Pos Y>]]"`
 
 - Stop Stops the Plugin from listening to incoming DMX
 - Start Starts the plugin using the following configuration options:
