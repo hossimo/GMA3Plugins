@@ -233,7 +233,7 @@ function Drt.SelectionToArray(random)
 end
 
 -- ****************************************************************
--- Drt.calculateSFID(number) : number
+-- Drt.calculateSFID(number) : string
 -- Sub Fixtures (not child fixtures), don't contain an FID. returns the aparent Sub fixture ID based on the root fixture
 -- ****************************************************************
 function Drt.calculateSFID(fixture)
@@ -253,4 +253,66 @@ function Drt.calculateSFID(fixture)
 	end
 	result = GetSubfixture(fixture).FID .. result
 	return result
+end
+
+-- ****************************************************************
+-- Drt.calculateRange(string) : table, string
+-- ****************************************************************
+function Drt.calculateRange(input)
+    assert(type(input) == "string", "Drt.calculateRange(string) : table, string")
+	-- first split on ","
+	local seqSplit = Drt.split(input, ",")
+	local returnList = {}
+	local returnString = ""
+
+	if #seqSplit == 0 then
+		Printf("No Sequences Found, Exiting")
+		return nil
+	elseif #seqSplit > 0 then
+		for k, v in pairs(seqSplit) do
+			if string.find(v, "-") ~= nil then
+				local inputRange = Drt.split(v, "-")
+
+				-- if inputRange[1] == null or inputRange[2] == null then
+				-- 	goto continue
+				-- end
+
+				if tonumber(inputRange[1]) == nil or tonumber(inputRange[2]) == nil then
+					goto continue
+				end
+
+				-- found a range
+				local inputStart = math.floor(tonumber(inputRange[1]))
+				local inputEnd = math.floor(tonumber(inputRange[2]))
+
+				if inputStart < inputEnd then
+					--input the range into the table
+					for i = inputStart, inputEnd do
+						table.insert (returnList, i)
+					end
+					returnString = returnString .. v .. ","
+				else
+					--range is invalid, skip it.
+				end
+				
+			else
+				-- just a value
+				if tonumber(v) == nil then
+					goto continue
+				end
+				local item = math.floor(tonumber(v))
+				if item ~= nil then
+					table.insert (returnList, item)
+					returnString = returnString .. v .. ","
+				end
+			end
+			::continue::
+		end
+	end
+	if #returnList == 0 then
+		return nil
+	else 
+		returnString = returnString:sub(1, -2)
+		return returnList, returnString	
+	end
 end
