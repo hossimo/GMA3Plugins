@@ -31,32 +31,6 @@ local componentName = select(2,...);
 local signalTable = select(3,...);
 local my_handle = select(4,...);
 
--- Enter Names for colors, Add your own in the following format
--- {{r, g, b,"NAME"}}
--- r, g and b are between 0 and 255
-local names = {
-    {{0  ,  0,  0},"Black"},
-    {{255,  0,  0},"Red"},
-    {{0  ,255,  0},"Green"},
-    {{0  ,  0,255},"Blue"},
-
-    {{0  ,255,255},"Cyan"},
-    {{255,255,  0},"Yellow"},
-    {{255,  0,255},"Magenta"},
-
-    {{255,127,  0},"Orange"},
-    {{127,255,  0},"Lime"},
-    {{  0,255,127},"Sea Foam"},
-    {{  0,127,255},"Lt Blue"},
-    {{127,  0,255},"Purple"},
-    {{255,  0,127},"Hot Pink"},
-
-    {{255,255,255},"White"}
-}
-
--- local functions
-local split, clamp, toRGB, getColorName
-
 -- ****************************************************************
 -- plugin main entry point 
 -- ****************************************************************
@@ -130,7 +104,7 @@ local function Main (display_handle, argument)
         overwrite = messageBoxResult["states"][messageBoxQuestions[8]];
 
         -- get inputs
-        count = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[1]]) or 0), 0, 360)
+        count = Drt.clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[1]]) or 0), 0, 360)
         if count == 0 or messageBoxResult["result"] == 0 then
             return
         end
@@ -138,19 +112,19 @@ local function Main (display_handle, argument)
         local v = "[^0123456789.]"
 
         fillS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[2]], v, "") -- valid characters only
-        fillS = clamp(tonumber(fillS) or 1.0, 0.0, 1.0)
+        fillS = Drt.clamp(tonumber(fillS) or 1.0, 0.0, 1.0)
 
         fillB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[3]], v, "")
-        fillB = clamp(tonumber(fillB) or 1.0, 0.0, 1.0)
+        fillB = Drt.clamp(tonumber(fillB) or 1.0, 0.0, 1.0)
 
         outlineS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[4]], v, "")
-        outlineS = clamp(tonumber(outlineS) or 1.0, 0.0, 1.0)
+        outlineS = Drt.clamp(tonumber(outlineS) or 1.0, 0.0, 1.0)
 
         outlineB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[5]], v, "")
-        outlineB = clamp(tonumber(outlineB) or 1.0, 0.0, 1.0)
+        outlineB = Drt.clamp(tonumber(outlineB) or 1.0, 0.0, 1.0)
 
-        appearanceStartIndex = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[6]]) or 101, 1 ,9999)
-        macroStartIndex = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[7]]) or 101, 1 ,9999)
+        appearanceStartIndex = Drt.clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[6]]) or 101, 1 ,9999)
+        macroStartIndex = Drt.clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[7]]) or 101, 1 ,9999)
         local overwriteString
         if overwrite == 1 then
             overwriteString = "Yes"
@@ -161,32 +135,31 @@ local function Main (display_handle, argument)
         continueString = string.format("Continue? Count: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nAppearance Start Index: %d\nMacro Start Index: %d\nOverwrite: %s", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex, overwriteString)
     else
         -- sanatize our inputs
-        arguments = split(argument, ",")
+        arguments = Drt.split(argument, ",")
         --count (int)
-        count = clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
+        count = Drt.clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
 
         -- fill saturation (float)
-        fillS = clamp(tonumber(arguments[2]) or (1.0 + .0), 0.0, 1.0)
+        fillS = Drt.clamp(tonumber(arguments[2]) or (1.0 + .0), 0.0, 1.0)
 
         -- fill brightness (float)
-        fillB = clamp(tonumber(arguments[3]) + .0, 0.0, 1.0) or 1.0
+        fillB = Drt.clamp(tonumber(arguments[3]) + .0, 0.0, 1.0) or 1.0
 
         --outline saturation (float)
-        outlineS = clamp(tonumber(arguments[4]) + .0, 0.0, 1.0) or fillS
+        outlineS = Drt.clamp(tonumber(arguments[4]) + .0, 0.0, 1.0) or fillS
 
         -- outline brightness (float)
-        outlineB = clamp(tonumber(arguments[5]) + .0, 0.0, 1.0) or fillB
+        outlineB = Drt.clamp(tonumber(arguments[5]) + .0, 0.0, 1.0) or fillB
 
         -- appearanceStartIndex (int)
-        appearanceStartIndex = clamp(math.floor(tonumber(arguments[6]) or 101),1,10000)
+        appearanceStartIndex = Drt.clamp(math.floor(tonumber(arguments[6]) or 101),1,10000)
 
         -- appearanceStartIndex (int)
-        macroStartIndex = clamp(math.floor(tonumber(arguments[7]) or appearanceStartIndex),1,10000)
+        macroStartIndex = Drt.clamp(math.floor(tonumber(arguments[7]) or appearanceStartIndex),1,10000)
 
         inline = true
+        overwrite = 1
     end
-
-
 
     if inline == false then
         local c = Confirm("Continue?", continueString)
@@ -205,8 +178,8 @@ local function Main (display_handle, argument)
     -- loop thru count, hack to not include 1 in the loop
     for i = 0, 1-0.001, fillIncrement do
         local a = 1.0
-        local rf, gf, bf, namef = toRGB(i, fillS, fillB)
-        local ro, go, bo, nameo = toRGB(i, outlineS, outlineB)
+        local rf, gf, bf, namef = Drt.toRGB(i, fillS, fillB)
+        local ro, go, bo, nameo = Drt.toRGB(i, outlineS, outlineB)
 
         -- Overwrite Appearances
         local buildAppearances
@@ -289,114 +262,5 @@ end
 -- ****************************************************************
 local function Execute(Type, ...)
 end
-
--- ****************************************************************
--- Local Functions
--- ****************************************************************
-
--- split
-function split (inputstr, sep)
-    if sep == nil then
-            sep = "%s"
-    end
-    local t={}
-    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-            table.insert(t, str)
-    end
-    return t
-end
-
--- clamp
-function clamp (input, min, max)
-    local i = input
-    if i < min then i = min end
-    if i > max then i = max end
-    return i
-end
-
--- convert to RGB
-function toRGB (h, s, v)
-    -- stuff of magic https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
-    if h == nil then h = 0 end
-    if s == nil then s = 1.0 end
-    if v == nil then v = 1.0 end
-
-    local r = 0
-    local g = 0
-    local b = 0
-    local name = nil
-    local i = math.floor(h * 6)
-    local f = h * 6 - i
-    local p = v * (1.0 - s)
-    local q = v * (1.0 - f  * s)
-    local t = v * (1.0 - (1.0 - f) * s)
-
-    if (i % 6) == 0 then
-        r = v
-        g = t
-        b = p
-    elseif (i % 6) == 1 then
-        r = q
-        g = v
-        b = p
-    elseif (i % 6) == 2 then
-        r = p
-        g = v
-        b = t
-    elseif (i % 6) == 3 then
-        r = p
-        g = q
-        b = v
-    elseif (i % 6) == 4 then
-        r = t
-        g = p
-        b = v
-    elseif (i % 6) == 5 then
-        r = v
-        g = p
-        b = q
-    end
-
-    -- need to round and clamp this!
-    name = getColorName(r,g,b)
-    return r, g, b, name
-end
-
-function getColorName (r, g, b, threshold)
-    -- http://chir.ag/projects/ntc/ntc.js
-    -- not fully implimented, needs to also check HSV values, but works for now.
-    -- safty first
-    r = r or 0
-    g = g or 0
-    b = b or 0
-    threshold = threshold or 1500
-
-    r = clamp(math.floor(r * 255), 0, 255)
-    g = clamp(math.floor(g * 255), 0, 255)
-    b = clamp(math.floor(b * 255), 0, 255)
-
-    local bestScore = -1
-    local bestIndex
-    for k, v in pairs(names) do
-        local cR = v[1][1];
-        local cG = v[1][2];
-        local cB = v[1][3];
-
-        local score = ((r - cR)*(r - cR)) + ((g - cG)*(g - cG)) + ((b - cB)*(b - cB))
-        
-        if bestScore < 0 or bestScore > score then
-            bestScore = score
-            bestIndex = k
-        end
-    end
-    --Echo("%s (%d)", names[bestIndex][2], bestScore)
-    local result = nil
-    if (bestScore < threshold) then
-        result = names[bestIndex][2]
-    end
-    return result
-end
-
-
 
 return Main, Cleanup, Execute
