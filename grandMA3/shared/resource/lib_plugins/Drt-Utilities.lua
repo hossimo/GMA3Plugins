@@ -33,8 +33,12 @@ Drt = {}
 -- ****************************************************************
 function Drt.split(input, seperator)
     local ErrorString = "Drt.split(string:input[, string:seperator]) "
-    assert(type(input) == "string", ErrorString .. "- Input Must be a string")
+    assert(type(input) == "string" or input == nil, ErrorString .. "- Input Must be a string")
     assert(type(seperator) == "string" or seperator == nil, ErrorString .. "- seperator must be a string or nil (nil == '%s')")
+    if input == nil then
+        return nil
+    end
+
 
     if seperator == nil then seperator = "%s" end
     local t = {}
