@@ -7,6 +7,8 @@ Moves the selected fixture according to Incoming or Internal Art-Net
 
 [![In Action](https://img.youtube.com/vi/iBeWw8SVQKE/0.jpg)](https://www.youtube.com/watch?v=iBeWw8SVQKE)
 
+![Settings Dialog](https://github.com/hossimo/GMA3Plugins/blob/master/Images/KineticSetSettings.png)
+
 ### Notes:
 
 The code for this plugin will remain private until official API Documents are available.
