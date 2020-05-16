@@ -2,7 +2,7 @@
 *v1.1.0.1*
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
-![Fade Master Example](..\Images\FadeMaster.gif)
+![Fade Master Example](../../../../../Images/FadeMaster.gif)
 
 Allows you to automate a Executor or Sequence Fader movement over time.
 
