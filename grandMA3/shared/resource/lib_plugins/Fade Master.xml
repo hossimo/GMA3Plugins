@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.0.0.3">
+    <Plugin Name="Fade Master" Author="Hoss" Version="1.1.0.1">
+        <ComponentLua Name="Fade Master" FileName="Fade Master.lua" Installed="Yes" LoadOnDemand="Yes" />
+        <ComponentLua Name="DRT-Utilities" FileName="DRT-Utilities.lua" Installed="Yes" LoadOnDemand="Yes" />
+    </Plugin>
+</GMA3>
