@@ -28,6 +28,7 @@ jobs:
         cp -vr ${PLUGIN}/"USB Stomper"* $TMP_PATH
         cp -vr ${PLUGIN}/"Rem Dim"* $TMP_PATH
         cp -vr ${PLUGIN}/"Fade Master"* $TMP_PATH
+        cp -vr ${PLUGIN}/"Drt-Utilities.lua" $TMP_PATH
         find . -name "libcache.dat" -type f -delete -print
         find . -name "pvt_*" -type f -delete
         find . -name "pvt_*" -type d -delete
