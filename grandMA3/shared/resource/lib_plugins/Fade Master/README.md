@@ -2,7 +2,7 @@
 *v1.1.0.1*
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
-![Fade Master Example](..\Images\FadeMaster.gif)
+![Fade Master Example](../../../../../Images/FadeMaster.gif)
 
 Allows you to automate a Executor or Sequence Fader movement over time.
 
@@ -29,15 +29,19 @@ Additionally, if you have a long running fade that you need to abort you can del
 ### Usage:
 
 *Fade Executor 1.201 to full*
+
 `Plugin "Fade Maser" "Page , 1.201 , 100 , 5"`
 
 *Fade Sequence 4 to full*
+
 `Plugin "Fade Maser" "Sequence , 4 , 100 , 5"`
 
 *Stop Executor 1.201 While running*
+
 `DelUserVar "FMP1.201"`
 
 *Stop Sequence 4 While running*
+
 `DelUserVar "FMS4"`
 
 ### Releases:
