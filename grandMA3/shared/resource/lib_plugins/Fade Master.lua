@@ -46,6 +46,8 @@ local my_handle = select(4,...);
 local function Main (display_handle, argument)
     local arguments = Drt.split(argument, ",")
     local tick = 1/30       -- updates / second
+    local MAXTIME = 3600.0  -- the max number of seconds
+    local MAXPOOL = 9999    -- the max number of pool items
     local op = ""           -- the object we are operating on
     local destPage          -- the page asked for
     local destExec          -- the executor on the page
@@ -56,31 +58,125 @@ local function Main (display_handle, argument)
     local v = UserVars()
     local gVarName = ""
 
+    -- Grab inputs based on the number of arguments
+    -- we will validate them later.
+    if argument == nil then
+        -- ask through dialog
+        local messageBoxInputs = {
+            "Page.Exec # or\nSequence #",
+            "Level (%)",
+            "Time (S)"
+        }
 
-    if argument == nil or #arguments ~= 4 then
+        local messageBoxOptions = {
+            title="Fade Master Options",
+            message="",
+            commands = {
+                {value=0, name="Cancel"},
+                {value=1, name="OK"}
+            },
+            inputs = {
+                {name=messageBoxInputs[1], vkPlugin="TextInputNumOnlyRange"},
+                {name=messageBoxInputs[2], vkPlugin="TextInputNumOnlyRange"},
+                {name=messageBoxInputs[3], vkPlugin="TextInputNumOnlyRange"}
+            }
+        }
+        local result = MessageBox(messageBoxOptions)
+        if result.result == 0 then
+            return
+        end
+
+        local x = Drt.split(result.inputs[messageBoxInputs[1]], ".")
+        if #x == 1 then
+            op = "Sequence"
+            destSeq = tonumber(x[1])
+        elseif #x == 2 then
+            op = "Page"
+            destPage = tonumber(x[1])
+            destExec = tonumber(x[2])
+        else
+            ErrPrintf("Incorrect Sequence/Page Identifier")
+            return
+        end
+
+        faderEnd = result.inputs[messageBoxInputs[2]]
+        faderTime = result.inputs[messageBoxInputs[3]]
+
+    elseif #arguments == 3 then
+        -- [1]page/seq [2]level [3]time
+        faderEnd = tonumber(arguments[2])
+        faderTime = tonumber(arguments[3])
+
+        local x = Drt.split(arguments[1], ".")
+        if #x == 1 then
+            op = "Sequence"
+            destSeq = tonumber(x[1])
+        elseif #x == 2 then
+            op = "Page"
+            destPage = tonumber(x[1])
+            destExec = tonumber(x[2])
+        else
+            ErrPrintf("Incorrect Sequence/Page Identifier")
+            return
+        end
+    elseif #arguments == 4 then
+        -- [1]"Page"/"Seq" [2]page/seqID [3]level [4]time
+        faderEnd = tonumber(arguments[3])
+        faderTime = tonumber(arguments[4])
+
+        if string.lower(arguments[1]):sub(1, 3) == "seq" then       -- Operate on a Sequence
+            op = "Sequence"
+            destSeq = tonumber(arguments[2])
+        elseif string.lower(arguments[1]):sub(1, 3) == "pag" then   -- Operate on a Page
+            op = "Page"
+            local x = Drt.split(arguments[2], ".")
+            if #x == 2 then
+                destPage = tonumber(x[1])
+                destExec = tonumber(x[2])
+            else
+                ErrPrintf("Incorrect Page Identifier; Page.Ecexutor")
+                return
+            end
+        end
+    else
         ErrPrintf("Incorrect number of arguments")
         ErrPrintf("Plugin \"Fade Master\" \"<Page|Sequence>, <Page#.Executor# | Sequence#>, <Level>, <Seconds> \"")
         return
     end
 
-    faderEnd = Drt.clamp(tonumber(arguments[3]), 0.0, 100.0)
-    faderTime = Drt.clamp(tonumber(arguments[4]), 0.0, 3600.0)
 
-    if string.lower(arguments[1]):sub(1, 3) == "seq" then       -- Operate on a Sequence
-        op = "Sequence"
-        destSeq = tonumber(arguments[2])
-    elseif string.lower(arguments[1]):sub(1, 3) == "pag" then   -- Operate on a Page
-        op = "Page"
-        local x = Drt.split(arguments[2], ".")
-        if #x == 2 then
-            destPage = tonumber(x[1])
-            destExec = tonumber(x[2])
+    -- check our inputs
+    if tonumber(faderEnd) == nil then
+        ErrPrintf("Incorrect level, Enter a value between 0.0 and 100.0")
+        return
+    else
+        faderEnd = Drt.clamp(tonumber(faderEnd), 0.0, 100.0)
+    end
+    if tonumber(faderEnd) == nil then
+        ErrPrintf("Incorrect time, Enter Seconds between 0.0 and " .. MAXTIME)
+        return
+    else
+        faderTime = Drt.clamp(tonumber(faderTime), 0.0, MAXTIME)
+    end
+
+    if op == "Sequence" then
+        if destSeq == nil then
+            Printf("Invalid Page Number, Enter a number between 1 and " .. MAXPOOL)
         else
-            ErrPrintf("Incorrect Page Identifier; Page.Ecexutor")
+            destSeq = Drt.clamp(destSeq, 1, MAXPOOL)
+        end
+    elseif op == "Page" then
+        if destPage == nil then
+            Printf("Invalid Sequence Number, Enter a number between 1 and " .. MAXPOOL)
+        else
+            destPage = Drt.clamp(destPage, 1, MAXPOOL)
+        end
+        if destExec == nil then
+            Printf("Invalid Executor Number, Enter a Page.Executor, e.g: 1.201")
         end
     end
 
-
+    -- setup exec and UserVars
     if op == "Sequence" then
         gVarName = "FM".."S"..destSeq
         execObject = DataPool().sequences:Children()[destSeq]
@@ -122,9 +218,9 @@ local function Main (display_handle, argument)
 
         if faderTime > 0  and math.abs(distance) > 0 then
             if op == "Sequence" then
-                Printf("Running Fade Master on Sequence %d for %d Seconds. To abort fade execute - DelUserVar \"%s\"", destSeq, faderTime, gVarName)
+                Printf("Running Fade Master on Sequence %d for %d Seconds. To abort - DelUserVar \"%s\"", destSeq, faderTime, gVarName)
             elseif op == "Page" then
-                Printf("Running Fade Master on Page %d.%d for %d Seconds. To abort fade execute - DelUserVar \"%s\"", destPage, destExec, faderTime, gVarName)
+                Printf("Running Fade Master on Page %d.%d for %d Seconds. To abort - DelUserVar \"%s\"", destPage, destExec, faderTime, gVarName)
             end
             local interval = (distance * tick)/faderTime
             repeat

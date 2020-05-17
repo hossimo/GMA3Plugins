@@ -9,7 +9,7 @@ Download the latest release [here](https://github.com/hossimo/GMA3Plugins/releas
 * [Copy Screenshots 1.0.0.3](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Copy%20Screenshots)
 * [Assign AutoStart Fix 1.0.0.3](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Assign%20AutoStart%20Fix)
 * [Rem Dim 1.1.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Rem%20Dim)
-* [Fade Master 1.1.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Fade%20Master)
+* [Fade Master 1.1.0.2](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Fade%20Master)
 
 ### Source not released
 * [Kinetic Set 1.0.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/KineticSet)

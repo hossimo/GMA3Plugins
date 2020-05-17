@@ -1,5 +1,5 @@
 # Fade Master
-*v1.1.0.1*
+*v1.1.0.2*
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 ![Fade Master Example](../../../../../Images/FadeMaster.gif)
@@ -9,10 +9,14 @@ Allows you to automate a Executor or Sequence Fader movement over time.
 In grandMA 2 you could do `ExecButton 1.1 At 100 Fade 3`
 
 With this plugin you can do:
-'Plugin "Fade Master" "Page,1.201,100,3"' Which fade executor 1.201 from its current value to 100% over 3 seconds.
+`Plugin "Fade Master" "Page,1.201,100,3"` Which fade executor 1.201 from its current value to 100% over 3 seconds.
 
 You also can do the following:
-'Plugin "Fade Master" "Sequence,4,100,3"' Which Sequence 4 from its current value to 100% over 3 seconds. The executor does not even need to be assigned to an executor or an executor with a master.
+`Plugin "Fade Master" "Sequence,4,100,3"` Which Sequence 4 from its current value to 100% over 3 seconds. The executor does not even need to be assigned to an executor or an executor with a master.
+
+Added in v1.1.0.2:
+* `Plugin "Fade Master"` (without arguments) and a dialog with options will be displayed
+* No longer need `Page` or `Sequence` arguments, if you enter a number with a `.` it will be a page and without a sequence.
 
 
 Additionally, if you have a long running fade that you need to abort you can delete the User Vraiable and the fade will stop.
@@ -46,3 +50,4 @@ Additionally, if you have a long running fade that you need to abort you can del
 
 ### Releases:
 - 1.1.0.1 - Inital Release
+- 1.1.0.2 - Added no argument dialog, and some additional sanity checking.
