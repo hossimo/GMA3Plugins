@@ -56,28 +56,45 @@ local function Main (display_handle, argument)
     local v = UserVars()
     local gVarName = ""
 
+    if argument == nil then
+    elseif #arguments == 3 then
+        faderEnd = Drt.clamp(tonumber(arguments[2]), 0.0, 100.0)
+        faderTime = Drt.clamp(tonumber(arguments[3]), 0.0, 3600.0)
 
-    if argument == nil or #arguments ~= 4 then
-        ErrPrintf("Incorrect number of arguments")
-        ErrPrintf("Plugin \"Fade Master\" \"<Page|Sequence>, <Page#.Executor# | Sequence#>, <Level>, <Seconds> \"")
-        return
-    end
-
-    faderEnd = Drt.clamp(tonumber(arguments[3]), 0.0, 100.0)
-    faderTime = Drt.clamp(tonumber(arguments[4]), 0.0, 3600.0)
-
-    if string.lower(arguments[1]):sub(1, 3) == "seq" then       -- Operate on a Sequence
-        op = "Sequence"
-        destSeq = tonumber(arguments[2])
-    elseif string.lower(arguments[1]):sub(1, 3) == "pag" then   -- Operate on a Page
-        op = "Page"
-        local x = Drt.split(arguments[2], ".")
-        if #x == 2 then
+        local x = Drt.split(arguments[1], ".")
+        if #x == 1 then
+            op = "Sequence"
+            destSeq = tonumber(x[1])
+        elseif #x == 2 then
+            op = "Page"
             destPage = tonumber(x[1])
             destExec = tonumber(x[2])
         else
-            ErrPrintf("Incorrect Page Identifier; Page.Ecexutor")
+            ErrPrintf("Incorrect Sequence/Page Identifier")
+            return
         end
+    elseif #arguments == 4 then
+        faderEnd = Drt.clamp(tonumber(arguments[3]), 0.0, 100.0)
+        faderTime = Drt.clamp(tonumber(arguments[4]), 0.0, 3600.0)
+
+        if string.lower(arguments[1]):sub(1, 3) == "seq" then       -- Operate on a Sequence
+            op = "Sequence"
+            destSeq = tonumber(arguments[2])
+        elseif string.lower(arguments[1]):sub(1, 3) == "pag" then   -- Operate on a Page
+            op = "Page"
+            local x = Drt.split(arguments[2], ".")
+            if #x == 2 then
+                destPage = tonumber(x[1])
+                destExec = tonumber(x[2])
+            else
+                ErrPrintf("Incorrect Page Identifier; Page.Ecexutor")
+                return
+            end
+        end
+    else
+        ErrPrintf("Incorrect number of arguments")
+        ErrPrintf("Plugin \"Fade Master\" \"<Page|Sequence>, <Page#.Executor# | Sequence#>, <Level>, <Seconds> \"")
+        return
     end
 
 
@@ -122,9 +139,9 @@ local function Main (display_handle, argument)
 
         if faderTime > 0  and math.abs(distance) > 0 then
             if op == "Sequence" then
-                Printf("Running Fade Master on Sequence %d for %d Seconds. To abort fade execute - DelUserVar \"%s\"", destSeq, faderTime, gVarName)
+                Printf("Running Fade Master on Sequence %d for %d Seconds. To abort - DelUserVar \"%s\"", destSeq, faderTime, gVarName)
             elseif op == "Page" then
-                Printf("Running Fade Master on Page %d.%d for %d Seconds. To abort fade execute - DelUserVar \"%s\"", destPage, destExec, faderTime, gVarName)
+                Printf("Running Fade Master on Page %d.%d for %d Seconds. To abort - DelUserVar \"%s\"", destPage, destExec, faderTime, gVarName)
             end
             local interval = (distance * tick)/faderTime
             repeat
