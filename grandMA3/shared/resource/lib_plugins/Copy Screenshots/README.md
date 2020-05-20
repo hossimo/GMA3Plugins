@@ -3,7 +3,7 @@ Copy Screenshots v1.0.0.3
 Please note that this will likly break in future version of the console. and to use at your own risk.
 
 Usage:
-* Call Plugin "Copy Screenshots"
+* `Plugin "Copy Screenshots"`
 * Will any screen shots (with the name *display*.png) to all connected USB sticks
   in the folder grandMA3\shared\resource\lib_images
 
