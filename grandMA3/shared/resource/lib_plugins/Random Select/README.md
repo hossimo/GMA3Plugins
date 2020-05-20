@@ -5,7 +5,7 @@ Please note that this will likly break in future version of the console. and to 
 
 #### Usage:
 * Select some fixtures
-* Call Plugin "Random Select"
+* `Plugin "Random Select"`
 * Your selection is now in a random order, if you don't like the order call the selection again.
 
 #### Releases:
