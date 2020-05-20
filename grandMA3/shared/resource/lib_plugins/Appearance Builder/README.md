@@ -5,10 +5,10 @@ Please note that this will likly break in future version of the console. and to 
 This plugin creates the specified number of Appearance colors by spinning the Hue wheel eavenly. it trys to give the colors names based on a small list of editable RGB values and names in the plugin.
 
 Usage:
-`Call Plugin AppearanceBuilder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearanceStartIndex], [MacroStartIndex]"'`
+`Plugin Appearance Builder "COUNT, [FillSaturation], [FillBrightness], [OutlineSaturation], [OutlineBrightness], [AppearanceStartIndex], [MacroStartIndex]"'`
 
 Example:
-`Call Plugin "AppearanceBuilder" "10, 1, 0.4, 1, 1, 103, 121"`
+`Plugin "Appearance Builder" "10, 1, 0.4, 1, 1, 103, 121"`
 
 Creates 10 Appearances starting at 103 and Macros starting at 121 with the fill being darker then the outline.
 If no properties are called with with the plugin a series of text boxes will ask questions for each value.
