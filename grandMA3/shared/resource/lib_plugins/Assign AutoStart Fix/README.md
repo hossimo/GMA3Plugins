@@ -1,4 +1,4 @@
-Assign AutoStart Fix v1.0.0.3
+Assign AutoStart Fix v1.1.0.1
 
 Please note that this will likely break in future version of the console. and to use at your own risk.
 
@@ -13,9 +13,10 @@ Usage:
 
 Issues:
 * ***NOTE: This will OVERWRITE any CMD's in the Selected Sequences CueZero and OffCue!***
-* Does not currently check if the Sequence exists, probably no need since when the issue gets fixed this plugin will be depricated.
+* Does not currently check if the Sequence exists, probably no need since when the issue gets fixed this plugin will be deprecated.
 
 Releases:
 * 1.0.0.1 - Initial release
 * 1.0.0.2 - Added Oops, better checks for non valid inputs
 * 1.0.0.3 - Making functions local
+* 1.1.0.1 - Spelling Corrections

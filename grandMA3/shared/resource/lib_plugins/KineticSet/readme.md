@@ -3,7 +3,7 @@
 
 Moves the selected fixture according to Incoming or Internal Art-Net
 
-[Youtube Link](https://www.youtube.com/watch?v=iBeWw8SVQKE)
+[YouTube Link](https://www.youtube.com/watch?v=iBeWw8SVQKE)
 
 [![In Action](https://img.youtube.com/vi/iBeWw8SVQKE/0.jpg)](https://www.youtube.com/watch?v=iBeWw8SVQKE)
 
