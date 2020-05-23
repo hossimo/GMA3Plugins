@@ -24,4 +24,4 @@ Releases:
 * 1.0.0.1 - Initial release
 * 1.0.0.2 - Fixed a path parsing bug causing the plugin to not work on the console.
 * 1.0.0.3 - Making functions local
-
+* 1.1.0.4 - Fixed Image copy on windows.
