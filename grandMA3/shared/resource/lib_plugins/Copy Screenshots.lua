@@ -72,7 +72,7 @@ local function Main(display_handle,argument)
     -- files to copy
 
     -- get someone else to do it.
-    local result = copyFileToUSB(files, true)
+    local result = copyFileToUSB(files, false)
 end
 
 -- ****************************************************************
@@ -119,7 +119,7 @@ function copyFileToUSB(sourceFiles, overwrite)
 
     for k, v in pairs(sourceFiles) do
         --Echo("srcFileHandle: %s", v)
-        local srcFileHandle = assert(io.open(v, "r"))
+        local srcFileHandle = assert(io.open(v, "rb"))
         local fileContent = srcFileHandle:read("*all")
 
         for i, d in ipairs(Root().Temp.DriveCollect) do
@@ -130,16 +130,15 @@ function copyFileToUSB(sourceFiles, overwrite)
             if i ~= 1 then
                 local path = d.path
                 local exportFilePath = GetPathOverrideFor("lib_images", path) .. sep
-                local file = io.open(exportFilePath .. k, "r")
-                if overwrite and  file ~= nil then 
+                local fileCheck = io.open(exportFilePath .. k, "r")
+                if overwrite == false and fileCheck ~= nil then
                     E("Skipping Existing: %s", exportFilePath)
                     skipCount = skipCount + 1
-                    io.close(file)
+                    io.close(fileCheck)
                     goto continue
                 end
 
-
-                local file, err = io.open(exportFilePath .. k, "w+")
+                local file, err = io.open(exportFilePath .. k, "wb")
                 if file then
                     assert(file:write(fileContent))
                     io.close(file)
@@ -169,7 +168,7 @@ end
 
 
 -- ****************************************************************
--- return the entry points of this plugin : 
+-- return the entry points of this plugin :
 -- ****************************************************************
 
 return Main,Cleanup,Execute
