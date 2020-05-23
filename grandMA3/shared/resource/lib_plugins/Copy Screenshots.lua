@@ -1,5 +1,5 @@
 --[[
-Copy Screenshots v1.0.0.3
+Copy Screenshots v1.1.0.4
 See README.md for more information
 
 MIT License
