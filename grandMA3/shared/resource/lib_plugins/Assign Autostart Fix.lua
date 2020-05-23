@@ -1,5 +1,5 @@
 --[[
-Assign AutoStart Fix v1.0.0.3
+Assign AutoStart Fix v1.1.0.1
 See README.md for more information
 
 MIT License
@@ -52,20 +52,20 @@ local function Main(display_handle,argument)
 		input = argument
 	else
 		-- no argument prompt in the UI
-		input = TextInput("Enter Sequance Number or range (e.g. 1,2-4)")
+		input = TextInput("Enter Sequence Number or range (e.g. 1,2-4)")
 	end
 	
-	local sequances, stringSequances = Drt.calculateRange(input)
-	if sequances == nil then
+	local sequences, stringSequences = Drt.calculateRange(input)
+	if sequences == nil then
 		Echo("No Valid Ranges")
 		return
 	end
 
 	-- create an undo session.
-	local undo = CreateUndo("Adding Macros AutoStart Macros to Sequences " .. stringSequances)
+	local undo = CreateUndo("Adding Macros AutoStart Macros to Sequences " .. stringSequences)
 	
 	-- use our returned sequences to insert the CueZero and CueEnd Macros
-	for k, v in pairs(sequances) do
+	for k, v in pairs(sequences) do
 		-- make sure object exists!
 		-- assign the macros
 		local cmdString = string.format('Set Seq %d "CmdEnable" "Yes"', v)

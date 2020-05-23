@@ -1,6 +1,6 @@
 # Fade Master
 *v1.1.0.2*
-Please note that this will likly break in future version of the console. and to use at your own risk.
+Please note that this will likely break in future version of the console. and to use at your own risk.
 
 ![Fade Master Example](../../../../../Images/FadeMaster.gif)
 
@@ -19,12 +19,12 @@ Added in v1.1.0.2:
 * No longer need `Page` or `Sequence` arguments, if you enter a number with a `.` it will be a page and without a sequence.
 
 
-Additionally, if you have a long running fade that you need to abort you can delete the User Vraiable and the fade will stop.
+Additionally, if you have a long running fade that you need to abort you can delete the User Variable and the fade will stop.
 
 ### Note:
 
-* The plugin does it's best to make sure a user does not run the same executor twice, However there are edge cases like assigining Sequence 2 to Page 1.201 and dunning both Page and Sequence modes on the same executor will do undefined things.
-* If the Fade Master plugin is already running it will not start again until the previous move is complete (thus its corasponding UserVar is deleted.)
+* The plugin does it's best to make sure a user does not run the same executor twice, However there are edge cases like assigning Sequence 2 to Page 1.201 and dunning both Page and Sequence modes on the same executor will do undefined things.
+* If the Fade Master plugin is already running it will not start again until the previous move is complete (thus its corresponding UserVar is deleted.)
 * Fades are limited to 1 Hour, only for a sensible limit.
 * Fades are currently always calculated in seconds.
 * Spacing between arguments is optional but arguments must be delimited by comma ","
@@ -49,5 +49,5 @@ Additionally, if you have a long running fade that you need to abort you can del
 `DelUserVar "FMS4"`
 
 ### Releases:
-- 1.1.0.1 - Inital Release
+- 1.1.0.1 - Initial Release
 - 1.1.0.2 - Added no argument dialog, and some additional sanity checking.

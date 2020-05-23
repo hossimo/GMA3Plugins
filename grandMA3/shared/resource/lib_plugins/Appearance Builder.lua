@@ -108,7 +108,7 @@ local function Main (display_handle, argument)
         if count == 0 or messageBoxResult["result"] == 0 then
             return
         end
-        -- have to filter out the numbers because non text inputs dont respect the black/white Filters.
+        -- have to filter out the numbers because non text inputs don't respect the black/white Filters.
         local v = "[^0123456789.]"
 
         fillS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[2]], v, "") -- valid characters only
@@ -134,7 +134,7 @@ local function Main (display_handle, argument)
 
         continueString = string.format("Continue? Count: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nAppearance Start Index: %d\nMacro Start Index: %d\nOverwrite: %s", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex, overwriteString)
     else
-        -- sanatize our inputs
+        -- sanitize our inputs
         arguments = Drt.split(argument, ",")
         --count (int)
         count = Drt.clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
@@ -228,7 +228,7 @@ local function Main (display_handle, argument)
 
         -- build macros
         -- Overwrite Macros
-        --TODO: This should do an overwrite insted of a delete
+        --TODO: This should do an overwrite instead of a delete
         if overwrite == 1 then
             Cmd(string.format("Delete Macro %d /NC", macroIndex), undo)
         end

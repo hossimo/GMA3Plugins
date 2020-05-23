@@ -3,7 +3,7 @@
 
 Moves the selected fixture according to Incoming or Internal Art-Net
 
-[Youtube Link](https://www.youtube.com/watch?v=iBeWw8SVQKE)
+[YouTube Link](https://www.youtube.com/watch?v=iBeWw8SVQKE)
 
 [![In Action](https://img.youtube.com/vi/iBeWw8SVQKE/0.jpg)](https://www.youtube.com/watch?v=iBeWw8SVQKE)
 
@@ -55,7 +55,7 @@ Things to-do:
 
 - Add Distance Scale for Position X, Y, Z (Just need to code it up)
 - Add `Call Plugin x "Store"` to Store the current positions in UserVars
-- Add `Call Plugin x "Racall"` to put the fixtures back in their original position/rotations.
+- Add `Call Plugin x "Recall"` to put the fixtures back in their original position/rotations.
 - Change Start and Stop to UserVars to avoid conflicting plugins being out of sync.
 - Fix BUGS!
 

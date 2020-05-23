@@ -7,7 +7,7 @@ Based on your selection, sets the dimmer of _other_ fixtures to 0.
 
 Using the plugin without arguments will restrict the operation to fixtures of the selected ID Type. The "All" argument will execute Rem Dim on ALL patched fixtures however Global Fixtures will be ignored.
 
-Makes sensable selections so should work with any number of fixtures.
+Makes sensible selections so should work with any number of fixtures.
 
 ### Note:
 
@@ -54,4 +54,4 @@ Result:
 Fixtures 2 Thru 10 + Channel 2 Thru 10 At 0
 
 ### Releases:
-- 1.1.0.1 - Inital Release
+- 1.1.0.1 - Initial Release
