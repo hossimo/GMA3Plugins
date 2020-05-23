@@ -107,6 +107,7 @@
         "GetDMXUniverse",
         "Timer",
         "GetTokenNameByIndex",
-        "GetAttributeCount"
+        "GetAttributeCount",
+        "CurrentExecPage"
     ]
 }
