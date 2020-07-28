@@ -3,8 +3,8 @@ Please note that this will likely break in future version of the console. and to
 
 ![Example Image](https://github.com/hossimo/GMA3Plugins/blob/master/Images/RandomSelect.gif)
 
-#### Shuffle Selection in 1.2.x
-The newly added [MAtricks Shuffle Keyword](https://help2.malighting.com/Page/grandMA3/matricks_shuffle/en/1.2/Shuffle) depracates this Plugin. as of now I have not tested this Plugin it should still work but using the Shuffle option is way more powerful!
+#### ✨Shuffle Selection in 1.2.x
+The newly added [MAtricks Shuffle Keyword](https://help2.malighting.com/Page/grandMA3/matricks_shuffle/en/1.2/Shuffle) depracates this Plugin. as of now I have not tested this Plugin it should still work but using the Shuffle option is way more powerful👍
 
 #### Usage:
 * Select some fixtures
