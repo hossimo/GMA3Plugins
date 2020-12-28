@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.4.0.0">
+    <Plugin Name="Clock Setter" Author="Hoss" Version="1.4.0.0">
+        <ComponentLua Name="Clock Setter" FileName="Clock Setter.lua" LoadOnDemand="Yes" />
+    </Plugin>
+</GMA3>
