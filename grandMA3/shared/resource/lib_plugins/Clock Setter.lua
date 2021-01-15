@@ -9,20 +9,21 @@ local split
 local function Main (display_handle, argument)
     local h, m, s = 0, 0, 0;    -- set hour minute and second to 0
     local userVar = UserVars(); -- lets store the FID in the UserVars 
-    local clear = false;        -- cunset the clear flag
+    local clear = true;        -- clear control values
+    local fid = GetVar(userVar, "CLOCK_FID") or -1
 
     -- If CLOCK_FID is a number then use it, else set it to -1 and ask the user what channel.
-    if tonumber(GetVar(userVar, "CLOCK_FID") or -1) == -1 then
+    if tonumber(fid) == -1 then
         local tempid = tonumber(TextInput("ENTER CLOCK FIXTURE ID"))
         if tempid == nil then
-            Echo("Imporer Fixture ID, Exitting");
+            Echo("Improper Fixture ID, Exiting");
             return;
         end
         fid = tempid
         SetVar(userVar, "CLOCK_FID", fid);
     end
 
-    local result = split(TextInput("Enter Time in format 'h.m.s.<clear>'"),".");
+    local result = split(TextInput("Enter Time in format 'h.m.s.<do not clear>'"),".");
     if #result == 1 then
         s = result[1];
     elseif #result == 2 then
@@ -36,17 +37,18 @@ local function Main (display_handle, argument)
         h = result[1];
         m = result[2];
         s = result[3];
-        clear = true;
+        clear = false;
 
     else
         Echo("Incorrect number of arguments");
         return;
     end
 
-    Cmd('Clear Selection; Fixture '..fid..'; Attribute "Control1" At Absolute Decimal8 6; Attribute "Hours" At Absolute Decimal8 '..h..'; Attribute "Minutes" At Absolute Decimal8 '..m..'; Attribute "Seconds" At Absolute Decimal8 '.. s)
+    Cmd('Clear Selection; Fixture '..fid..'; Attribute "Control1" At Absolute Decimal8 16; Attribute "Hours" At Absolute Decimal8 '..h..'; Attribute "Minutes" At Absolute Decimal8 '..m..'; Attribute "Seconds" At Absolute Decimal8 '.. s)
     if clear then 
         coroutine.yield(2/30)
-        Cmd('Off Attribute "Control1"; Off Attribute "Hours"; Off Attribute "Minutes"; Off Attribute "Seconds"');
+        Cmd('Off Fixture ' .. fid)
+        --Cmd('Off Attribute "Control1"; Off Attribute "Hours"; Off Attribute "Minutes"; Off Attribute "Seconds"');
     end
 end
 
