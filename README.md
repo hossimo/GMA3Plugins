@@ -6,6 +6,7 @@ Download the latest release [here](https://github.com/hossimo/GMA3Plugins/releas
 ### Tested on 1.5.2.1
 * [Appearance Builder 1.1.0.4](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder)
 
+### Tested on 1.0.0.3  -  1.1.4.2
 * [Random Select 1.1.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Random%20Select)
 * [Copy Screenshots 1.1.0.4](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Copy%20Screenshots)
 * [Assign AutoStart Fix 1.1.0.1](https://github.com/hossimo/GMA3Plugins/tree/master/grandMA3/shared/resource/lib_plugins/Assign%20AutoStart%20Fix)
