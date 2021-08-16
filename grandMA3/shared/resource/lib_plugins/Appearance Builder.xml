@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<GMA3 DataVersion="1.0.0.3">
-    <Plugin Name="Appearance Builder" Author="Hoss" Version="1.1.0.4">
+<GMA3 DataVersion="1.5.2.1">
+    <Plugin Name="Appearance Builder" Author="Hoss" Version="1.5.2.1-1">
         <ComponentLua Name="Appearance Builder" FileName="Appearance Builder.lua" Installed="Yes" LoadOnDemand="Yes" />
-        <ComponentLua Name="DRT Utilities" FileName="Drt-Utilities.lua" />
     </Plugin>
 </GMA3>

@@ -31,6 +31,9 @@ local componentName = select(2,...);
 local signalTable = select(3,...);
 local my_handle = select(4,...);
 
+-- local functions
+local clamp, split, toRGB, getColorName, colorNames
+
 -- ****************************************************************
 -- plugin main entry point 
 -- ****************************************************************
@@ -43,7 +46,6 @@ local function Main (display_handle, argument)
     local outlineS
     local outlineB
     local appearanceStartIndex
-    local macroStartIndex
     local inline = false
     local continueString
     local overwrite = false
@@ -51,19 +53,18 @@ local function Main (display_handle, argument)
 
     if argument == nil then
         Printf("Usage:")
-        Printf('Call Plugin AppearanceBuilder "<COUNT 1 - 360>, [Fill Saturation 0 - 1], [Fill Brightness 0 - 1], [Outline Saturation 0 - 1], [Outline Brightness 0 - 1], [Appearance Start Index 1 - 10000], [Macro Start Index 1 - 10000]"');
+        Printf('Call Plugin AppearanceBuilder "<COUNT 1 - 360> [,Appearance Start Index 1 - 10000] [,Fill Saturation 0 - 1] [,Fill Brightness 0 - 1] [,Outline Saturation 0 - 1] [,Outline Brightness 0 - 1]"');
         Printf('All options except for COUNT are optional, and will choose some defaults')
 
         -- Gather information using MessageBox()
 
         local messageBoxQuestions = {
             "Count",
+            "Appearance Index\n(1 - 9999)",
             "Fill Saturation\n(0.0 - 1.0)",
             "Fill Brightness\n(0.0 - 1.0)",
             "Outline Saturation\n(0.0 - 1.0)",
             "Outline Brightness\n(0.0 - 1.0)",
-            "Appearance Index\n(1 - 9999)",
-            "Macro Index\n(1 - 9999)",
             "Overwrite"
         }
         local wfInt = "0123456789"
@@ -88,43 +89,42 @@ local function Main (display_handle, argument)
                 -- NumericInput does not have "."
                 -- Therefore need to remove the the following from the result "/-+Thru %=*"
                 {name=messageBoxQuestions[1], value="", maxTextLength = 4, vkPlugin = "TextInputNumOnly", whiteFilter = wfInt},
-                {name=messageBoxQuestions[2], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
+                {name=messageBoxQuestions[2], value="101", maxTextLength = 5, vkPlugin = "TextInputNumOnly", whiteFilter = wfInt},
                 {name=messageBoxQuestions[3], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
                 {name=messageBoxQuestions[4], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
                 {name=messageBoxQuestions[5], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
-                {name=messageBoxQuestions[6], value="101", maxTextLength = 5, vkPlugin = "TextInputNumOnly", whiteFilter = wfInt},
-                {name=messageBoxQuestions[7], value="101", maxTextLength = 5, vkPlugin = "TextInputNumOnly", whiteFilter = wfInt}
+                {name=messageBoxQuestions[6], value="1.0", maxTextLength = 5, vkPlugin = "NumericInput", whiteFilter = wfFloat},
             },
             states={
-                {name=messageBoxQuestions[8], state = true},
+                {name=messageBoxQuestions[7], state = true},
             }
         }
         local messageBoxResult = MessageBox(messageBoxOptions);
         --tableToString(messageBoxResult)
-        overwrite = messageBoxResult["states"][messageBoxQuestions[8]];
+        overwrite = messageBoxResult["states"][messageBoxQuestions[7]];
+
 
         -- get inputs
-        count = Drt.clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[1]]) or 0), 0, 360)
+        count = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[1]]) or 0), 0, 360)
         if count == 0 or messageBoxResult["result"] == 0 then
             return
         end
         -- have to filter out the numbers because non text inputs don't respect the black/white Filters.
         local v = "[^0123456789.]"
 
-        fillS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[2]], v, "") -- valid characters only
-        fillS = Drt.clamp(tonumber(fillS) or 1.0, 0.0, 1.0)
+        fillS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[3]], v, "") -- valid characters only
+        fillS = clamp(tonumber(fillS) or 1.0, 0.0, 1.0)
 
-        fillB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[3]], v, "")
-        fillB = Drt.clamp(tonumber(fillB) or 1.0, 0.0, 1.0)
+        fillB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[4]], v, "")
+        fillB = clamp(tonumber(fillB) or 1.0, 0.0, 1.0)
 
-        outlineS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[4]], v, "")
-        outlineS = Drt.clamp(tonumber(outlineS) or 1.0, 0.0, 1.0)
+        outlineS = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[5]], v, "")
+        outlineS = clamp(tonumber(outlineS) or 1.0, 0.0, 1.0)
 
-        outlineB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[5]], v, "")
-        outlineB = Drt.clamp(tonumber(outlineB) or 1.0, 0.0, 1.0)
+        outlineB = string.gsub(messageBoxResult["inputs"][messageBoxQuestions[6]], v, "")
+        outlineB = clamp(tonumber(outlineB) or 1.0, 0.0, 1.0)
 
-        appearanceStartIndex = Drt.clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[6]]) or 101, 1 ,9999)
-        macroStartIndex = Drt.clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[7]]) or 101, 1 ,9999)
+        appearanceStartIndex = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[2]]) or 101, 1 ,9999)
         local overwriteString
         if overwrite == 1 then
             overwriteString = "Yes"
@@ -132,33 +132,31 @@ local function Main (display_handle, argument)
             overwriteString = "No"
         end
 
-        continueString = string.format("Continue? Count: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nAppearance Start Index: %d\nMacro Start Index: %d\nOverwrite: %s", count, fillS, fillB, outlineS, outlineB, appearanceStartIndex, macroStartIndex, overwriteString)
+        continueString = string.format("Continue? Count: %d\nAppearance Start Index: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nOverwrite: %s", count, appearanceStartIndex, fillS, fillB, outlineS, outlineB, overwriteString)
     else
         -- sanitize our inputs
-        arguments = Drt.split(argument, ",")
+        arguments = split(argument, ",")
         --count (int)
-        count = Drt.clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
+        count = clamp(math.floor(tonumber(arguments[1]) or 15 ), 1, 360)
+
+        -- appearanceStartIndex (int)
+        appearanceStartIndex = clamp(math.floor(tonumber(arguments[2]) or 101),1,10000)
 
         -- fill saturation (float)
-        fillS = Drt.clamp(tonumber(arguments[2]) or (1.0 + .0), 0.0, 1.0)
+        fillS = clamp((tonumber(arguments[3]) or 1.0), 0.0, 1.0) + 0.0
 
         -- fill brightness (float)
-        fillB = Drt.clamp(tonumber(arguments[3]) + .0, 0.0, 1.0) or 1.0
+        fillB = clamp((tonumber(arguments[4]) or 1.0), 0.0, 1.0) + 0.0
 
         --outline saturation (float)
-        outlineS = Drt.clamp(tonumber(arguments[4]) + .0, 0.0, 1.0) or fillS
+        outlineS = clamp((tonumber(arguments[5]) or fillS), 0.0, 1.0) + 0.0
 
         -- outline brightness (float)
-        outlineB = Drt.clamp(tonumber(arguments[5]) + .0, 0.0, 1.0) or fillB
+        outlineB = clamp((tonumber(arguments[6]) or fillB), 0.0, 1.0) + 0.0
 
-        -- appearanceStartIndex (int)
-        appearanceStartIndex = Drt.clamp(math.floor(tonumber(arguments[6]) or 101),1,10000)
-
-        -- appearanceStartIndex (int)
-        macroStartIndex = Drt.clamp(math.floor(tonumber(arguments[7]) or appearanceStartIndex),1,10000)
 
         inline = true
-        overwrite = 1
+        overwrite = true
     end
 
     if inline == false then
@@ -173,20 +171,19 @@ local function Main (display_handle, argument)
 
     local fillIncrement = 1 / count
     local appearanceIndex = appearanceStartIndex
-    local macroIndex = macroStartIndex
 
     -- loop thru count, hack to not include 1 in the loop
     for i = 0, 1-0.001, fillIncrement do
         local a = 1.0
-        local rf, gf, bf, namef = Drt.toRGB(i, fillS, fillB)
-        local ro, go, bo, nameo = Drt.toRGB(i, outlineS, outlineB)
+        local rf, gf, bf, namef = toRGB(i, fillS, fillB)
+        local ro, go, bo, nameo = toRGB(i, outlineS, outlineB)
 
         -- Overwrite Appearances
         local buildAppearances
         local currentAppearance = Root().ShowData.Appearances[appearanceIndex] --index number, nil if not exists
-        if overwrite == 1 then
+        if overwrite == true then
             buildAppearances = true
-        elseif overwrite == 0  and currentAppearance == nil then
+        elseif overwrite == false  and currentAppearance == nil then
             buildAppearances = true
         else
             buildAppearances = false
@@ -226,27 +223,8 @@ local function Main (display_handle, argument)
             Cmd(string.format("Set Appearance %d Property Image ''", appearanceIndex), undo)
         end
 
-        -- build macros
-        -- Overwrite Macros
-        --TODO: This should do an overwrite instead of a delete
-        if overwrite == 1 then
-            Cmd(string.format("Delete Macro %d /NC", macroIndex), undo)
-        end
-
-        Cmd("Store Macro " .. macroIndex, undo)
-        Cmd("Assign Appearance " .. appearanceIndex .. " at Macro " .. macroIndex, undo)
-        Cmd("CD Macro " .. macroIndex, undo)
-        Cmd("Insert", undo) --TODO: HMM, how do I first delete all lines.
-        Cmd(string.format('Set 1 Command "Assign Appearance %d at" ', appearanceIndex), undo)
-        Cmd("Set 1 Execute no", undo)
-        Cmd("CD Root", undo)
-        local macroName = "Assign " .. (nameo or "Appearance")
-        Cmd("Label Macro " .. macroIndex .. '"'.. macroName ..'"', undo)
-
-
         -- increment our indexes
         appearanceIndex = appearanceIndex + 1
-        macroIndex = macroIndex + 1
     end
     CloseUndo(undo)
 end
@@ -262,5 +240,171 @@ end
 -- ****************************************************************
 local function Execute(Type, ...)
 end
+
+-- ****************************************************************
+-- DRT Common Functions
+-- These are functions I find helpful
+-- ****************************************************************
+-- ****************************************************************
+-- clamp(number, number, number) : number
+-- ****************************************************************
+function clamp(input, min, max)
+    local ErrorString = "clamp(number:input, number:min, number:max) "
+    assert(type(input) == "number", ErrorString .. "- input, must be a number")
+    assert(type(min) == "number", ErrorString .. "- min, must be a number")
+    assert(type(max) == "number", ErrorString .. "- max, must be a number")
+    assert(min <= max, ErrorString .. "- min must be less or equal to max")
+    local i = input
+    if i < min then i = min end
+    if i > max then i = max end
+    return i
+end
+
+-- ****************************************************************
+-- split(string, string) : table
+-- ****************************************************************
+function split(input, separator)
+    local ErrorString = "split(string:input[, string:seperator]) "
+    assert(type(input) == "string" or input == nil, ErrorString .. "- Input Must be a string")
+    assert(type(separator) == "string" or separator == nil, ErrorString .. "- seperator must be a string or nil (nil == '%s')")
+    if input == nil then
+        return nil
+    end
+
+
+    if separator == nil then separator = "%s" end
+    local t = {}
+    for str in string.gmatch(input, "([^" .. separator .. "]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+
+-- ****************************************************************
+-- toRGB(number, number, number) : (number, number, number, string)
+-- ****************************************************************
+function toRGB (h, s, v)
+    local ErrorString = "toRGB([number:Hue] [, number:Saturation] [, number:Value]) "
+    assert(type(h) == "number" or h == nil, ErrorString .. " - Hue must be a number or nil")
+    assert(type(s) == "number" or s == nil, ErrorString .. " - Saturation must be a number or nil")
+    assert(type(v) == "number" or v == nil, ErrorString .. " - Value must be a number or nil")
+
+    --assert(h >= 0 or s <= 1, ErrorString .. " - Hue must be between 0 and 1") -- I don't remember if this is true
+    assert(s >= 0 or s <= 1, ErrorString .. " - Saturation must be between 0 and 1")
+    assert(v >= 0 or v <= 1, ErrorString .. " - Value must be between 0 and 1")
+
+    -- stuff of magic https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
+    if h == nil then h = 0 end
+    if s == nil then s = 1.0 end
+    if v == nil then v = 1.0 end
+
+    local r = 0
+    local g = 0
+    local b = 0
+    local name = nil
+    local i = math.floor(h * 6)
+    local f = h * 6 - i
+    local p = v * (1.0 - s)
+    local q = v * (1.0 - f  * s)
+    local t = v * (1.0 - (1.0 - f) * s)
+
+    if (i % 6) == 0 then
+        r = v
+        g = t
+        b = p
+    elseif (i % 6) == 1 then
+        r = q
+        g = v
+        b = p
+    elseif (i % 6) == 2 then
+        r = p
+        g = v
+        b = t
+    elseif (i % 6) == 3 then
+        r = p
+        g = q
+        b = v
+    elseif (i % 6) == 4 then
+        r = t
+        g = p
+        b = v
+    elseif (i % 6) == 5 then
+        r = v
+        g = p
+        b = q
+    end
+
+    -- need to round and clamp this!
+    name = getColorName(r,g,b)
+    return r, g, b, name
+end
+
+-- ****************************************************************
+-- getColorName(number, number, number, number) : string
+-- ****************************************************************
+function getColorName (r, g, b, threshold)
+
+    -- http://chir.ag/projects/ntc/ntc.js
+    -- not fully implimented, needs to also check HSV values, but works for now.
+    -- safty first
+    r = r or 0
+    g = g or 0
+    b = b or 0
+    threshold = threshold or 1500
+
+    r = clamp(math.floor(r * 255), 0, 255)
+    g = clamp(math.floor(g * 255), 0, 255)
+    b = clamp(math.floor(b * 255), 0, 255)
+
+    local bestScore = -1
+    local bestIndex
+    for k, v in pairs(colorNames) do
+        local cR = v[1][1];
+        local cG = v[1][2];
+        local cB = v[1][3];
+
+        local score = ((r - cR)*(r - cR)) + ((g - cG)*(g - cG)) + ((b - cB)*(b - cB))
+        
+        if bestScore < 0 or bestScore > score then
+            bestScore = score
+            bestIndex = k
+        end
+    end
+    --Echo("%s (%d)", names[bestIndex][2], bestScore)
+    local result = nil
+    if (bestScore < threshold) then
+        result = colorNames[bestIndex][2]
+    end
+    return result
+end
+
+-- ****************************************************************
+-- colorNames
+-- Enter Names for colors, Add your own in the following format
+-- {{r, g, b,"NAME"}}
+-- r, g and b are between 0 and 255
+-- ****************************************************************
+
+colorNames = {
+    {{0  ,  0,  0},"Black"},
+    {{255,  0,  0},"Red"},
+    {{0  ,255,  0},"Green"},
+    {{0  ,  0,255},"Blue"},
+
+    {{0  ,255,255},"Cyan"},
+    {{255,255,  0},"Yellow"},
+    {{255,  0,255},"Magenta"},
+
+    {{255,127,  0},"Orange"},
+    {{127,255,  0},"Lime"},
+    {{  0,255,127},"Sea Foam"},
+    {{  0,127,255},"Lt Blue"},
+    {{127,  0,255},"Purple"},
+    {{255,  0,127},"Hot Pink"},
+
+    {{255,255,255},"White"}
+}
+
+
 
 return Main, Cleanup, Execute
