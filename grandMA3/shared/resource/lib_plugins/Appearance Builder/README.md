@@ -5,7 +5,7 @@ Please note that this will likely break in future version of the console. and to
 This plugin creates the specified number of Appearance colors by spinning the Hue wheel evenly. it tries to give the colors names based on a small list of editable RGB values and names in the plugin.
 
 Usage:
-`Plugin Appearance Builder "COUNT [,AppearanceStartIndex] [,FillSaturation] [,FillBrightness] [,OutlineSaturation] [,OutlineBrightness]"`
+`Plugin Appearance Builder "COUNT [,AppearanceStartIndex [,FillSaturation [,FillBrightness [,OutlineSaturation [,OutlineBrightness]]]]]"`
 
 Example:
 `Plugin "Appearance Builder" "10, 103, 1, 0.4, 1, 1"`
