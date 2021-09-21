@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.5.2.3.1">
+    <Plugin Name="Get Date" Author="Hoss" Version="1.5.2.3.1">
+        <ComponentLua Name="Get Date" FileName="GetDate.lua" Installed="No" LoadOnDemand="Yes" />
+    </Plugin>
+</GMA3>
