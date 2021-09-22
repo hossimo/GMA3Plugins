@@ -36,12 +36,12 @@ format - if nil will use the format YYYY-MM-DD or use https://www.lua.org/pil/22
 * Can be called as a Plugin:
 
     `Call Plugin "GetDate"` or `Call Plugin "GetDate" "%Y-%m-$d %H:%M:%S"`
-    ![Example Image](https://github.com/hossimo/GMA3Plugins/blob/master/Images/UsedAsPlugin.png)
+    ![Example Image](https://github.com/hossimo/GMA3Plugins/blob/master/Images/GetDateUsedAsPlugin.png)
 
 * Or as a function directly on the Command Line:
 
     `Lua 'GetDate()'` or `Lua 'GetDate("%Y-%m-$d %H:%M:%S")'`
-    ![Example Image](https://github.com/hossimo/GMA3Plugins/blob/master/Images/UsedFromScript.png)
+    ![Example Image](https://github.com/hossimo/GMA3Plugins/blob/master/Images/GetDateUsedFromScript.png)
 
 * Or as a function call within your own Plugins:
 
