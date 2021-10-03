@@ -4,7 +4,7 @@
 ## Note:
 As of console version 1.6.1.3 the built-in `FaderMaster` command with `Fade` keyword is working. for example to Fade Executor 201 on Page 1 to 100% at 5 seconds you cen type:
 
-`FaderMaster Page 1.201 at 100 Fadde 5`
+`FaderMaster Page 1.201 at 100 Fade 5`
 
 
 ![Fade Master Example](../../../../../Images/FadeMaster.gif)
