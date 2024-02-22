@@ -1,10 +1,10 @@
 --[[
-AppearanceBuilder v1.1.0.4
+AppearanceBuilder v1.6.0
 See README.md for more information
 
 MIT License
 
-Copyright (c) 2019 Down Right Technical Inc.
+Copyright (c) 2019 - 2024 Down Right Technical Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --]]
 
-
-local pluginName = select(1,...);
-local componentName = select(2,...);
-local signalTable = select(3,...);
-local my_handle = select(4,...);
-
 -- local functions
-local clamp, split, toRGB, getColorName, colorNames
+local clamp, split, toRGB, getColorName
 
 -- ****************************************************************
 -- plugin main entry point 
@@ -49,6 +43,13 @@ local function Main (display_handle, argument)
     local inline = false
     local continueString
     local overwrite = false
+    local buildBuiltIn = false
+    local builtInColorsCount = 0
+
+    -- all because I decided not to use a table with incremental keys
+    for _ in pairs(builtInColors) do
+        builtInColorsCount = builtInColorsCount + 1
+    end
 
 
     if argument == nil then
@@ -65,7 +66,8 @@ local function Main (display_handle, argument)
             "Fill Brightness\n(0.0 - 1.0)",
             "Outline Saturation\n(0.0 - 1.0)",
             "Outline Brightness\n(0.0 - 1.0)",
-            "Overwrite"
+            "Overwrite",
+            "System Colors"
         }
         local wfInt = "0123456789"
         local wfFloat = "0123456789."
@@ -97,12 +99,13 @@ local function Main (display_handle, argument)
             },
             states={
                 {name=messageBoxQuestions[7], state = true},
+                {name=messageBoxQuestions[8], state = true}
             }
         }
         local messageBoxResult = MessageBox(messageBoxOptions);
         --tableToString(messageBoxResult)
         overwrite = messageBoxResult["states"][messageBoxQuestions[7]];
-
+        buildBuiltIn = messageBoxResult["states"][messageBoxQuestions[8]];
 
         -- get inputs
         count = clamp(math.floor(tonumber(messageBoxResult["inputs"][messageBoxQuestions[1]]) or 0), 0, 360)
@@ -126,13 +129,17 @@ local function Main (display_handle, argument)
 
         appearanceStartIndex = clamp(tonumber(messageBoxResult["inputs"][messageBoxQuestions[2]]) or 101, 1 ,9999)
         local overwriteString
-        if overwrite == 1 then
+        if overwrite then
             overwriteString = "Yes"
         else
             overwriteString = "No"
         end
 
-        continueString = string.format("Continue? Count: %d\nAppearance Start Index: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nOverwrite: %s", count, appearanceStartIndex, fillS, fillB, outlineS, outlineB, overwriteString)
+        if buildBuiltIn then
+            continueString = string.format("Continue?\nCount: %d + %d \nAppearance Start Index: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nOverwrite: %s\nBuild Built In: Yes", count, builtInColorsCount, appearanceStartIndex, fillS, fillB, outlineS, outlineB, overwriteString)
+        else
+            continueString = string.format("Continue?\nCount: %d \nAppearance Start Index: %d\nFill Saturation: %f\nFill Brightness: %f\nOutline Saturation: %f\nOutline Brightness: %f\nOverwrite: %s", count, appearanceStartIndex, fillS, fillB, outlineS, outlineB, overwriteString)
+        end
     else
         -- sanitize our inputs
         arguments = split(argument, ",")
@@ -179,14 +186,12 @@ local function Main (display_handle, argument)
         local ro, go, bo, nameo = toRGB(i, outlineS, outlineB)
 
         -- Overwrite Appearances
-        local buildAppearances
+        local buildAppearances = false
         local currentAppearance = Root().ShowData.Appearances[appearanceIndex] --index number, nil if not exists
         if overwrite == true then
             buildAppearances = true
         elseif overwrite == false  and currentAppearance == nil then
             buildAppearances = true
-        else
-            buildAppearances = false
         end
 
         if (buildAppearances == true) then
@@ -226,19 +231,33 @@ local function Main (display_handle, argument)
         -- increment our indexes
         appearanceIndex = appearanceIndex + 1
     end
+
+    -- for each in builtInColors
+    if (buildBuiltIn == true) then
+        for k, v in pairs(builtInColors) do
+            local currentAppearance = Root().ShowData.Appearances[appearanceIndex] --index number, nil if not exists
+            if currentAppearance == nil then
+                local command = string.format(
+                    'Set Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d" "Name" "%s"',
+                    appearanceIndex,
+                    v[1]/255, --0 - 255
+                    v[2]/255,
+                    v[3]/255,
+                    1.0,
+                    v[1], -- 0 - 1
+                    v[2],
+                    v[3],
+                    255,
+                    k
+                )
+                Cmd("Store Appearance " .. appearanceIndex, undo) --store it first to make sure we have something to set.
+                Cmd(command, undo)
+                Cmd(string.format("Set Appearance %d Property Image ''", appearanceIndex), undo)
+            end
+            appearanceIndex = appearanceIndex + 1
+        end
+    end
     CloseUndo(undo)
-end
-
--- ****************************************************************
--- Cleanup (placeholder)
--- ****************************************************************
-local function Cleanup()
-end
-
--- ****************************************************************
--- Execute (placeholder)
--- ****************************************************************
-local function Execute(Type, ...)
 end
 
 -- ****************************************************************
@@ -405,6 +424,24 @@ colorNames = {
     {{255,255,255},"White"}
 }
 
+-- ****************************************************************
+-- builtInColors hard coded from the default color template v1.9.7.0
+-- Values are entered in hex (0x00 - 0xFF) since that is how they are
+-- entered in the console
+-- ****************************************************************
+builtInColors = {
+    A_Fade =     {0x00, 0xCC, 0xFF},
+    A_Delay =    {0xFF, 0x7C, 0x00},
+    A_Absolute = {0x7E, 0x11, 0x11},
+    A_Relative = {0x98, 0x3B, 0x5E},
+    A_Phaser =   {0x74, 0x36, 0x80},
+    A_Macro =    {0x80, 0x00, 0x00},
+    A_Plugin =   {0x70, 0x00, 0x50},
+    A_Group =    {0x00, 0x40, 0x80},
+    A_World =    {0x00, 0x00, 0x80},
+    A_Filters =  {0x00, 0x00, 0x90},
+    A_Sequence = {0xA6, 0x7D, 0x00},
+    A_Preset =   {0x00, 0x80, 0x80}
+}
 
-
-return Main, Cleanup, Execute
+return Main

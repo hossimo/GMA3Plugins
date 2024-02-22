@@ -1,4 +1,4 @@
-AppearanceBuilder v1.5.2.1-1
+AppearanceBuilder v1.6
 
 Please note that this will likely break in future version of the console. and to use at your own risk.
 
@@ -47,4 +47,5 @@ Releases:
 - 1.1.0.2 - Message Box fields use the correct types. Fixed a bug where canceling at continue proceeded anyway.
 - 1.1.0.3 - Fixed Undo
 - 1.1.0.4 - When overwriting, clear out any overwritten images
-- 1.5.2.1-1 - Fixed for 1.5.2.1, removed macro creation, re-ordered command line arguments, corrected default values MessageBox() status now return true/false not 0/1, 
+- 1.5.2.1-1 - Fixed for 1.5.2.1, removed macro creation, re-ordered command line arguments, corrected default values MessageBox() status now return true/false not 0/1,
+- 1.6.0 - Added System Colors, fixed overwrite result from the message box being a bool and not a int any longer.
