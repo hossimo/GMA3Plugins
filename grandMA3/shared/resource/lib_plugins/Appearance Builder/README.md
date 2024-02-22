@@ -23,7 +23,9 @@ Creates 10 at default index with the below defaults
 If no properties are called with with the plugin a series of text boxes will ask questions for each value.
 
 ![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilderExample.png)
- 
+
+![Example with System Colors](https://github.com/hossimo/GMA3Plugins/assets/1986602/14408603-6d62-41ea-9847-5fee3b1454b4)
+
 Properties:
 COUNT                between  1 and 360
 AppearanceStartIndex between 0 - 10000 defaults to 101
