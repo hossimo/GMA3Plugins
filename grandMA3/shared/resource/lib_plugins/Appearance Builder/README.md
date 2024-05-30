@@ -1,4 +1,43 @@
-AppearanceBuilder v1.6
+## Appearance Builder 2.0
+Tested with MA 2.0.2.0
+
+This updated version of the appearance builder adds images and a better UI
+
+Changes from v1.x
+- Removed the Commandline Entry (could add back if it's useful).
+- Updated UI to the ScreenOverlay APIs.
+- Added the ability to append generated System Colors (Macro, Sequence, Fade, Delay...).
+- Added the ability to add Images to the generated Appearances.
+- Window Stays open between generations for easy creation of multiple color setups.
+- A new Undo step is created every type you press apply
+- UI will complain in if any value is not valid (e.g. Saturation of 1.1 or count and start is greater then 10,000)
+- Choosing a Count of 0 and System colors will only make the system colors
+- The fill Saturation controls the color of the image, to make the image show up as designed make the Fill Saturation 0
+
+
+Create 12 Appearances starting at index 1
+![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/ApearanceBuilder2-simple1.png)
+
+Create another 12 starting at 14 and fill and outline brightness set to 50%
+![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilder2-simple2.png)
+
+Create 13 appearances starting at 1 and append the system colors as well as overwriting pervious
+![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilder2-system.png)
+
+
+Create 25 Appearances with Image 2 overwriting previous, note the color of the fill chooses the color of the Image, so a Saturation of 0 makes the fill white thus making the image appear as designed, increating the Saturation of the fill with an image acts as a tint.
+![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilder2-images.png)
+
+
+
+![Appearance Builder 2_combined.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202%20combined.xml) - This is noth the xml and lua code in a single file
+![Appearance Builder 2.lua](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202.lua) - If you want to view the code here on github
+![Appearance Builder 2.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202.xml) - used with the lua file if you like it that way.
+
+
+
+
+## AppearanceBuilder v1.6
 
 Please note that this will likely break in future version of the console. and to use at your own risk.
 
