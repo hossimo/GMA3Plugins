@@ -16,7 +16,7 @@ Changes from v1.x
 
 
 Create 12 Appearances starting at index 1
-![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/ApearanceBuilder2-simple1.png)
+![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilder2-simple1.png)
 
 Create another 12 starting at 14 and fill and outline brightness set to 50%
 ![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilder2-simple2.png)
@@ -29,10 +29,11 @@ Create 25 Appearances with Image 2 overwriting previous, note the color of the f
 ![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilder2-images.png)
 
 
+[Appearance Builder 2_combined.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202_combined.xml) - This is noth the xml and lua code in a single file
 
-![Appearance Builder 2_combined.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202%20combined.xml) - This is noth the xml and lua code in a single file
-![Appearance Builder 2.lua](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202.lua) - If you want to view the code here on github
-![Appearance Builder 2.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202.xml) - used with the lua file if you like it that way.
+[Appearance Builder 2.lua](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202.lua) - If you want to view the code here on github
+
+[Appearance Builder 2.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202.xml) - used with the lua file if you like it that way.
 
 
 
