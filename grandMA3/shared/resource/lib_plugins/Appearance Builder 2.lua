@@ -3,6 +3,7 @@ local componentName = select(2,...);
 local signalTable   = select(3,...); 
 local my_handle     = select(4,...);
 
+-- main ref to the dialog
 local dialog
 
 -- functions
@@ -11,12 +12,11 @@ local buildMenu, buildHeader, getColorName, toRGB, clamp, split, validateDialog
 --global values
 local builtInColors, colorNames
 
-
 local validValues = {}
 local isValid = false
 
 local stateOverwrite = 0
-local stateSystemColors = 1
+local stateSystemColors = 0
 
 local colorTransparent = Root().ColorTheme.ColorGroups.Global.Transparent
 
@@ -47,7 +47,6 @@ function buildMenu(width, height)
     result.dialog.CloseOnEscape = "Yes"
 
     --titlebar
-    -- titlebar
     result.titleBar = result.dialog:Append("TitleBar")
     result.titleBar.Columns = 2
     result.titleBar.Rows = 1
@@ -68,7 +67,6 @@ function buildMenu(width, height)
 
     -- Create the dialog's main frame.
     result.dlgFrame = result.dialog:Append("DialogFrame")
-    --dlgFrame.Padding ="5,5,5,0"
     result.dlgFrame.H = "100%"
     result.dlgFrame.W = "100%"
     result.dlgFrame.Columns = 1
@@ -85,28 +83,28 @@ function buildMenu(width, height)
     result.Row1[2][3].SizePolicy = "Fixed"
     result.Row1[2][3].Size = "60"
 
-        -- label
-        result.startLabel = result.Row1:Append("UIObject")
-        result.startLabel.Anchors = "0,0"
-        result.startLabel.Text = "Start"
-        result.startLabel.Font = "Medium20"
-        result.startLabel.HasHover = "No"
-        result.startLabel.BackColor = colorTransparent
-        result.startLabel.TextalignmentH = "Right"
+    -- label
+    result.startLabel = result.Row1:Append("UIObject")
+    result.startLabel.Anchors = "0,0"
+    result.startLabel.Text = "Start"
+    result.startLabel.Font = "Medium20"
+    result.startLabel.HasHover = "No"
+    result.startLabel.BackColor = colorTransparent
+    result.startLabel.TextalignmentH = "Right"
 
-        -- Start
-        result.start = result.Row1:Append("LineEdit")
-        result.start.Name="Start"
-        result.start.Message="Start Index"
-        result.start.Anchors = "1,0"
-        result.start.Texture = "corner15"
-        result.start.target = CurrentProfile()
-        result.start.Focus = "InitialFocus"
-        result.start.TextChanged="OnChange"
-        result.start.PluginComponent = my_handle
-        result.start.VKPluginName = "TextInputNumOnly"
-        result.start.Filter = "1234567890"
-        result.start.MaxTextLength = 5    
+    -- Start
+    result.start = result.Row1:Append("LineEdit")
+    result.start.Name="Start"
+    result.start.Message="Start Index"
+    result.start.Anchors = "1,0"
+    result.start.Texture = "corner15"
+    result.start.target = CurrentProfile()
+    result.start.Focus = "InitialFocus"
+    result.start.TextChanged="OnChange"
+    result.start.PluginComponent = my_handle
+    result.start.VKPluginName = "TextInputNumOnly"
+    result.start.Filter = "1234567890"
+    result.start.MaxTextLength = 5    
 
     -- label
     result.countLabel = result.Row1:Append("UIObject")
@@ -263,10 +261,7 @@ function buildMenu(width, height)
     result.outlineSaturation.PluginComponent = my_handle
     result.outlineSaturation.MaxTextLength = 5
     result.outlineSaturation.Content = "1.0"
-    
 
-
-    
     -- Brightness Label
     result.brightnessLabel = result.Row5:Append("UIObject")
     result.brightnessLabel.Anchors = "2,0"
@@ -288,8 +283,6 @@ function buildMenu(width, height)
     result.outlineBrightness.MaxTextLength = 5
     result.outlineBrightness.Content = "1.0"
 
-
-    
     -- Alpha Label
     result.alphaLabel = result.Row5:Append("UIObject")
     result.alphaLabel.Anchors = "4,0"
@@ -311,20 +304,19 @@ function buildMenu(width, height)
     result.outlineAlpha.MaxTextLength = 5
     result.outlineAlpha.Content = "1.0"
 
-
     -- Image
-    result.image = result.dlgFrame:Append("PropertyInput")
+    --
+    -- This is a bit of a hack, but it works for the moment
+    --
+    result.image = result.dlgFrame:Append("Button")
     result.image.Name = 'Image'
     result.image.Text = 'Image'
-    result.image.Property = 'image'
-    result.image.target = CurrentProfile()
     result.image.Anchors = "0,6"
-    result.image.colorindicatorheight = 0
     result.image.Texture = "corner15"
     result.image.PluginComponent = my_handle
+    result.image.Clicked = 'imagePopup'
 
     -- Other Stuff
-
     result.systemRow = result.dlgFrame:Append("UILayoutGrid")
     result.systemRow.Anchors = "0,7"
     result.systemRow.Columns = 2
@@ -342,7 +334,6 @@ function buildMenu(width, height)
     result.overwrite.State = stateOverwrite
     result.overwrite.PluginComponent = my_handle
 
-
     --system colors
     result.systemColors = result.systemRow:Append("CheckBox")
     result.systemColors.Name="System Colors"
@@ -356,7 +347,6 @@ function buildMenu(width, height)
     result.systemColors.PluginComponent = my_handle
 
     -- Action Buttons
-
     result.actionButtons = result.dlgFrame:Append("UILayoutGrid")
     result.actionButtons.Anchors = "0,9"
     result.actionButtons.Columns = 2
@@ -375,7 +365,7 @@ function buildMenu(width, height)
     result.apply.Clicked = "ApplyButtonClicked"
     result.apply.Enabled = "No"
     
-    -- Cancel
+    -- Close
     result.cancel = result.actionButtons:Append("Button");
     result.cancel.Anchors = "1,0";
     result.cancel.Textshadow = 1;
@@ -433,7 +423,7 @@ function validateDialog()
     end
 
     --Start
-    if currentStart > 10000 then
+    if currentStart < 1 or currentStart > 10000 then
         dialog.start.TextColor = Root().ColorTheme.ColorGroups.Global.ErrorText
         validValues["Start"] = false
     else
@@ -488,38 +478,48 @@ end
 
 signalTable.ApplyButtonClicked = function (caller, ...)
     local undo = CreateUndo("Appearance Builder 2")
-    local fillIncrement = 1/tonumber(dialog.count.Content)
+
+    local fillIncrement
     local appearanceIndex = tonumber(dialog.start.Content)
-    for i = 0, 1-0.001, fillIncrement do
-        local af = dialog.fillAlpha.Content
-        local ao = dialog.outlineAlpha.Content
-        local rf, gf, bf, namef = toRGB(i, tonumber(dialog.fillSaturation.Content), tonumber(dialog.fillBrightness.Content))
-        local ro, go, bo, nameo = toRGB(i, tonumber(dialog.outlineSaturation.Content), tonumber(dialog.outlineBrightness.Content))
-        local currentAppearance = Root().ShowData.Appearances[appearanceIndex]
-        if currentAppearance == nil or dialog.overwrite.State == 1 then
-            local command = string.format('Set Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d"',
-                            appearanceIndex,
-                            rf,
-                            gf,
-                            bf,
-                            af,
-                            math.floor(ro * 255),
-                            math.floor(go * 255),
-                            math.floor(bo * 255),
-                            math.floor(ao * 255))
-
-            if nameo then
-                command = command .. ' Name "' .. nameo .. '"'
+    
+    if (tonumber(dialog.count.Content) or 0) > 0 then
+        fillIncrement = 1/tonumber(dialog.count.Content)
+        for i = 0, 1-0.001, fillIncrement do
+            local af = dialog.fillAlpha.Content
+            local ao = dialog.outlineAlpha.Content
+            local rf, gf, bf, namef = toRGB(i, tonumber(dialog.fillSaturation.Content), tonumber(dialog.fillBrightness.Content))
+            local ro, go, bo, nameo = toRGB(i, tonumber(dialog.outlineSaturation.Content), tonumber(dialog.outlineBrightness.Content))
+            local currentAppearance = Root().ShowData.Appearances[appearanceIndex]
+            if currentAppearance == nil or dialog.overwrite.State == 1 then
+                local command = string.format('Set Appearance %d Property "Color" "%f,%f,%f,%f" "BackR" "%d" "BackG" "%d" "BackB" "%d" "BackAlpha" "%d"',
+                                appearanceIndex,
+                                rf,
+                                gf,
+                                bf,
+                                af,
+                                math.floor(ro * 255),
+                                math.floor(go * 255),
+                                math.floor(bo * 255),
+                                math.floor(ao * 255))
+    
+                if nameo then
+                    command = command .. ' Name "' .. nameo .. '"'
+                end
+    
+                -- Store it
+                Cmd("Store Appearance " .. appearanceIndex, undo)
+                Cmd(command, undo)
+                -- TODO: Image
+                if dialog.image.Text == "<None>" or dialog.image.Text == "Image" then
+                    Cmd(string.format("Set Appearance %d Property Image ''", appearanceIndex), undo)    
+                else
+                    Cmd(string.format("Assign Image 3.%d at Appearance %d", tonumber(dialog.image.Text:match("%d+")), appearanceIndex), undo)
+                end
             end
-
-            -- Store it
-            Cmd("Store Appearance " .. appearanceIndex, undo)
-            Cmd(command, undo)
-            -- TODO: Image
-            Cmd(string.format("Set Appearance %d Property Image ''", appearanceIndex), undo)
+            appearanceIndex = appearanceIndex + 1
         end
-        appearanceIndex = appearanceIndex + 1
     end
+
 
     -- Add System colors to the end
     if dialog.systemColors.State == 1 then
@@ -554,6 +554,30 @@ end
 
 signalTable.CancelButtonClicked = function (caller, ...)
     Obj.Delete(dialog.overlay, Obj.Index(dialog.dialog))
+end
+
+    -- all of  this is a bit of a hack just to make work.
+signalTable.imagePopup = function (caller, ...)
+    local items = {"<None>"}
+    for key, value in pairs(Root().ShowData.MediaPools.Images:Children()) do
+        -- store the index and name in the table
+        -- this is less then ideal but it works for now
+        table.insert(items, value.No .. " - " .. value.Name)
+    end 
+    popupdata = {
+        title = "Image",
+        caller = caller,
+        items = items,
+        selectedValue = caller.Text
+    }
+    local choiceIndex, choiceName = PopupInput(popupdata)
+
+    choiceIndex = choiceIndex - 1
+    if choiceIndex == -1 then
+        caller.Text = "<None>"
+    else
+        caller.Text = items[choiceIndex + 1]
+    end
 end
 
 -- ****************************************************************

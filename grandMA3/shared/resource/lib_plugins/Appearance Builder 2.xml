@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="2.0.2.0">
+    <Plugin Name="Appearance Builder 2" Author="Hoss" Version="2.0.0.1">
+        <ComponentLua Name="Appearance Builder 2" FileName="Appearance Builder 2.lua" Installed="No"/>
+    </Plugin>
+</GMA3>
