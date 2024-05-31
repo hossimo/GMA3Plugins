@@ -29,7 +29,7 @@ Create 25 Appearances with Image 2 overwriting previous, note the color of the f
 ![AppearanceBuilder Example](https://github.com/hossimo/GMA3Plugins/blob/master/Images/AppearanceBuilder2-images.png)
 
 
-[Appearance Builder 2_combined.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202_combined.xml) - This is noth the xml and lua code in a single file
+[Appearance Builder 2_combined.xml](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202_combined.xml) - This is the xml and lua code in a single file
 
 [Appearance Builder 2.lua](https://github.com/hossimo/GMA3Plugins/blob/master/grandMA3/shared/resource/lib_plugins/Appearance%20Builder%202.lua) - If you want to view the code here on github
 
